@@ -11,7 +11,7 @@ export default function Home() {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
+         Em breve aqui o mais novo do <br/><a href="">SINDICATO RURAL DE SANTA RITA DO PARDO!</a>
         </h1>
 
         <p className={styles.description}>
