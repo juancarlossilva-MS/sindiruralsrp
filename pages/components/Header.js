@@ -104,35 +104,13 @@ return(
                     Classificados
                   </Button>
                 </ListItem>
-                <ListItem>
-                   
-                    <CustomInput
-                      green
-                      inputRootCustomClasses={classes.inputRootCustomClasses}
-                      formControlProps={{
-                        className: classes.formControl,
-                      }}
-                      inputProps={{
-                        placeholder: "Search",
-                        inputProps: {
-                          "aria-label": "Search",
-                          className: classes.searchInput,
-                        },
-                      }}
-                    />
-                    <Button justIcon round color="white">
-                      <Search className={classes.searchIcon} />
-                    </Button>
-                </ListItem>
               
               </List>
-            }
-            
+            }            
             rightLinks={
-              <div style={{marginLeft: "-40%",marginTop: "-3%",marginBottom: "-1%"}}>
                  <List className={classes.list} >
                   <ListItem className={classes.listItem}>
-                    <a style={{color:"#023927"}} href="/"><Facebook/>/Sindicatoruraldesantaritadopardo</a>
+                    <a style={{color:"#023927"}} href="https://facebook.com/sindicatoruraldesantaritadopardoms"><Facebook/>/Sindicatoruraldesantaritadopardo</a>
                    
                   </ListItem>
                   <ListItem className={classes.listItem}>
@@ -144,7 +122,7 @@ return(
                   </ListItem>
                 
                 </List>
-              </div>
+
             }
             />
 )}

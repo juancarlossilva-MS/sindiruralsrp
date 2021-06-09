@@ -9,8 +9,8 @@ export default function Home() {
   return (
     <div >
       <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
+        <title>Site Oficial do Sindicato Rural de Santa Rita do Pardo - MS</title>
+        <link rel="icon" href="/logo.png" />
       </Head>
       <Header/>
       <main >
