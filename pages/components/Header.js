@@ -10,7 +10,7 @@ import styles from "styles/jss/nextjs-material-kit/pages/componentsSections/navb
 import CustomInput from "components/CustomInput/CustomInput.js";
 import { makeStyles } from "@material-ui/core/styles";
 import Image from 'next/image';
-
+import LocationOn from '@material-ui/icons/LocationOn';
 
 export default function WeHeader(){
   const useStyles = makeStyles(styles);
@@ -20,7 +20,7 @@ export default function WeHeader(){
 
 return(
 <Header
-            brand={<Image src="/logo.png" width={300} height={80} />}
+            brand={<Image src="/logo.png" width={250} height={65} />}
             color="green"
             leftLinks={
               <List className={classes.list}>
@@ -104,36 +104,45 @@ return(
                     Classificados
                   </Button>
                 </ListItem>
+                <ListItem>
+                   
+                    <CustomInput
+                      green
+                      inputRootCustomClasses={classes.inputRootCustomClasses}
+                      formControlProps={{
+                        className: classes.formControl,
+                      }}
+                      inputProps={{
+                        placeholder: "Search",
+                        inputProps: {
+                          "aria-label": "Search",
+                          className: classes.searchInput,
+                        },
+                      }}
+                    />
+                    <Button justIcon round color="white">
+                      <Search className={classes.searchIcon} />
+                    </Button>
+                </ListItem>
+              
               </List>
             }
             
             rightLinks={
-              <div>
+              <div style={{marginLeft: "-40%",marginTop: "-3%",marginBottom: "-1%"}}>
                  <List className={classes.list} >
-                <ListItem className={classes.listItem}>
-                  <Facebook/>/Sindicato
-                </ListItem>
-                <ListItem className={classes.listItem}>
-                  <Phone/> (67) 3591 - 1400
-                </ListItem>
+                  <ListItem className={classes.listItem}>
+                    <a style={{color:"#023927"}} href="/"><Facebook/>/Sindicatoruraldesantaritadopardo</a>
+                   
+                  </ListItem>
+                  <ListItem className={classes.listItem}>
+                    <Phone/> (67) 3591 - 1400
+                  </ListItem>
+                  <ListItem className={classes.listItem}>
+
+                    <LocationOn/>Rua Julio César Paulino Maia, 1845, Centro, Santa Rita do Pardo - MS
+                  </ListItem>
                 
-                <CustomInput
-                  green
-                  inputRootCustomClasses={classes.inputRootCustomClasses}
-                  formControlProps={{
-                    className: classes.formControl,
-                  }}
-                  inputProps={{
-                    placeholder: "Search",
-                    inputProps: {
-                      "aria-label": "Search",
-                      className: classes.searchInput,
-                    },
-                  }}
-                />
-                <Button justIcon round color="white">
-                  <Search className={classes.searchIcon} />
-                </Button>
                 </List>
               </div>
             }

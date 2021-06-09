@@ -53,9 +53,7 @@ const headerStyle = {
     flex: 1,
   },
   
-  logo:{
-    marginRight:"3%"
-  },
+  
   title: {
     ...defaultFont,
     lineHeight: "30px",
