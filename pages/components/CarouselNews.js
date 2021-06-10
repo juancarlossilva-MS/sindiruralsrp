@@ -57,7 +57,7 @@ export default function SectionCarousel(props) {
   if(tipoCar == "cursos"){
     return (
         <div >
-          <div className={classes.container} style={{width:"130%"}}>
+          <div className={classes.container} >
     
             <GridContainer>
               <GridItem xs={12} sm={12} md={8} >
@@ -113,7 +113,7 @@ export default function SectionCarousel(props) {
   }else{
   return (
     <div >
-      <div className={classes.container} style={{width:"130%"}}>
+      <div className={classes.container} >
 
         <GridContainer>
           <GridItem xs={12} sm={12} md={8} >

@@ -27,12 +27,12 @@ export default function Home() {
       
       <div style={{padding:"0px"}}> 
         <Grid container  spacing={0}>
-          <Grid item  xs={1}>
-          </Grid>
-          <Grid item  xs={7}>
+          
+          
+          <Grid item  xs={6} md={8}>
               <CarouselNews />
           </Grid>
-          <Grid item xs={4} >
+          <Grid item xs={6} md={4} >
               <CarouselNews tipoCar="cursos"/>
           </Grid>
         </Grid>
