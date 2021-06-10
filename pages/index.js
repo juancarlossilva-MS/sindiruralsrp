@@ -6,7 +6,15 @@ import { Grid } from "@material-ui/core";
 import Header from './components/Header';
 import CarouselNews from './components/CarouselNews';
 
+
 export default function Home() {
+
+  React.useEffect(() => {
+    const jssStyles = document.querySelector('#jss-server-side');
+    if (jssStyles) {
+      jssStyles.parentElement.removeChild(jssStyles);
+    }
+  }, []);
 
   return (
     <div >
@@ -28,13 +36,20 @@ export default function Home() {
       <div style={{padding:"0px"}}> 
         <Grid container  spacing={0}>
           
-          
-          <Grid item  xs={6} md={8}>
+          <Grid item  xs={12} md={6} style={{marginLeft:"3%",marginRight:"2%"}}>
               <CarouselNews />
           </Grid>
-          <Grid item xs={6} md={4} >
+          <Grid item xs={12} md={4} style={{marginLeft:"3%"}}>
               <CarouselNews tipoCar="cursos"/>
           </Grid>
+          <Grid item xs={12} style={{marginLeft:"3%"}}>
+               <div dangerouslySetInnerHTML={{__html: `
+              <iframe src="https://www.noticiasagricolas.com.br/widgets/cotacoes?id=55&fonte=Tahoma&tamanho=10pt&largura=400px&cortexto=023927&corcabecalho=&corlinha=&imagem=false";width=450&amp;colorscheme=light&amp;show_faces=true&amp;stream=false&amp;header=true&amp;height=320 " scrolling="yes" frameborder="0" style="border:none; overflow:hidden; width:450px; height:250px;" allowTransparency="true"></iframe>
+              `}} />;
+               
+
+          </Grid>
+
         </Grid>
       </div>
 

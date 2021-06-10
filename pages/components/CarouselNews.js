@@ -47,10 +47,16 @@ export default function SectionCarousel(props) {
 
   }
 
-  const styleImg ={
+  const styleImgCursos ={
     maxWidth: "100%",
     maxHeight: "20.4rem",
     minHeight: "20.4rem",
+    minWidth: "100%",
+  }
+  const styleImg ={
+    maxWidth: "100%",
+    maxHeight: "23rem",
+    minHeight: "23rem",
     minWidth: "100%",
   }
 
@@ -58,16 +64,25 @@ export default function SectionCarousel(props) {
     return (
         <div >
           <div className={classes.container} >
-    
             <GridContainer>
-              <GridItem xs={12} sm={12} md={8} >
-                <Card carousel style={{height:"83%"}}>
+
+              <GridItem xs={12} sm={12} >
+                                     
+
+
+                <Card carousel style={{marginTop:0}}>
+                  <div style={{backgroundColor:"#023927",padding:5}}>
+                    <span style={{width: "100%",color:"white",marginLeft:"40%",fontWeight:"bold",fontSize: "28px"}}>CURSOS</span>
+                  </div>  
+                
+                
                   <Carousel {...settings}>
                     <div>
+                      
                       <img
                         src="/img/notice.jpg"
                         alt="First slide"
-                        style={styleImg}
+                        style={styleImgCursos}
                       />
                       <div style={{padding:"1%"}}>
                         <Badge color="success">Logística</Badge>
@@ -85,7 +100,7 @@ export default function SectionCarousel(props) {
                       <img
                         src="/img/notice2.jpg"
                         alt="First slide"
-                        style={styleImg}
+                        style={styleImgCursos}
                       />
                       <div style={{padding:"1%"}}>
                         <Badge color="success">Logística</Badge>
@@ -113,12 +128,12 @@ export default function SectionCarousel(props) {
   }else{
   return (
     <div >
-      <div className={classes.container} >
+      <div className={classes.container}  >
 
         <GridContainer>
-          <GridItem xs={12} sm={12} md={8} >
-            <Card carousel style={{height:"83%"}}>
-              <Carousel {...settings}>
+          <GridItem xs={12} sm={12} >
+            <Card carousel style={{marginTop:0,marginBottom:15}}>
+              <Carousel {...settings} >
                 <div>
                   <img
                     src="/img/notice.jpg"
