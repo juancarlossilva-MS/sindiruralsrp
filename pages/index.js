@@ -5,6 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
 import Header from './components/Header';
 import CarouselNews from './components/CarouselNews';
+import Card from "components/Card/Card.js";
 
 
 export default function Home() {
@@ -42,14 +43,58 @@ export default function Home() {
           <Grid item xs={12} md={4} style={{marginLeft:"3%"}}>
               <CarouselNews tipoCar="cursos"/>
           </Grid>
-          <Grid item xs={12} style={{marginLeft:"3%"}}>
-               <div dangerouslySetInnerHTML={{__html: `
-              <iframe src="https://www.noticiasagricolas.com.br/widgets/cotacoes?id=55&fonte=Tahoma&tamanho=10pt&largura=400px&cortexto=023927&corcabecalho=&corlinha=&imagem=false";width=450&amp;colorscheme=light&amp;show_faces=true&amp;stream=false&amp;header=true&amp;height=320 " scrolling="yes" frameborder="0" style="border:none; overflow:hidden; width:450px; height:250px;" allowTransparency="true"></iframe>
-              `}} />;
+          <Card > 
+            
+            <Grid item xs={12} style={{}}>
+                 <div style={{backgroundColor:"#023927",padding:5}}>
+                  <span style={{width: "100%",color:"white",position: "relative",left: "28%",transform: "translate(-50%, -50%)",fontWeight:"bold",fontSize: "28px"}}>MERCADO AGRÍCOLA</span>
+                </div>
+            </Grid>
+          <Grid container  spacing={0} style={{paddingLeft:20}}>
                
-
-          </Grid>
-
+                <Grid item xs={12} md={4} style={{marginLeft:"0px"}}>
+                    <Card style={{width:"94%"}}>
+                              <div dangerouslySetInnerHTML={{__html: `
+                              <iframe src="https://www.noticiasagricolas.com.br/widgets/cotacoes?id=142&fonte=Tahoma&tamanho=12pt&largura=100%&cortexto=023927&corcabecalho=&corlinha=&imagem=false";width=100%&amp;colorscheme=light&amp;show_faces=true&amp;stream=false&amp;header=true&amp;height=100%" scrolling="yes" frameborder="0" style="border:none; overflow:hidden; width:100%; height:400px;" allowTransparency="true"></iframe>
+                              `}} />;
+                      </Card>
+                      
+                </Grid>
+                <Grid item xs={12} md={4} style={{marginLeft:"0px"}}>
+                      <Card style={{width:"94%"}}>
+                      
+                              <div dangerouslySetInnerHTML={{__html: `
+                              <iframe src="https://www.noticiasagricolas.com.br/widgets/cotacoes?id=200&fonte=Tahoma&tamanho=12pt&largura=100%&cortexto=023927&corcabecalho=&corlinha=&imagem=false";width=100%&amp;colorscheme=light&amp;show_faces=true&amp;stream=false&amp;header=true&amp;height=100% " scrolling="yes" frameborder="0" style="border:none; overflow:hidden; width:100%; height:400px;" allowTransparency="true"></iframe>
+                              `}} />;
+                      </Card>
+                </Grid>
+                <Grid item xs={12} md={4} style={{marginLeft:"0px"}}>
+                      <Card style={{width:"94%"}}>
+                      
+                              <div dangerouslySetInnerHTML={{__html: `
+                              <iframe src="https://www.noticiasagricolas.com.br/widgets/cotacoes?id=141&fonte=Tahoma&tamanho=12pt&largura=100%&cortexto=023927&corcabecalho=&corlinha=&imagem=false";width=100%&amp;colorscheme=light&amp;show_faces=true&amp;stream=false&amp;header=true&amp;height=100% " scrolling="yes" frameborder="0" style="border:none; overflow:hidden; width:100%; height:400px;" allowTransparency="true"></iframe>
+                              `}} />;
+                      </Card>
+                </Grid>
+                <Grid item xs={12} sm={4} style={{marginLeft:"0px"}}>
+                      <Card style={{width:"94%"}}>
+                      
+                              <div dangerouslySetInnerHTML={{__html: `
+                              <iframe src="https://www.noticiasagricolas.com.br/widgets/cotacoes?id=217&fonte=Tahoma&tamanho=12pt&largura=100%&cortexto=023927&corcabecalho=&corlinha=&imagem=false";width=100%&amp;colorscheme=light&amp;show_faces=true&amp;stream=false&amp;header=true&amp;height=100% " scrolling="yes" frameborder="0" style="border:none; overflow:hidden; width:100%; height:400px;" allowTransparency="true"></iframe>
+                              `}} />;
+                      </Card>
+                </Grid>
+                <Grid item xs={12} sm={4} style={{marginLeft:"0px"}}>
+                      <Card style={{width:"94%"}}>
+                      
+                              <div dangerouslySetInnerHTML={{__html: `
+                              <iframe src="https://www.noticiasagricolas.com.br/widgets/cotacoes?id=143&fonte=Tahoma&tamanho=12pt&largura=100%&cortexto=023927&corcabecalho=&corlinha=&imagem=false";width=100%&amp;colorscheme=light&amp;show_faces=true&amp;stream=false&amp;header=true&amp;height=100% " scrolling="yes" frameborder="0" style="border:none; overflow:hidden; width:100%; height:400px;" allowTransparency="true"></iframe>
+                              `}} />;
+                      </Card>
+                </Grid>
+               
+          </Grid> 
+          </Card>
         </Grid>
       </div>
 
