@@ -36,18 +36,21 @@ export default function Home() {
       
       <div style={{padding:"0px"}}> 
         <Grid container  spacing={0}>
-          
-          <Grid item  xs={12} md={6} style={{marginLeft:"3%",marginRight:"2%"}}>
-              <CarouselNews />
-          </Grid>
-          <Grid item xs={12} md={4} style={{marginLeft:"3%"}}>
-              <CarouselNews tipoCar="cursos"/>
+          <Grid container 
+          >
+            <Grid item  xs={12} md={1} style={{}}></Grid>
+            <Grid item  xs={12} md={6} style={{}}>
+                <CarouselNews />
+            </Grid>
+            <Grid item xs={12} md={4} >
+                <CarouselNews tipoCar="cursos"/>
+            </Grid>
           </Grid>
           <Card > 
             
             <Grid item xs={12} style={{}}>
-                 <div style={{backgroundColor:"#023927",padding:5}}>
-                  <span style={{width: "100%",color:"white",position: "relative",left: "28%",transform: "translate(-50%, -50%)",fontWeight:"bold",fontSize: "28px"}}>MERCADO AGRÍCOLA</span>
+                 <div style={{backgroundColor:"#023927",padding:5,display: "flex",alignItems: "center",justifyContent: "center"}}>
+                  <span style={{width: "100%",color:"white",position: "relative",textAlign:"center",fontWeight:"bold",fontSize: "28px"}}>MERCADO AGRÍCOLA</span>
                 </div>
             </Grid>
           <Grid container  spacing={0} style={{paddingLeft:20}}>
