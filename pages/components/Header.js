@@ -71,7 +71,7 @@ return(
                     onClick={(e) => e.preventDefault()}
                     color="transparent"
                   >
-                    Acões Sociais
+                    Ações Sociais
                   </Button>
                 </ListItem>
                 <ListItem className={classes.listItem}>
