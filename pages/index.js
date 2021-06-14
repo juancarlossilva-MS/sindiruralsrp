@@ -12,6 +12,7 @@ import Card from "components/Card/Card.js";
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Send from '@material-ui/icons/Send';
+import fire from '../config/fire-config';
 
 
 export default function Home() {
@@ -21,6 +22,11 @@ export default function Home() {
     if (jssStyles) {
       jssStyles.parentElement.removeChild(jssStyles);
     }
+  }, []);
+
+
+  React.useEffect(() => {
+
   }, []);
 
   return (
@@ -79,18 +85,26 @@ export default function Home() {
                   <span style={{width: "100%",color:"white",position: "relative",textAlign:"center",fontWeight:"bold",fontSize: "28px"}}>PARCEIROS</span>
                 </div>
             </Grid>
+
+         <Card>
+
            <Grid container style={{display:"block",padding:25}} spacing={0} >
                <Parceiros/>
                <br/>
                <Parceiros/>
           </Grid>
-          <Grid item xs={12} style={{}}>
-                 <div style={{backgroundColor:"#023927",padding:5,display: "flex",alignItems: "center",justifyContent: "center"}}>
-                  <span style={{width: "100%",color:"white",position: "relative",textAlign:"center",fontWeight:"bold",fontSize: "28px"}}>
-                    ASSOCIE-SE HOJE MESMO AO SINDICATO RURAL DE SANTA RITA DO PARDO - MS</span>
-                </div>
-            </Grid>
+
+
+         </Card>
+
+         
+         <Card>
             <Grid container style={{padding:15}} spacing={3} >
+                
+                <Grid item xs={12} sm={2} ></Grid>
+                <Grid item xs={12} sm={8} ><img src="/associe.png" style={{width:"100%"}} /></Grid>
+                <Grid item xs={12} sm={2} ></Grid>
+
                 <Grid item xs ></Grid>
                 <Grid item xs={6} spacing={0} >
                   <Card style={{padding:30}}>
@@ -103,7 +117,7 @@ export default function Home() {
                 <Grid item xs ></Grid>
 
             </Grid>
-        
+        </Card>
         </Grid>
       </div>
 

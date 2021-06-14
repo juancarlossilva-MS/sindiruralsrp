@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState,useRef} from "react";
 // react component for creating beautiful carousel
 import Carousel from "react-slick";
 // @material-ui/core components
@@ -14,6 +14,7 @@ import styles from "styles/jss/nextjs-material-kit/pages/componentsSections/caro
 import Badge from "components/Badge/Badge.js";
 import stylesTypo from "styles/jss/nextjs-material-kit/pages/componentsSections/typographyStyle.js";
 import Small from "components/Typography/Small.js";
+import fire from '../../config/fire-config';
 
 const useStyles = makeStyles(styles);
 const useStylesTypo = makeStyles(stylesTypo);
@@ -55,12 +56,24 @@ export default function SectionCarousel(props) {
   }
   const styleImg ={
     maxWidth: "100%",
-    maxHeight: "23rem",
-    minHeight: "23rem",
+    maxHeight: "28rem",
+    minHeight: "28rem",
     minWidth: "100%",
   }
 
+ 
+
   if(tipoCar == "cursos"){
+    React.useEffect(() => {
+      var news = fire.database().ref('noticias').limitToLast(2);
+
+        news.on("value",(snap) => {
+            console.log(snap);
+            console.log(snap.val());
+
+        });
+
+      }, []);
     return (
         <div >
           <div className={classes.container} >
@@ -126,7 +139,27 @@ export default function SectionCarousel(props) {
         </div>
       );
   }else{
+    const [noticias,setNoticias] = useState([]);
+    React.useEffect(() => {
+      var news = fire.database().ref('noticias').orderByChild("ehCurso").equalTo(null).limitToLast(2);
+      
+
+        news.on("value",(snap) => {
+            snap.forEach((n) => {
+                  var np = n.val();
+                                      setNoticias(prev =>[...prev, np]);
+
+                  
+
+            });
+
+
+        });
+
+  }, []);
+  
   return (
+    
     <div >
       <div className={classes.container}  >
 
@@ -134,44 +167,32 @@ export default function SectionCarousel(props) {
           <GridItem xs={12} sm={12} >
             <Card carousel style={{marginTop:0,marginBottom:15}}>
               <Carousel {...settings} >
-                <div>
-                  <img
-                    src="/img/notice.jpg"
-                    alt="First slide"
-                    style={styleImg}
-                  />
-                  <div style={{padding:"1%"}}>
-                    <Badge color="success">Logística</Badge>
-                    <div className={classesTypo.typo} style={{padding:"0px"}}>
-                    <h4>
-                        COMITÊ EXTRAORDINÁRIO DA COVID-19 ATENDE SOLICITAÇÃO DO SINDICATO RURAL
-                        <br />
-                        <Small>O Comitê Extraordinário da Covid-19 atendeu à solicitação do Sindicato Rural de Dourados, realizada no último dia 30, e autorizou que produtores rurais, empresas Seguradoras de Seguros Agrícolas e de Planejamento e Assistência Técnica Rural, bem como seus funcionários e prepostos, realizem os serviços durante o lockdown decretado no município.</Small>
-                    </h4>
-                    </div>
-                    
-                  </div>
-                </div>
-                <div>
-                  <img
-                    src="/img/notice2.jpg"
-                    alt="First slide"
-                    style={styleImg}
-                  />
-                  <div style={{padding:"1%"}}>
-                    <Badge color="success">Logística</Badge>
-                    <div className={classesTypo.typo} style={{padding:"0px"}}>
-                    <h4>
-                    NOVA FERROESTE DEVE INICIAR OPERAÇÕES COM TRANSPORTE DE 26 MILHÕES DE TONELADAS DE CARGA
+                {noticias.map((noticia)=>{ 
+                 
 
-                        <br />
-                        <Small>No “Ano Zero”, momento em que estiver concluída e iniciando suas operações, a Nova Ferroeste deverá atender...
-                        </Small>
-                    </h4>
+                  return(
+                    <div>
+                      <img
+                        src={"https://firebasestorage.googleapis.com/v0/b/sindiruralsrp.appspot.com/o/noticias%2F"+noticia.imagem+"?alt=media"}
+                        alt={noticia.titulo}
+                        style={styleImg}
+                      />
+                      <div style={{padding:"1%"}}>
+                        <Badge color="success">{noticia.tipo}</Badge>
+                        <div className={classesTypo.typo} style={{padding:"0px",marginBottom:"0px"}}>
+                        <h4>
+                            {noticia.titulo}
+                            <br />
+                            <Small>{noticia.materia.slice(0,600)}...</Small>
+                        </h4>
+                        </div>
+                        
+                      </div>
                     </div>
-                    
-                  </div>
-                </div>
+                  )
+
+                })
+              }
                 
                
                </Carousel>
