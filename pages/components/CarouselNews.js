@@ -93,10 +93,11 @@ export default function SectionCarousel(props) {
                   <Carousel {...settings}>
                     <div>
                       
-                      <img
+                      <Image
                         src="/img/notice.jpg"
                         alt="First slide"
-                        style={styleImgCursos}
+                        width={500}
+                        height={410}
                       />
                       <div style={{padding:"1%"}}>
                         <Badge color="success">Logística</Badge>
@@ -111,10 +112,11 @@ export default function SectionCarousel(props) {
                       </div>
                     </div>
                     <div>
-                      <img
+                    <Image
                         src="/img/notice2.jpg"
                         alt="First slide"
-                        style={styleImgCursos}
+                        width={500}
+                        height={410}
                       />
                       <div style={{padding:"1%"}}>
                         <Badge color="success">Logística</Badge>
@@ -177,7 +179,7 @@ export default function SectionCarousel(props) {
                         src={"https://firebasestorage.googleapis.com/v0/b/sindiruralsrp.appspot.com/o/noticias%2F"+noticia.imagem+"?alt=media"}
                         alt={noticia.titulo}
                         width={500}
-                        height={300}
+                        height={410}
                         layout='responsive'
                       />
                       <div style={{padding:"1%"}}>
