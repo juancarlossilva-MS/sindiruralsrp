@@ -13,6 +13,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Send from '@material-ui/icons/Send';
 import fire from '../config/fire-config';
+import Image from 'next/image';
 
 
 export default function Home() {
@@ -102,7 +103,7 @@ export default function Home() {
             <Grid container style={{padding:15}} spacing={3} >
                 
                 <Grid item xs={12} sm={2} ></Grid>
-                <Grid item xs={12} sm={8} ><img src="/associe.png" style={{width:"100%"}} /></Grid>
+                <Grid item xs={12} sm={8} ><Image src="/associe.png" width={200} height={100} layout="responsive" /></Grid>
                 <Grid item xs={12} sm={2} ></Grid>
 
                 <Grid item xs ></Grid>
