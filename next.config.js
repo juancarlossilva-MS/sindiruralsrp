@@ -8,4 +8,7 @@ module.exports = withPlugins([[withImages]], {
     config.resolve.modules.push(path.resolve("./"));
     return config;
   },
+  images: {
+    domains: ['assets.vercel.com',"firebasestorage.googleapis.com"],
+  },
 });

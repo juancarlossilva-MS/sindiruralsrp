@@ -15,6 +15,7 @@ import Badge from "components/Badge/Badge.js";
 import stylesTypo from "styles/jss/nextjs-material-kit/pages/componentsSections/typographyStyle.js";
 import Small from "components/Typography/Small.js";
 import fire from '../../config/fire-config';
+import Image from 'next/image'
 
 const useStyles = makeStyles(styles);
 const useStylesTypo = makeStyles(stylesTypo);
@@ -172,10 +173,12 @@ export default function SectionCarousel(props) {
 
                   return(
                     <div>
-                      <img
+                      <Image
                         src={"https://firebasestorage.googleapis.com/v0/b/sindiruralsrp.appspot.com/o/noticias%2F"+noticia.imagem+"?alt=media"}
                         alt={noticia.titulo}
-                        style={styleImg}
+                        width={500}
+                        height={300}
+                        layout='responsive'
                       />
                       <div style={{padding:"1%"}}>
                         <Badge color="success">{noticia.tipo}</Badge>
