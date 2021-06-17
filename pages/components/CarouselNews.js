@@ -65,16 +65,18 @@ export default function SectionCarousel(props) {
  
 
   if(tipoCar == "cursos"){
+    const [cursos,setCursos] = useState([]);
     React.useEffect(() => {
-      var news = fire.database().ref('noticias').limitToLast(2);
+      var lc = fire.database().ref('noticias').orderByChild("ehCurso").equalTo(true).limitToLast(2);
+      
 
-        news.on("value",(snap) => {
-            console.log(snap);
-            console.log(snap.val());
-
+        lc.on("value",(snap) => {
+            snap.forEach((c) => {
+                  var nc = c.val();
+                   setCursos(prev =>[...prev, nc]);
+            });
         });
-
-      }, []);
+  }, []);
     return (
         <div >
           <div className={classes.container} >
@@ -91,46 +93,34 @@ export default function SectionCarousel(props) {
                 
                 
                   <Carousel {...settings}>
-                    <div>
-                      
-                      <img
-                        src="/img/notice.jpg"
-                        alt="First slide"
-                        style={styleImgCursos}
-                      />
-                      <div style={{padding:"1%"}}>
-                        <Badge color="success">Logística</Badge>
-                        <div className={classesTypo.typo} style={{padding:"0px"}}>
-                        <h4>
-                            COMITÊ teste EXTRAORDINÁRIO DA COVID-19 ATENDE SOLICITAÇÃO DO SINDICATO RURAL
-                            <br />
-                            <Small>O Comitê Extraordinário da Covid-19 atendeu à solicitação do Sindicato Rural de Dourados, realizada no último dia 30, e autorizou que produtores rurais, empresas Seguradoras de Seguros Agrícolas e de Planejamento e Assistência Técnica Rural, bem como seus funcionários e prepostos, realizem os serviços durante o lockdown decretado no município.</Small>
-                        </h4>
+                   {cursos.map((curso)=>{ 
+                 
+
+                 return(
+                   <div>
+                     <Image
+                       src={"https://firebasestorage.googleapis.com/v0/b/sindiruralsrp.appspot.com/o/noticias%2F"+curso.imagem+"?alt=media"}
+                       alt={curso.titulo}
+                       width={520}
+                       height={410}
+                       layout='responsive'
+                     />
+                          <div style={{padding:"1%"}}>
+                            <Badge color="success">{curso.tipo}</Badge>
+                            <div className={classesTypo.typo} style={{padding:"0px",marginBottom:"0px"}}>
+                            <h4 style={{fontWeight:"400"}}>
+                                {curso.titulo} </h4>
+                               
+                                <Small>{curso.materia.slice(0,500)}...</Small>
+                           
+                            </div>
+                            
+                          </div>
                         </div>
-                        
-                      </div>
-                    </div>
-                    <div>
-                      <img
-                        src="/img/notice2.jpg"
-                        alt="First slide"
-                        style={styleImgCursos}
-                      />
-                      <div style={{padding:"1%"}}>
-                        <Badge color="success">Logística</Badge>
-                        <div className={classesTypo.typo} style={{padding:"0px"}}>
-                        <h4>
-                        NOVA FERROESTE DEVE INICIAR OPERAÇÕES COM TRANSPORTE DE 26 MILHÕES DE TONELADAS DE CARGA
-    
-                            <br />
-                            <Small>No “Ano Zero”, momento em que estiver concluída e iniciando suas operações, a Nova Ferroeste deverá atender...
-                            </Small>
-                        </h4>
-                        </div>
-                        
-                      </div>
-                    </div>
-                    
+                      )
+
+                    })
+                  }
                    
                    </Carousel>
                 </Card>
@@ -148,15 +138,9 @@ export default function SectionCarousel(props) {
         news.on("value",(snap) => {
             snap.forEach((n) => {
                   var np = n.val();
-                                      setNoticias(prev =>[...prev, np]);
-
-                  
-
+                   setNoticias(prev =>[...prev, np]);
             });
-
-
         });
-
   }, []);
   
   return (
@@ -176,18 +160,18 @@ export default function SectionCarousel(props) {
                       <Image
                         src={"https://firebasestorage.googleapis.com/v0/b/sindiruralsrp.appspot.com/o/noticias%2F"+noticia.imagem+"?alt=media"}
                         alt={noticia.titulo}
-                        width={500}
-                        height={300}
+                        width={580}
+                        height={410}
                         layout='responsive'
                       />
                       <div style={{padding:"1%"}}>
                         <Badge color="success">{noticia.tipo}</Badge>
                         <div className={classesTypo.typo} style={{padding:"0px",marginBottom:"0px"}}>
-                        <h4>
-                            {noticia.titulo}
-                            <br />
-                            <Small>{noticia.materia.slice(0,600)}...</Small>
-                        </h4>
+                        <h4 style={{fontWeight:"bold"}}>
+                            {noticia.titulo}</h4>
+                           
+                            <Small>{noticia.materia.slice(0,500)}...</Small>
+                        
                         </div>
                         
                       </div>

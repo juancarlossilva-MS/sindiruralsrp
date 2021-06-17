@@ -13,6 +13,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Send from '@material-ui/icons/Send';
 import fire from '../config/fire-config';
+import Image from 'next/image';
 
 
 export default function Home() {
@@ -98,15 +99,14 @@ export default function Home() {
          </Card>
 
          
-         <Card>
-            <Grid container style={{padding:15}} spacing={3} >
+            <Grid container style={{padding:0}} spacing={0} >
                 
                 <Grid item xs={12} sm={2} ></Grid>
-                <Grid item xs={12} sm={8} ><img src="/associe.png" style={{width:"100%"}} /></Grid>
+                <Grid item xs={12} sm={8} ><Image src="/associe.png" width={200} height={100} layout="responsive" /></Grid>
                 <Grid item xs={12} sm={2} ></Grid>
 
-                <Grid item xs ></Grid>
-                <Grid item xs={6} spacing={0} >
+                <Grid item xs={12} sm={3}></Grid>
+                <Grid item xs={12} sm={6} spacing={0} >
                   <Card style={{padding:30}}>
                       <TextField required id="standard-required" label="Seu Nome"  />
                       <br/><TextField required id="standard-required" label="Seu Email"  />
@@ -114,10 +114,9 @@ export default function Home() {
                       <br/><Button style={{color:"white",backgroundColor:"#023928"}} fullWidth> Enviar!<Send/></Button>
                   </Card>
                 </Grid>
-                <Grid item xs ></Grid>
+                <Grid item xs={12} sm={3}></Grid>
 
             </Grid>
-        </Card>
         </Grid>
       </div>
 
