@@ -6,30 +6,30 @@ import PropTypes from "prop-types";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 // @material-ui/icons
-
 // core components
-import styles from "assets/jss/nextjs-material-dashboard/components/cardBodyStyle.js";
 
-export default function CardBody(props) {
+import styles from "assets/jss/nextjs-material-dashboard/components/cardAvatarStyle.js";
+
+export default function CardAvatar(props) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
-  const { className, children, plain, profile, ...rest } = props;
-  const cardBodyClasses = classNames({
-    [classes.cardBody]: true,
-    [classes.cardBodyPlain]: plain,
-    [classes.cardBodyProfile]: profile,
+  const { children, className, plain, profile, ...rest } = props;
+  const cardAvatarClasses = classNames({
+    [classes.cardAvatar]: true,
+    [classes.cardAvatarProfile]: profile,
+    [classes.cardAvatarPlain]: plain,
     [className]: className !== undefined,
   });
   return (
-    <div className={cardBodyClasses} {...rest}>
+    <div className={cardAvatarClasses} {...rest}>
       {children}
     </div>
   );
 }
 
-CardBody.propTypes = {
+CardAvatar.propTypes = {
+  children: PropTypes.node.isRequired,
   className: PropTypes.string,
-  plain: PropTypes.bool,
   profile: PropTypes.bool,
-  children: PropTypes.node,
+  plain: PropTypes.bool,
 };

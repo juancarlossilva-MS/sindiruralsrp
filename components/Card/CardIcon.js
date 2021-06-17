@@ -8,28 +8,34 @@ import { makeStyles } from "@material-ui/core/styles";
 // @material-ui/icons
 
 // core components
-import styles from "assets/jss/nextjs-material-dashboard/components/cardBodyStyle.js";
+import styles from "assets/jss/nextjs-material-dashboard/components/cardIconStyle.js";
 
-export default function CardBody(props) {
+export default function CardIcon(props) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
-  const { className, children, plain, profile, ...rest } = props;
-  const cardBodyClasses = classNames({
-    [classes.cardBody]: true,
-    [classes.cardBodyPlain]: plain,
-    [classes.cardBodyProfile]: profile,
+  const { className, children, color, ...rest } = props;
+  const cardIconClasses = classNames({
+    [classes.cardIcon]: true,
+    [classes[color + "CardHeader"]]: color,
     [className]: className !== undefined,
   });
   return (
-    <div className={cardBodyClasses} {...rest}>
+    <div className={cardIconClasses} {...rest}>
       {children}
     </div>
   );
 }
 
-CardBody.propTypes = {
+CardIcon.propTypes = {
   className: PropTypes.string,
-  plain: PropTypes.bool,
-  profile: PropTypes.bool,
+  color: PropTypes.oneOf([
+    "warning",
+    "success",
+    "danger",
+    "info",
+    "primary",
+    "rose",
+    "dark",
+  ]),
   children: PropTypes.node,
 };
