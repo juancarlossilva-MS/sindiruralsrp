@@ -26,6 +26,7 @@ export default function Sidebar(props) {
   const classes = useStyles();
   // verifies if routeName is the one active (in browser input)
   function activeRoute(routeName) {
+    if(router.route == "/admin/addNoticia" && routeName == "/admin/noticias") return true; 
     return router.route.indexOf(routeName) > -1 ? true : false;
   }
   const { color, logo, image, logoText, routes } = props;

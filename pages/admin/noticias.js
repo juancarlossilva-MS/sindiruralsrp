@@ -1,11 +1,13 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {Paper,Table,TableBody,TableCell,TableContainer,TableHead,TablePagination,TableRow} from "@material-ui/core"
-import {Edit,Delete} from "@material-ui/icons"
+import {Edit,Delete,Add} from "@material-ui/icons"
 import Header from "./header";
 import Admin from "layout/admin";
 import Link from "next/link";
 import fire from "../../config/fire-config";
+import Button from "components/CustomButtons/Button.js";
+
 const columns = [
   { id: 'titulo', label: 'Titulo', minWidth: 170 },
   { id: 'tipo', label: 'Tipo', minWidth: 100 },
@@ -68,7 +70,12 @@ React.useEffect(() =>{
 
   return (
       <>
-        <main style={{}} className={classes.content}>
+        <main  className={classes.content}>
+          <Link href="/admin/addNoticia" >
+            <Button style={{backgroundColor:"#023723",float:"right"}} round>
+                <Add className={classes.icons} /> Noticia
+              </Button>
+          </Link>
             <Paper className={classes.root}>
         <TableContainer className={classes.container}>
             <Table stickyHeader aria-label="sticky table">
