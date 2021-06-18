@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import {Paper,Table,TableBody,TableCell,TableContainer,TableHead,TablePagination,TableRow} from "@material-ui/core"
 import {Edit,Delete} from "@material-ui/icons"
 import Header from "./header";
+import Admin from "layout/admin";
 import Link from "next/link";
 import fire from "../../config/fire-config";
 const columns = [
@@ -36,7 +37,7 @@ const useStyles = makeStyles({
 
 
 
-export default function StickyHeadTable() {
+function Noticias() {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -67,8 +68,7 @@ React.useEffect(() =>{
 
   return (
       <>
-        <Header/>
-        <main style={{paddingLeft:250,paddingTop:90,paddingRight:30}} className={classes.content}>
+        <main style={{}} className={classes.content}>
             <Paper className={classes.root}>
         <TableContainer className={classes.container}>
             <Table stickyHeader aria-label="sticky table">
@@ -124,3 +124,7 @@ React.useEffect(() =>{
     </>
   );
 }
+
+Noticias.layout = Admin;
+
+export default Noticias;

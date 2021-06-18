@@ -44,18 +44,14 @@ export default function Sidebar(props) {
             [" " + classes[color]]: activeRoute(prop.layout + prop.path),
           });
         }
-        const whiteFontClasses = classNames({
-          [" " + classes.whiteFont]:
-            activeRoute(prop.layout + prop.path) ||
-            prop.path === "/upgrade-to-pro",
-        });
+       
         return (
           <Link href={prop.layout + prop.path} key={key}>
             <a className={activePro + classes.item}>
               <ListItem button className={classes.itemLink + listItemClasses}>
                 {typeof prop.icon === "string" ? (
                   <Icon
-                    className={classNames(classes.itemIcon, whiteFontClasses, {
+                    className={classNames(classes.itemIcon, {
                       [classes.itemIconRTL]: props.rtlActive,
                     })}
                   >
@@ -63,14 +59,14 @@ export default function Sidebar(props) {
                   </Icon>
                 ) : (
                   <prop.icon
-                    className={classNames(classes.itemIcon, whiteFontClasses, {
+                    className={classNames(classes.itemIcon, {
                       [classes.itemIconRTL]: props.rtlActive,
                     })}
                   />
                 )}
                 <ListItemText
                   primary={props.rtlActive ? prop.rtlName : prop.name}
-                  className={classNames(classes.itemText, whiteFontClasses, {
+                  className={classNames(classes.itemText, {
                     [classes.itemTextRTL]: props.rtlActive,
                   })}
                   disableTypography={true}
@@ -85,7 +81,7 @@ export default function Sidebar(props) {
   var brand = (
     <div className={classes.logo}>
       <a
-        href="https://www.creative-tim.com?ref=njsmd-sidebar"
+       
         className={classNames(classes.logoLink, {
           [classes.logoLinkRTL]: props.rtlActive,
         })}
@@ -94,7 +90,6 @@ export default function Sidebar(props) {
         <div className={classes.logoImage}>
           <img src={logo} alt="logo" className={classes.img} />
         </div>
-        {logoText}
       </a>
     </div>
   );
@@ -103,7 +98,7 @@ export default function Sidebar(props) {
       <Hidden mdUp implementation="css">
         <Drawer
           variant="temporary"
-          anchor={props.rtlActive ? "left" : "right"}
+          anchor="left" 
           open={props.open}
           classes={{
             paper: classNames(classes.drawerPaper, {
@@ -130,7 +125,7 @@ export default function Sidebar(props) {
       </Hidden>
       <Hidden smDown implementation="css">
         <Drawer
-          anchor={props.rtlActive ? "right" : "left"}
+          anchor={"left"}
           variant="permanent"
           open
           classes={{

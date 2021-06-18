@@ -32,6 +32,7 @@
   },
   "devDependencies": {
     "firebase": "^8.6.7",
+    "perfect-scrollbar": "^1.5.1",
     "react-dom": "^17.0.2",
     "react-slick": "^0.28.1",
     "styled-components": "^5.3.0"

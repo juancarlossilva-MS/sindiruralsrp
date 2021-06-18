@@ -9,7 +9,15 @@ function MyApp({ Component, pageProps }) {
       jssStyles.parentElement.removeChild(jssStyles);
     }
   }, []);
-  return <Component {...pageProps} />
+
+
+  const Layout = Component.layout || (({ children }) => <>{children}</>);
+  return (
+      <>
+       <Layout>
+        <Component {...pageProps} />
+        </Layout>
+        </>);
 }
 
 export default MyApp
