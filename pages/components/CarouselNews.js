@@ -111,7 +111,7 @@ export default function SectionCarousel(props) {
                             <h4 style={{fontWeight:"400"}}>
                                 {curso.titulo} </h4>
                                
-                                <Small>{curso.materia.slice(0,500)}...</Small>
+                                <Small>{curso.materia.slice(0,500).replace(/<[^>]+>/g, '') }...</Small>
                            
                             </div>
                             

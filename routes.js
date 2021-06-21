@@ -47,7 +47,7 @@ const dashboardRoutes = [
     layout: "/admin",
   },
   {
-    path: "/table-list",
+    path: "/classificados",
     name: "Classificados",
     rtlName: "قائمة الجدول",
     icon: AddShoppingCart,

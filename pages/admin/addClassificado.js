@@ -1,7 +1,7 @@
 import React,{useRef,useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import {Paper,Table,Fab,TableBody,TableCell,TableContainer,MenuItem,FormControlLabel,Radio,Grid,
-TextField,FormControl, FormLabel, RadioGroup, TableHead,TablePagination,TableRow, Divider} from "@material-ui/core"
+import {Paper,GridList,Fab,GridListTile,GridListTileBar,TableContainer,MenuItem,FormControlLabel,Radio,Grid,
+TextField,FormControl, FormLabel, InputLabel, Input,InputAdornment,TableRow, Divider} from "@material-ui/core"
 import {Edit,Delete,Add, AddPhotoAlternate,Send} from "@material-ui/icons"
 import Header from "./header";
 import Admin from "layout/admin";
@@ -13,7 +13,8 @@ import dynamic from 'next/dynamic';
 import 'react-quill/dist/quill.snow.css';
 import Datetime from "react-datetime";
 import { now } from 'moment';
-
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 const importJodit = () => import('react-quill');
 
 const ReactQuill = dynamic(importJodit, {
@@ -29,40 +30,79 @@ const useStyles = makeStyles({
     maxHeight: 440,
   },
     
-    input: {
-      display: "none"
-    },
+  input: {
+    display: "none"
+  },
   
-    
-  });
+  
+  closeButton: {
+    position: 'absolute',
+   left:0,
+   top:0,
+    color: "red",
+  },
+}
+);
   
 
 
-function AddNoticia() {
+function AddClassificado() {
   const classes = useStyles();
   const [value, setValue] = useState('');
   const [age, setAge] = React.useState('noticias');
-  const [img, setImg] = React.useState();
-  const [imgSel, setImgSel] = React.useState();
+  const [img, setImg] = React.useState([]);
+  const [imgSel, setImgSel] = React.useState([]);
   
   let titulo = useRef();
   let data = useRef();
+  let preco = useRef();
 
+  const onClose = (event) => {
+    var item = (event.currentTarget.name);
+    setImgSel(imgSel.filter(ac => ac !== item));
+
+  };
   function handleUploadClick(event){
    // console.log(event.target.files[0]);
-    var file = event.target.files[0];
-    setImg(file);
-    //const reader = new FileReader();
-    //var url = reader.readAsDataURL(file);
-    //console.log(file.name); // Would see a path?
-    var reader = new FileReader();
-    var url = reader.readAsDataURL(file);
-    reader.onloadend = function (e) {
-     setImgSel(reader.result);
+    var file = event.target.files;
+
+    if((imgSel.length + file.length) > 8){ alert("Limite de imagens atingido!"); return;}
+    for(let i=0; i < file.length;i++){
       
-    }.bind(this);
-    console.log(url); 
+       addImgSel(file[i]);
+       setImg(prev => [...prev,file[i]]);
+    }
   };
+
+  function addImgSel(file){
+     var reader = new FileReader();
+      var url = reader.readAsDataURL(file);
+      reader.onloadend = function (e) {
+        setImgSel(prev=>[...prev,reader.result]);
+      }.bind(this);
+  }
+
+  function ImagensCarregadas(){
+    return(
+      <GridList cellHeight={280} className={classes.gridList} cols={3}>
+      {imgSel.map((simg,index) => (
+        <GridListTile key={simg} >
+          
+          <img src={simg}  />
+          <GridListTileBar
+              actionIcon={
+                <IconButton aria-label="close" name={simg} className={classes.closeButton} onClick={event=> onClose(event)}>
+                  <CloseIcon />
+                </IconButton>
+              }
+            />
+        </GridListTile>
+      ))}
+    </GridList>
+    );
+       
+             
+  }
 
   const handleChange = (event) => {
     setAge(event.target.value);
@@ -75,27 +115,36 @@ function SubmitForm(){
     if(title == ""){alert("Insira um Titulo"); return;}
     
     var storageRef = fire.storage().ref();
-    var ref = storageRef.child('noticias/'+img.name);       
     
-     console.log(title);
-     console.log(age);
-     console.log(value);
      var dataPost = data.current.state.inputValue;
-     var type = null;
-    if(age !== "noticias") type = true;
-     ref.put(img).then(function(snapshot) {
-        var news = fire.database().ref("noticias");
-        news.push().set({
-            titulo:title,
-            materia:value,
-            data:dataPost,
-            imagem:img.name,
-            tipo:age,
-            ehCurso:type,
-            slug_name: title.replace(/\s/g, '-')
+     var valor = preco.current.value;
+    var imgs = "";
+    Promise.all(
+      img.map((i)=>{
+        var ref = storageRef.child('classificados/'+title+"/"+i.name);       
+          ref.put(i);
+          imgs = imgs + (i.name) + ";";
 
-        });
+      }),
+      console.log(imgs)
+    )
+    .then((url) => {
+      console.log(imgs);
+            var news = fire.database().ref("classificados/");
+            news.push().set({
+                titulo:title,
+                materia:value,
+                data:dataPost,
+                imagem:imgs,
+                valor:valor,
+                slug_name: title.replace(/\s/g, '-')
+    
+            });
+    })
+    .catch((error) => {
+      console.log(`Some failed: `, error.message)
     });
+     
      
 }
 
@@ -113,22 +162,14 @@ function SubmitForm(){
             <form style={{padding:25}} className={classes.root} noValidate autoComplete="off">
                     <Grid container style={{padding:25}}>
                       <Grid item xs={12}>
-                          <TextField style={{width:"100%"}} inputRef={titulo} required variant="standard" label="Titulo da Noticia" />
+                          <TextField style={{width:"100%"}} inputRef={titulo} required variant="standard" label="Titulo do Classificado" />
                           <Divider/>
                       </Grid>
                     <Grid item xs={12} style={{paddingTop:25}}>
-                    <FormControl component="fieldset">
-                        <FormLabel component="legend">Tipo da Noticia</FormLabel>
-                        <RadioGroup aria-label="tipo" name="tipo" value={age} onChange={handleChange}>
-                            <li style={{listStyle:"none"}}>
-                            <FormControlLabel value="noticias" control={<Radio />} label="Noticias" />
-                            <FormControlLabel value="cursos" control={<Radio />} label="Cursos" />
-                            <FormControlLabel value="acoes" control={<Radio />} label="Ações Sociais" />
-                            </li>
-                        </RadioGroup>
-                        </FormControl>
-                        <Divider/>
-                     </Grid>
+
+                     <FormControl component="fieldset">
+
+                     <FormLabel component="legend">Descrição do Produto</FormLabel>
                      <Grid item xs={12} style={{paddingTop:25}}>   
                      <ReactQuill 
                      style={{height:"23rem"}}
@@ -150,10 +191,25 @@ function SubmitForm(){
                      theme="snow" value={value} onChange={setValue}/>
 
                      </Grid>
+                     </FormControl>
+                     </Grid>
+
+                      <Grid container style={{paddingTop:55}}>
+                        <Grid item xs={12}>
+                        <FormControl fullWidth className={classes.margin}>
+                          <InputLabel htmlFor="standard-adornment-amount">Preço</InputLabel>
+                          <Input
+                            id="standard-adornment-amount"
+                            inputRef={preco}
+                            startAdornment={<InputAdornment position="start">R$</InputAdornment>}
+                          />
+                        </FormControl>
+                        </Grid>
+                      </Grid>
                       <Grid container style={{paddingTop:55}}>
                         
                         <Grid item xs={12} sm={3}>
-                        <h4> Insira a Imagem de capa:</h4>
+                        <h4> Insira as Imagens do Produto [max:8 imagens]:</h4>
                         <input
                         accept="image/*"
                         className={classes.input}
@@ -169,7 +225,6 @@ function SubmitForm(){
                         </Fab>
                         
                         </label>
-                        <img src={imgSel} style={{maxWidth:"50%"}} />
                         </Grid>
                         <Grid item xs={12} sm={6}>
 
@@ -188,6 +243,12 @@ function SubmitForm(){
                         </Button>
                         </Grid>
                       </Grid>
+                      <Grid container style={{paddingTop:55}}>
+                        <Grid item xs={12}>
+                            <ImagensCarregadas/>
+
+                        </Grid>
+                      </Grid>
                     </Grid>
                      
                        
@@ -199,6 +260,6 @@ function SubmitForm(){
   );
 }
 
-AddNoticia.layout = Admin;
+AddClassificado.layout = Admin;
 
-export default AddNoticia;
+export default AddClassificado;
