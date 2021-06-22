@@ -54,6 +54,7 @@ const dashboardRoutes = [
 
     layout: "/admin",
   },
+  
   {
     path: "/typography",
     name: "Diretoria",

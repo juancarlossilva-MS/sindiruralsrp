@@ -1,11 +1,12 @@
 import React,{useRef,useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import {Paper,GridList,Fab,GridListTile,GridListTileBar,TableContainer,MenuItem,FormControlLabel,Radio,Grid,
+import {Paper,GridList,Fab,GridListTile,GridListTileBar,Backdrop,CircularProgress,FormControlLabel,Radio,Grid,
 TextField,FormControl, FormLabel, InputLabel, Input,InputAdornment,TableRow, Divider} from "@material-ui/core"
 import {Edit,Delete,Add, AddPhotoAlternate,Send} from "@material-ui/icons"
 import Header from "./header";
 import Admin from "layout/admin";
 import Link from "next/link";
+import router from "next/router";
 import fire from "../../config/fire-config";
 import Button from "components/CustomButtons/Button.js";
 import dynamic from 'next/dynamic';
@@ -15,6 +16,8 @@ import Datetime from "react-datetime";
 import { now } from 'moment';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
+import IntlCurrencyInput from "react-intl-currency-input"
+
 const importJodit = () => import('react-quill');
 
 const ReactQuill = dynamic(importJodit, {
@@ -22,7 +25,7 @@ const ReactQuill = dynamic(importJodit, {
 });
 
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme)=>({
   root: {
     width: '100%',
   },
@@ -34,28 +37,68 @@ const useStyles = makeStyles({
     display: "none"
   },
   
-  
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
   closeButton: {
     position: 'absolute',
    left:0,
    top:0,
     color: "red",
   },
-}
+})
 );
-  
+
+const vamostestar ={
+    font: "inherit",
+    color: "currentColor",
+    width: "100%",
+    border: "0",
+    height: "1.1876em",
+    margin: "0",
+    display: "block",
+    padding: "6px 0 7px",
+    minWidth: "0",
+    background: "none",
+    boxSizing: "content-box",
+    animationName: "mui-auto-fill-cancel",
+    letterSpacing: "inherit",
+    animationDuration: "10ms",
+    fontSize:"xx-large"
+}
+
+const currencyConfig = {
+  locale: "pt-BR",
+  formats: {
+    number: {
+      BRL: {
+        style: "currency",
+        currency: "BRL",
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      },
+    },
+  },
+};
+
 
 
 function AddClassificado() {
   const classes = useStyles();
   const [value, setValue] = useState('');
-  const [age, setAge] = React.useState('noticias');
+  const [preco, setPreco] = React.useState(0);
   const [img, setImg] = React.useState([]);
   const [imgSel, setImgSel] = React.useState([]);
+  const [open, setOpen] = React.useState(false);
+
   
+  const handleToggle = () => {
+    setOpen(!open);
+  };
   let titulo = useRef();
   let data = useRef();
-  let preco = useRef();
+  
 
   const onClose = (event) => {
     var item = (event.currentTarget.name);
@@ -104,12 +147,13 @@ function AddClassificado() {
              
   }
 
-  const handleChange = (event) => {
-    setAge(event.target.value);
+  const handleChange = (event, value, maskedValue) => {
+    event.preventDefault();
+    setPreco(value); 
   };
 
-
 function SubmitForm(){
+    handleToggle();
     var title = titulo.current.value;
     if(img == null){alert("Insira uma Image"); return;}
     if(title == ""){alert("Insira um Titulo"); return;}
@@ -117,28 +161,29 @@ function SubmitForm(){
     var storageRef = fire.storage().ref();
     
      var dataPost = data.current.state.inputValue;
-     var valor = preco.current.value;
-    var imgs = "";
+
+    var imgs = [];
     Promise.all(
       img.map((i)=>{
         var ref = storageRef.child('classificados/'+title+"/"+i.name);       
           ref.put(i);
-          imgs = imgs + (i.name) + ";";
+          imgs = [...imgs,i.name];
 
       }),
-      console.log(imgs)
     )
     .then((url) => {
-      console.log(imgs);
-            var news = fire.database().ref("classificados/");
+      var news = fire.database().ref("classificados/");
             news.push().set({
                 titulo:title,
                 materia:value,
                 data:dataPost,
-                imagem:imgs,
-                valor:valor,
+                imagem:JSON.stringify(imgs),
+                valor:preco,
                 slug_name: title.replace(/\s/g, '-')
     
+            }).then(function(){
+                handleToggle();
+                router.push("/admin/classificados");
             });
     })
     .catch((error) => {
@@ -172,7 +217,7 @@ function SubmitForm(){
                      <FormLabel component="legend">Descrição do Produto</FormLabel>
                      <Grid item xs={12} style={{paddingTop:25}}>   
                      <ReactQuill 
-                     style={{height:"23rem"}}
+                     style={{height:"10rem"}}
                      modules={{
                         toolbar: [
                           [{ 'header': '1'}, {'header': '2'}, { 'font': [] }],
@@ -194,15 +239,13 @@ function SubmitForm(){
                      </FormControl>
                      </Grid>
 
-                      <Grid container style={{paddingTop:55}}>
+                      <Grid container style={{paddingTop:155}}>
                         <Grid item xs={12}>
-                        <FormControl fullWidth className={classes.margin}>
                           <InputLabel htmlFor="standard-adornment-amount">Preço</InputLabel>
-                          <Input
-                            id="standard-adornment-amount"
-                            inputRef={preco}
-                            startAdornment={<InputAdornment position="start">R$</InputAdornment>}
-                          />
+                          
+                        <FormControl style={{width:"100%"}} className={classes.margin}>
+                          <IntlCurrencyInput currency="BRL" style={vamostestar} config={currencyConfig}
+            onChange={handleChange} />  
                         </FormControl>
                         </Grid>
                       </Grid>
@@ -228,9 +271,10 @@ function SubmitForm(){
                         </Grid>
                         <Grid item xs={12} sm={6}>
 
-                        <FormControl style={{marginLeft:40}}>
+                        <FormControl style={{marginLeft:40,display:"none"}}>
                             <Datetime
                             ref={data}
+                          
                             initialValue={now()}
                             inputProps={{ placeholder: "Insira a data aqui" }}
                             />
@@ -256,6 +300,9 @@ function SubmitForm(){
                     </form>
         </Paper>
         </main>
+        <Backdrop className={classes.backdrop} open={open}>
+          <CircularProgress color="inherit" />
+        </Backdrop>
     </>
   );
 }
