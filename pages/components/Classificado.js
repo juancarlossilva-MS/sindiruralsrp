@@ -6,11 +6,12 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
-import Button from '@material-ui/core/Button';
+import Clock from '@material-ui/icons/AccessTime';
 import Typography from '@material-ui/core/Typography';
 import fire from '../../config/fire-config';
-import Image from 'next/image';
+import Link from 'next/link';
 import { now } from 'moment';
+import Button from "components/CustomButtons/Button.js";
 
 const useStyles = makeStyles({
   root: {
@@ -18,6 +19,16 @@ const useStyles = makeStyles({
   },
   media: {
     height: 190,
+  },
+  hiddenOverTitle:{
+    maxHeight: "2rem",
+    minHeight: "2rem",
+    overflow: "hidden !important"
+  },
+  hiddenOver:{
+    maxHeight: "4rem",
+    minHeight: "4rem",
+    overflow: "hidden !important"
   },
 });
 
@@ -30,7 +41,9 @@ export default function MediaCard() {
       speed: 500,
       slidesToShow: 3,
       slidesToScroll: 1,
-      autoplay:true,
+      autoplay:false,
+      arrows:false,
+      variableWidth:true,
       responsive: [
         {
           breakpoint: 1024,
@@ -113,7 +126,7 @@ if(diff < 60){
           {classificados.map((classi)=>{
             
               return(
-               <div>
+               <div style={{width:435}}>
                <Card className={classes.root}>
            <CardActionArea>
              <CardMedia
@@ -123,21 +136,27 @@ if(diff < 60){
                title="Contemplative Reptile"
              />
              <CardContent>
-               <Typography gutterBottom variant="h5" component="h2">
-                 {classi.titulo}
+             <Typography variant="caption" display="block" >
+                  <Clock style={{ fontSize: 13 }}/> { formataData(classi.data)}
+              </Typography>
+               <Typography className={classes.hiddenOverTitle} gutterBottom variant="h5" component="h2">
+                  {classi.titulo}
                </Typography>
-               <Typography variant="body2" color="textSecondary" component="p">
+               <Typography className={classes.hiddenOver} variant="body2" color="textSecondary" component="p">
                  {classi.materia.slice(0,200).replace(/<[^>]+>/g, '')}
                </Typography>
              </CardContent>
            </CardActionArea>
            <CardActions>
-             <Button size="small" color="primary">
-               R${classi.valor}
-             </Button>
-             <Button size="small" color="primary">
-               { formataData(classi.data)}
-             </Button>
+             <Typography style={{color:"#023927"}} variant="h5" component="h2" >
+               R$ {classi.valor}
+             </Typography>
+             <Link href="/classificados?id=xxxx" className={{    marginLeft: "43%"}}>
+                <Button style={{color:"#023927"}} simple>
+                  ver mais
+                </Button>
+              </Link>
+            
            </CardActions>
          </Card>
       
