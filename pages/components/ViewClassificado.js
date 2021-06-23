@@ -18,7 +18,7 @@ const useStyles = makeStyles({
     maxWidth: 345,
   },
   media: {
-    height: 190,
+    height: 320,
   },
   hiddenOverTitle:{
     maxHeight: "2rem",
@@ -39,7 +39,7 @@ export default function MediaCard() {
       dots: false,
       infinite: true,
       speed: 500,
-      slidesToShow: 3,
+      slidesToShow: 4,
       slidesToScroll: 1,
       autoplay:false,
       autoplaySpeed:2000,
@@ -48,6 +48,17 @@ export default function MediaCard() {
       nextArrow: <SampleNextArrow />,
       prevArrow: <SamplePrevArrow />,
       responsive: [
+        {
+          breakpoint: 1280,
+          settings: {
+            slidesToShow: 4,
+            slidesToScroll: 1,
+            infinite: true,
+            arrows:true,
+
+            dots: false
+          }
+        },
         {
           breakpoint: 1024,
           settings: {
@@ -158,29 +169,10 @@ if(diff < 60){
                        
                title="Contemplative Reptile"
              />
-             <CardContent>
-             <Typography variant="caption" display="block" >
-                  <Clock style={{ fontSize: 13 }}/> { formataData(classi.data)}
-              </Typography>
-               <Typography className={classes.hiddenOverTitle} gutterBottom variant="h5" component="h2">
-                  {classi.titulo}
-               </Typography>
-               <Typography className={classes.hiddenOver} variant="body2" color="textSecondary" component="p">
-                 {classi.materia.slice(0,200).replace(/<[^>]+>/g, '')}
-               </Typography>
-             </CardContent>
+             
            </CardActionArea>
-           <CardActions>
-             <Typography style={{color:"#023927"}} variant="h5" component="h2" >
-               R$ {classi.valor}
-             </Typography>
-             <Link href="/classificados?id=xxxx" className={{    marginLeft: "43%"}}>
-                <Button style={{color:"#023927"}} simple>
-                  ver mais
-                </Button>
-              </Link>
-            
-           </CardActions>
+          
+          
          </Card>
       
                </div>
