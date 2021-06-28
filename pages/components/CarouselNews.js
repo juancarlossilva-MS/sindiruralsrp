@@ -16,6 +16,7 @@ import stylesTypo from "styles/jss/nextjs-material-kit/pages/componentsSections/
 import Small from "components/Typography/Small.js";
 import fire from '../../config/fire-config';
 import Image from 'next/image'
+import Link from 'next/link'
 
 const useStyles = makeStyles(styles);
 const useStylesTypo = makeStyles(stylesTypo);
@@ -157,6 +158,8 @@ export default function SectionCarousel(props) {
 
                   return(
                     <div>
+                     <Link href={"/"+noticia.slug_name } >
+
                       <Image
                         src={"https://firebasestorage.googleapis.com/v0/b/sindiruralsrp.appspot.com/o/noticias%2F"+noticia.imagem+"?alt=media"}
                         alt={noticia.titulo}
@@ -164,6 +167,7 @@ export default function SectionCarousel(props) {
                         height={410}
                         layout='responsive'
                       />
+                      </Link>
                       <div style={{padding:"1%"}}>
                         <Badge color="success">{noticia.tipo}</Badge>
                         <div className={classesTypo.typo} style={{padding:"0px",marginBottom:"0px"}}>

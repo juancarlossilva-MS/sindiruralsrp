@@ -84,6 +84,7 @@ useEffect(()=>{
             snap.forEach((cl) => {
                   var nc = cl.val();
                   nc.imagem = JSON.parse(nc.imagem);
+                  nc.key = cl.key;
                    setClassificados(prev =>[...prev, nc]);
             });
         });
@@ -146,9 +147,9 @@ if(diff < 60){
       <>
         <Slider {...settings}>
 
-          {classificados.map((classi)=>{
+          {classificados.map((classi)=>{ 
             
-              return(
+              return(console.log(classificados),
                <div >
                <Card className={classes.root}>
            <CardActionArea>
@@ -174,7 +175,7 @@ if(diff < 60){
              <Typography style={{color:"#023927"}} variant="h5" component="h2" >
                R$ {classi.valor}
              </Typography>
-             <Link href="/classificados?id=xxxx" className={{    marginLeft: "43%"}}>
+             <Link href={{ pathname: '/produto', query: { id: classi.key } }} className={{    marginLeft: "43%"}}>
                 <Button style={{color:"#023927"}} simple>
                   ver mais
                 </Button>
