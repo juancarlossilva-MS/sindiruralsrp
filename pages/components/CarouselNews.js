@@ -133,7 +133,7 @@ export default function SectionCarousel(props) {
   }else{
     const [noticias,setNoticias] = useState([]);
     React.useEffect(() => {
-      var news = fire.database().ref('noticias').orderByChild("ehCurso").equalTo(null).limitToLast(2);
+      var news = fire.database().ref('noticias').orderByChild("ehCurso").equalTo(null).limitToLast(5);
       
 
         news.on("value",(snap) => {

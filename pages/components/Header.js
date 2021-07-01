@@ -1,6 +1,7 @@
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import Icon from "@material-ui/core/Icon";
+import Button2 from "@material-ui/core/Button";
 import Button from "components/CustomButtons/Button.js";
 import Search from "@material-ui/icons/Search";
 import Facebook from '@material-ui/icons/Facebook';
@@ -20,7 +21,7 @@ export default function WeHeader(){
 
 return(
 <Header
-            brand={<Image src="/logo.png" width={250} height={65} />}
+            brand={<Button2><Image src="/logo.png" width={250} height={65} /></Button2>}
             color="green"
             leftLinks={
               <List className={classes.list}>
