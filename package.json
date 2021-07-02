@@ -16,6 +16,7 @@
     "next": "10.2.0",
     "next-compose-plugins": "2.2.1",
     "next-images": "1.7.0",
+    "next-iron-session": "^4.2.0",
     "nextjs-redirect": "5.0.2",
     "node-sass": "5.0.0",
     "nouislider": "15.1.0",

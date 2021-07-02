@@ -99,6 +99,7 @@ export default function SectionCarousel(props) {
 
                  return(
                    <div>
+                     <Link href={"/cursos/"+curso.slug_name } >
                      <Image
                        src={"https://firebasestorage.googleapis.com/v0/b/sindiruralsrp.appspot.com/o/noticias%2F"+curso.imagem+"?alt=media"}
                        alt={curso.titulo}
@@ -106,6 +107,7 @@ export default function SectionCarousel(props) {
                        height={410}
                        layout='responsive'
                      />
+                     </Link>
                           <div style={{padding:"1%"}}>
                             <Badge color="success">{curso.tipo}</Badge>
                             <div className={classesTypo.typo} style={{padding:"0px",marginBottom:"0px"}}>
@@ -174,7 +176,7 @@ export default function SectionCarousel(props) {
                         <h4 style={{fontWeight:"bold"}}>
                             {noticia.titulo}</h4>
                            
-                            <Small>{noticia.materia.slice(0,500)}...</Small>
+                            <Small>{noticia.materia.slice(0,500).replace(/<[^>]+>/g, '') }...</Small>
                         
                         </div>
                         
