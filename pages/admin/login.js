@@ -8,6 +8,10 @@ import {Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox,Link 
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import MyBackDrop from '../components/MyBackDrop';
+
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 
 function Copyright() {
   return (
@@ -21,6 +25,7 @@ function Copyright() {
     </Typography>
   );
 }
+
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -42,30 +47,56 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
 function Login() {
   const classes = useStyles();
   const router = useRouter();
   const [email, setEmail] = useState("");
 const [password, setPassword] = useState("");
+
+const [open, setOpen] = useState(false);
+const [alertar, setAlertar] = useState(false);
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
+const handleClose = (event, reason) => {
+  if (reason === 'clickaway') {
+    return;
+  }
+
+  setAlertar(false);
+};
+
+
 const handlerSubmit = async (e) => {
+  
   e.preventDefault();
+  await setOpen(true);
+
   fire.auth().signInWithEmailAndPassword(email, password)
   .then(async(e) => {
-
-    const response = await fetch("../api/sessions", {
+    console.log("acessou, ou seja, fez login no fire")
+    const response = await fetch("/api/sessions", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password })
     });
     console.log(response);
     if (response.ok) {
-      return router.push("/Controle");
-    }
+      return router.push("/admin/noticias");
+    }else{
+      setOpen(false);
+    } 
 
   })
   .catch((error) => {
     var errorCode = error.code;
     var errorMessage = error.message;
+
+    setOpen(false)
+    setAlertar(true)
     // ..
   });
   
@@ -136,18 +167,23 @@ const onChangeHandler = event => {
                 Esqueceu a Senha?
               </Link>
             </Grid>
-            <Grid item>
-              <Link2 href="/Controle/cadastro" variant="body2">
-                {"Ainda não tem conta? Cadastre-se"}
-              </Link2>
-            </Grid>
+            
           </Grid>
         </form>
       </div>
       <Box mt={8}>
         <Copyright />
       </Box>
+      {open &&
+            <MyBackDrop />
+      }
+      <Snackbar open={alertar} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="error">
+          Email ou senha incorretos! tente novamente
+        </Alert>
+      </Snackbar>
     </Container>
+    
   );
 }
 

@@ -7,7 +7,7 @@ import Admin from "layout/admin";
 import Link from "next/link";
 import fire from "../../config/fire-config";
 import Button from "components/CustomButtons/Button.js";
-
+import { withIronSession } from "next-iron-session";
 const columns = [
   { id: 'titulo', label: 'Titulo', minWidth: 170 },
   { id: 'tipo', label: 'Tipo', minWidth: 100 },
@@ -128,9 +128,36 @@ React.useEffect(() =>{
         />
         </Paper>
         </main>
+       
     </>
   );
 }
+
+export const getServerSideProps = withIronSession(
+
+  
+  async ({ req, res }) => {
+    const user = req.session.get("user");
+    if (!user) {
+      res.setHeader("location", "/admin/login");
+      res.statusCode = 302;
+      res.end();
+      return { props: {} };
+    }
+
+    return {
+      props: { user }
+    };
+  },
+  {
+    cookieName: "MYSITECOOKIE",
+    cookieOptions: {
+      secure: process.env.NODE_ENV === "production" ? true : false
+    },
+    password: process.env.APPLICATION_SECRET
+  }
+);
+
 
 Noticias.layout = Admin;
 

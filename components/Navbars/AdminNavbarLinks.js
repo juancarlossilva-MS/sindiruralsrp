@@ -19,8 +19,9 @@ import Search from "@material-ui/icons/Search";
 import CustomInput from "components/CustomInput/CustomInput.js";
 import Button from "components/CustomButtons/Button.js";
 import useWindowSize from "components/Hooks/useWindowSize.js";
-
+import { useRouter } from 'next/router';
 import styles from "assets/jss/nextjs-material-dashboard/components/headerLinksStyle.js";
+import MyBackDrop from "pages/components/MyBackDrop"
 
 export default function AdminNavbarLinks() {
   const size = useWindowSize();
@@ -28,6 +29,10 @@ export default function AdminNavbarLinks() {
   const classes = useStyles();
   const [openNotification, setOpenNotification] = React.useState(null);
   const [openProfile, setOpenProfile] = React.useState(null);
+
+  const [open, setOpen] = React.useState(false);
+
+
   const handleClickNotification = (event) => {
     if (openNotification && openNotification.contains(event.target)) {
       setOpenNotification(null);
@@ -48,8 +53,29 @@ export default function AdminNavbarLinks() {
   const handleCloseProfile = () => {
     setOpenProfile(null);
   };
+
+    const router = useRouter();
+
+  const logout = async (e) => {
+    e.preventDefault();
+    setOpen(true);
+    const response = await fetch("/api/sessions", {
+       method: "DELETE",
+       headers: { "Content-Type": "application/json" }
+     });
+     console.log(response);
+ 
+     if (response.ok) {
+       return router.push("/admin/login");
+     }
+ 
+   };
+
   return (
     <div>
+       {open &&
+          <MyBackDrop/>
+        }
       <div className={classes.searchWrapper}>
         <CustomInput
           formControlProps={{
@@ -208,10 +234,10 @@ export default function AdminNavbarLinks() {
                     </MenuItem>
                     <Divider light />
                     <MenuItem
-                      onClick={handleCloseProfile}
+                      onClick={logout}
                       className={classes.dropdownItem}
                     >
-                      Logout
+                      Sair
                     </MenuItem>
                   </MenuList>
                 </ClickAwayListener>
