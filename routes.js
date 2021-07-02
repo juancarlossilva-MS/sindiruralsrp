@@ -39,7 +39,7 @@ const dashboardRoutes = [
     layout: "/admin",
   },
   {
-    path: "/user-profile",
+    path: "/usuarios",
     name: "Usuários",
     rtlName: "ملف تعريفي للمستخدم",
     icon: Person,
