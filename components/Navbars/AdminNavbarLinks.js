@@ -62,6 +62,7 @@ export default function AdminNavbarLinks() {
     const response = await fetch("/api/sessions", {
        method: "DELETE",
        headers: { "Content-Type": "application/json" }
+       
      });
      console.log(response);
  

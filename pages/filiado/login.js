@@ -76,31 +76,19 @@ const handlerSubmit = async (e) => {
   await setOpen(true);
 
   fire.auth().signInWithEmailAndPassword(email, password)
-  .then(async(userCredential) => {
-    var user = userCredential.user;
-
-    fire.database().ref("/user/"+user.uid).on('value', async(snapshot) => {
-      const data = snapshot.val();
-      const tipo = data.perfil;
-        const response = await fetch("/api/sessions", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password,tipo})
-        });
-       
-        if (response.ok) {
-          return router.push("/"+tipo+"/noticias");
-        }else{
-          setOpen(false);
-        } 
-
-    });
-    
-    /*
+  .then(async(e) => {
     console.log("acessou, ou seja, fez login no fire")
-    
+    const response = await fetch("/api/sessions", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password })
+    });
     console.log(response);
-   */
+    if (response.ok) {
+      return router.push("/admin/noticias");
+    }else{
+      setOpen(false);
+    } 
 
   })
   .catch((error) => {

@@ -7,7 +7,7 @@ import Admin from "layout/admin";
 import Link from "next/link";
 import fire from "../../config/fire-config";
 import Button from "components/CustomButtons/Button.js";
-import { withIronSession } from "next-iron-session";
+
 const columns = [
   { id: 'titulo', label: 'Titulo', minWidth: 170 },
   { id: 'tipo', label: 'Tipo', minWidth: 100 },
@@ -39,7 +39,7 @@ const useStyles = makeStyles({
 
 
 
-function Noticias() {
+function Classificados() {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -48,32 +48,15 @@ function Noticias() {
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
-  
- async function vamosNessa(){
-   
-  fetch("/api/admin", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" }
-  }).then(response => 
-    response.json().then(data => {
-        console.log(data)
-    }
-))
- 
-  
-}
 
 React.useEffect(() =>{
-
-    vamosNessa();
-
-
     var lc = fire.database().ref('noticias');
       
 
         lc.on("value",(snap) => {
             snap.forEach((c) => {
                   var nc = c.val();
+                  console.log("toaki"+nc);
                   setRows(prev=>[...prev,createData(nc.titulo,nc.tipo,nc.data)]);
             });
         });
@@ -88,9 +71,9 @@ React.useEffect(() =>{
   return (
       <>
         <main  className={classes.content}>
-          <Link href="/admin/addUsuario" >
+          <Link href="/admin/addClassificado" >
             <Button style={{backgroundColor:"#023723",float:"right"}} round>
-                <Add className={classes.icons} /> Usuário
+                <Add className={classes.icons} /> Classificado
               </Button>
           </Link>
             <Paper className={classes.root}>
@@ -123,8 +106,8 @@ React.useEffect(() =>{
                         );
                     })}
                     <TableCell>
-                        <Link href="/admin/editNoticias"><Edit/></Link>
-                        <Link href="/admin/editNoticias"><Delete/></Link>
+                        <Link href="/admin/editClassificado"><Edit/></Link>
+                        <Link href="/admin/editClassificado"><Delete/></Link>
                         
                         
                     </TableCell>
@@ -145,37 +128,10 @@ React.useEffect(() =>{
         />
         </Paper>
         </main>
-       
     </>
   );
 }
 
-export const getServerSideProps = withIronSession(
+Classificados.layout = Admin;
 
-  
-  async ({ req, res }) => {
-    const user = req.session.get("user");
-    if (!user) {
-      res.setHeader("location", "/admin/login");
-      res.statusCode = 302;
-      res.end();
-      return { props: {} };
-    }
-
-    return {
-      props: { user }
-    };
-  },
-  {
-    cookieName: "MYSITECOOKIE",
-    cookieOptions: {
-      secure: process.env.NODE_ENV === "production" ? true : false
-    },
-    password: process.env.APPLICATION_SECRET
-  }
-);
-
-
-Noticias.layout = Admin;
-
-export default Noticias;
+export default Classificados;

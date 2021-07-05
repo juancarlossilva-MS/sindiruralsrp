@@ -48,32 +48,15 @@ function Noticias() {
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
-  
- async function vamosNessa(){
-   
-  fetch("/api/admin", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" }
-  }).then(response => 
-    response.json().then(data => {
-        console.log(data)
-    }
-))
- 
-  
-}
 
 React.useEffect(() =>{
-
-    vamosNessa();
-
-
     var lc = fire.database().ref('noticias');
       
 
         lc.on("value",(snap) => {
             snap.forEach((c) => {
                   var nc = c.val();
+                  console.log("toaki"+nc);
                   setRows(prev=>[...prev,createData(nc.titulo,nc.tipo,nc.data)]);
             });
         });
@@ -88,9 +71,9 @@ React.useEffect(() =>{
   return (
       <>
         <main  className={classes.content}>
-          <Link href="/admin/addUsuario" >
+          <Link href="/admin/addNoticia" >
             <Button style={{backgroundColor:"#023723",float:"right"}} round>
-                <Add className={classes.icons} /> Usuário
+                <Add className={classes.icons} /> Noticia
               </Button>
           </Link>
             <Paper className={classes.root}>
@@ -154,7 +137,7 @@ export const getServerSideProps = withIronSession(
 
   
   async ({ req, res }) => {
-    const user = req.session.get("user");
+    const user = req.session.get("filiado");
     if (!user) {
       res.setHeader("location", "/admin/login");
       res.statusCode = 302;

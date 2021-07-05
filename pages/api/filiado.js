@@ -5,10 +5,10 @@ export default withIronSession(
   async (req, res) => {
     if (req.method === "POST") {
       console.log("ate veio");
-      const { email, password, tipo } = req.body;
+      const { email, password } = req.body;
         
       if (email && password) {
-        req.session.set(tipo, { email });
+        req.session.set("user", { email });
         await req.session.save();
         return res.status(201).send("");
       }
@@ -16,8 +16,8 @@ export default withIronSession(
       return res.status(403).send("");
     }
 	if (req.method === "DELETE") {
-        req.session.set("admin", null);
-        req.session.set("filiado", null);
+      
+        req.session.set("user", null);
         await req.session.save();
         return res.status(201).send("");
     }
@@ -25,7 +25,7 @@ export default withIronSession(
     return res.status(404).send("");
   },
   {
-    cookieName: "MYSITECOOKIE",
+    cookieName: "FILIADOCOOKIE",
     cookieOptions: {
       secure: process.env.NODE_ENV === "production" ? true : false
     },

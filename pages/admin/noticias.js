@@ -137,7 +137,7 @@ export const getServerSideProps = withIronSession(
 
   
   async ({ req, res }) => {
-    const user = req.session.get("user");
+    const user = req.session.get("admin");
     if (!user) {
       res.setHeader("location", "/admin/login");
       res.statusCode = 302;
