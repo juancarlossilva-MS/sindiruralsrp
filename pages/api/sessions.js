@@ -4,7 +4,6 @@ import { withIronSession } from "next-iron-session";
 export default withIronSession(
   async (req, res) => {
     if (req.method === "POST") {
-      console.log("ate veio");
       const { email, password, tipo } = req.body;
         
       if (email && password) {

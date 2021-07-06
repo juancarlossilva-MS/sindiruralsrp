@@ -2,7 +2,6 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {Paper,Table,TableBody,TableCell,TableContainer,TableHead,TablePagination,TableRow} from "@material-ui/core"
 import {Edit,Delete,Add} from "@material-ui/icons"
-import Header from "./header";
 import Admin from "layout/admin";
 import Link from "next/link";
 import fire from "../../config/fire-config";
@@ -150,18 +149,30 @@ React.useEffect(() =>{
   );
 }
 
+
+
+Noticias.layout = Admin;
+
+export default Noticias;
+
+
 export const getServerSideProps = withIronSession(
-
-  
   async ({ req, res }) => {
-    const user = req.session.get("user");
+    const user = req.session.get("admin");
     if (!user) {
-      res.setHeader("location", "/admin/login");
-      res.statusCode = 302;
-      res.end();
-      return { props: {} };
+      const userfili = req.session.get("filiado");
+      if(userfili){
+        res.setHeader("location", "/filiado/classificados");
+        res.statusCode = 302;
+        res.end();
+        return { props: {userfili} };
+      }else{
+        res.setHeader("location", "/login");
+        res.statusCode = 302;
+        res.end();
+        return { props: {} };
+      }
     }
-
     return {
       props: { user }
     };
@@ -174,8 +185,3 @@ export const getServerSideProps = withIronSession(
     password: process.env.APPLICATION_SECRET
   }
 );
-
-
-Noticias.layout = Admin;
-
-export default Noticias;

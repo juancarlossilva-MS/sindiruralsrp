@@ -12,7 +12,7 @@ import Sidebar from "components/Sidebar/Sidebar.js";
 import FixedPlugin from "components/FixedPlugin/FixedPlugin.js";
 import { withIronSession } from "next-iron-session";
 
-import routes from "routes.js";
+import routes from "filiroutes.js";
 
 import styles from "assets/jss/nextjs-material-dashboard/layouts/adminStyle.js";
 
@@ -21,7 +21,8 @@ import logo from "public/logo.png";
 
 let ps;
 
-export default function Admin({ children, ...rest }) {
+export default function Filiado({ children, ...rest }) {
+
   // used for checking current route
   const router = useRouter();
   // styles

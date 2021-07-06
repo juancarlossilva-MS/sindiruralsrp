@@ -2,7 +2,6 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {Paper,Table,TableBody,TableCell,TableContainer,TableHead,TablePagination,TableRow} from "@material-ui/core"
 import {Edit,Delete,Add} from "@material-ui/icons"
-import Header from "./header";
 import Admin from "layout/admin";
 import Link from "next/link";
 import fire from "../../config/fire-config";
@@ -39,7 +38,7 @@ const useStyles = makeStyles({
 
 
 
-function Noticias() {
+function Noticias(props) {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -49,6 +48,8 @@ function Noticias() {
     setPage(newPage);
   };
 
+  Admin.props = props;
+
 React.useEffect(() =>{
     var lc = fire.database().ref('noticias');
       
@@ -56,7 +57,6 @@ React.useEffect(() =>{
         lc.on("value",(snap) => {
             snap.forEach((c) => {
                   var nc = c.val();
-                  console.log("toaki"+nc);
                   setRows(prev=>[...prev,createData(nc.titulo,nc.tipo,nc.data)]);
             });
         });
@@ -132,19 +132,28 @@ React.useEffect(() =>{
     </>
   );
 }
+Noticias.layout = Admin;
+
+export default Noticias;
+
 
 export const getServerSideProps = withIronSession(
-
-  
   async ({ req, res }) => {
     const user = req.session.get("admin");
     if (!user) {
-      res.setHeader("location", "/admin/login");
-      res.statusCode = 302;
-      res.end();
-      return { props: {} };
+      const userfili = req.session.get("filiado");
+      if(userfili){
+        res.setHeader("location", "/filiado/classificados");
+        res.statusCode = 302;
+        res.end();
+        return { props: {userfili} };
+      }else{
+        res.setHeader("location", "/login");
+        res.statusCode = 302;
+        res.end();
+        return { props: {} };
+      }
     }
-
     return {
       props: { user }
     };
@@ -157,8 +166,3 @@ export const getServerSideProps = withIronSession(
     password: process.env.APPLICATION_SECRET
   }
 );
-
-
-Noticias.layout = Admin;
-
-export default Noticias;

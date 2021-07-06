@@ -2,11 +2,11 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {Paper,Table,TableBody,TableCell,TableContainer,TableHead,TablePagination,TableRow} from "@material-ui/core"
 import {Edit,Delete,Add} from "@material-ui/icons"
-import Header from "./header";
-import Admin from "layout/admin";
+import Filiado from "layout/filiado";
 import Link from "next/link";
 import fire from "../../config/fire-config";
 import Button from "components/CustomButtons/Button.js";
+import { withIronSession } from "next-iron-session";
 
 const columns = [
   { id: 'titulo', label: 'Titulo', minWidth: 170 },
@@ -71,7 +71,7 @@ React.useEffect(() =>{
   return (
       <>
         <main  className={classes.content}>
-          <Link href="/admin/addClassificado" >
+          <Link href="/filiado/addClassificado" >
             <Button style={{backgroundColor:"#023723",float:"right"}} round>
                 <Add className={classes.icons} /> Classificado
               </Button>
@@ -106,8 +106,8 @@ React.useEffect(() =>{
                         );
                     })}
                     <TableCell>
-                        <Link href="/admin/editClassificado"><Edit/></Link>
-                        <Link href="/admin/editClassificado"><Delete/></Link>
+                        <Link href="/filiado/editClassificado"><Edit/></Link>
+                        <Link href="/filiado/editClassificado"><Delete/></Link>
                         
                         
                     </TableCell>
@@ -132,6 +132,39 @@ React.useEffect(() =>{
   );
 }
 
-Classificados.layout = Admin;
+Classificados.layout = Filiado;
 
 export default Classificados;
+
+
+export const getServerSideProps = withIronSession(
+  async ({ req, res }) => {
+    const user = req.session.get("filiado");
+    if (!user) {
+      const userfili = req.session.get("admin");
+      if(userfili){
+        res.setHeader("location", "/admin/noticias");
+        res.statusCode = 302;
+        res.end();
+        return { props: {userfili} };
+      }else{
+        res.setHeader("location", "/login");
+        res.statusCode = 302;
+        res.end();
+        return { props: {} };
+      }
+      
+    }
+
+    return {
+      props: { user }
+    };
+  },
+  {
+    cookieName: "MYSITECOOKIE",
+    cookieOptions: {
+      secure: process.env.NODE_ENV === "production" ? true : false
+    },
+    password: process.env.APPLICATION_SECRET
+  }
+);

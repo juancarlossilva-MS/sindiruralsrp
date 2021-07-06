@@ -23,7 +23,7 @@ import { useRouter } from 'next/router';
 import styles from "assets/jss/nextjs-material-dashboard/components/headerLinksStyle.js";
 import MyBackDrop from "pages/components/MyBackDrop"
 
-export default function AdminNavbarLinks() {
+export default function AdminNavbarLinks(props) {
   const size = useWindowSize();
   const useStyles = makeStyles(styles);
   const classes = useStyles();
@@ -31,8 +31,29 @@ export default function AdminNavbarLinks() {
   const [openProfile, setOpenProfile] = React.useState(null);
 
   const [open, setOpen] = React.useState(false);
+  const [user,setUser] = React.useState();
+  
 
+ React.useEffect(()=>{
+   console.log(props)
+  if(props.user != null){
+      console.log(props.user.email)
 
+      setUser(props.user.email);
+    }
+    console.log(user);
+    
+ },[props]) 
+
+ const Parag = () => {
+   console.log(user);
+  
+   return(
+      <p className={classes.linkText}>{user}</p>
+   )
+ }
+
+  
   const handleClickNotification = (event) => {
     if (openNotification && openNotification.contains(event.target)) {
       setOpenNotification(null);
@@ -64,10 +85,9 @@ export default function AdminNavbarLinks() {
        headers: { "Content-Type": "application/json" }
        
      });
-     console.log(response);
  
      if (response.ok) {
-       return router.push("/admin/login");
+       return router.push("/login");
      }
  
    };
@@ -195,7 +215,8 @@ export default function AdminNavbarLinks() {
         >
           <Person className={classes.icons} />
           <Hidden mdUp implementation="css">
-            <p className={classes.linkText}>Profile</p>
+            <Parag/>
+           
           </Hidden>
         </Button>
         <Poppers
@@ -225,7 +246,7 @@ export default function AdminNavbarLinks() {
                       onClick={handleCloseProfile}
                       className={classes.dropdownItem}
                     >
-                      Profile
+                      {user}
                     </MenuItem>
                     <MenuItem
                       onClick={handleCloseProfile}

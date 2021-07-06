@@ -1,6 +1,6 @@
 import  Link2 from 'next/link';
 
-import fire from '../../config/fire-config';
+import fire from '../config/fire-config';
 import { useRouter } from 'next/router';
 
 import React, { useState} from 'react';
@@ -8,7 +8,7 @@ import {Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox,Link 
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import MyBackDrop from '../components/MyBackDrop';
+import MyBackDrop from './components/MyBackDrop';
 
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
@@ -82,6 +82,7 @@ const handlerSubmit = async (e) => {
     fire.database().ref("/user/"+user.uid).on('value', async(snapshot) => {
       const data = snapshot.val();
       const tipo = data.perfil;
+      console.log(tipo);
         const response = await fetch("/api/sessions", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -89,7 +90,7 @@ const handlerSubmit = async (e) => {
         });
        
         if (response.ok) {
-          return router.push("/"+tipo+"/noticias");
+          return router.push("/"+tipo+"/classificados");
         }else{
           setOpen(false);
         } 

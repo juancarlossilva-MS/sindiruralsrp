@@ -3,8 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import {Paper,GridList,Fab,GridListTile,GridListTileBar,Backdrop,CircularProgress,FormControlLabel,Radio,Grid,
 TextField,FormControl, FormLabel, InputLabel, Input,InputAdornment,TableRow, Divider} from "@material-ui/core"
 import {Edit,Delete,Add, AddPhotoAlternate,Send} from "@material-ui/icons"
-import Header from "./header";
-import Admin from "layout/admin";
+import Filiado from "layout/filiado";
 import Link from "next/link";
 import router from "next/router";
 import fire from "../../config/fire-config";
@@ -17,6 +16,7 @@ import { now } from 'moment';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import IntlCurrencyInput from "react-intl-currency-input"
+import { withIronSession } from "next-iron-session";
 
 const importJodit = () => import('react-quill');
 
@@ -183,7 +183,7 @@ function SubmitForm(){
     
             }).then(function(){
                 handleToggle();
-                router.push("/admin/classificados");
+                router.push("/filiado/classificados");
             });
     })
     .catch((error) => {
@@ -307,6 +307,39 @@ function SubmitForm(){
   );
 }
 
-AddClassificado.layout = Admin;
+AddClassificado.layout = Filiado;
 
 export default AddClassificado;
+
+
+export const getServerSideProps = withIronSession(
+  async ({ req, res }) => {
+    const user = req.session.get("filiado");
+    if (!user) {
+      const userfili = req.session.get("admin");
+      if(userfili){
+        res.setHeader("location", "/admin/noticias");
+        res.statusCode = 302;
+        res.end();
+        return { props: {userfili} };
+      }else{
+        res.setHeader("location", "/login");
+        res.statusCode = 302;
+        res.end();
+        return { props: {} };
+      }
+      
+    }
+
+    return {
+      props: { user }
+    };
+  },
+  {
+    cookieName: "MYSITECOOKIE",
+    cookieOptions: {
+      secure: process.env.NODE_ENV === "production" ? true : false
+    },
+    password: process.env.APPLICATION_SECRET
+  }
+);

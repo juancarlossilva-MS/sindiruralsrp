@@ -16,8 +16,7 @@ if (admin.apps.length === 0) {
 export default withIronSession(
   async (req, res) => {
     if (req.method === "POST") {
-      console.log("ate veio");
-      console.log("estamosaki");
+    
 
       var allUsers = [];
       return admin.auth().listUsers()
