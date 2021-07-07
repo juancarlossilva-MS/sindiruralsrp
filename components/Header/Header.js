@@ -83,7 +83,7 @@ export default function Header(props) {
             brandComponent
           )}
         </div>
-        <div style={{marginLeft: "-59%",marginTop: "-3%"}}> 
+        <div style={{marginLeft: "-65%",marginTop: "-3%"}}> 
         <Hidden  smDown implementation="css">
           {rightLinks}
         </Hidden>

@@ -35,18 +35,15 @@ export default function AdminNavbarLinks(props) {
   
 
  React.useEffect(()=>{
-   console.log(props)
-  if(props.user != null){
-      console.log(props.user.email)
 
-      setUser(props.user.email);
+  if(props.user != null){
+
+      setUser(props.user.displayName);
     }
-    console.log(user);
     
  },[props]) 
 
  const Parag = () => {
-   console.log(user);
   
    return(
       <p className={classes.linkText}>{user}</p>

@@ -4,10 +4,10 @@ import { withIronSession } from "next-iron-session";
 export default withIronSession(
   async (req, res) => {
     if (req.method === "POST") {
-      const { email, password, tipo } = req.body;
+      const { email, password, tipo,user } = req.body;
         
       if (email && password) {
-        req.session.set(tipo, { email });
+        req.session.set(tipo, { user });
         await req.session.save();
         return res.status(201).send("");
       }

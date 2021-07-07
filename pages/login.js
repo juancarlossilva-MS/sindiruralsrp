@@ -3,12 +3,13 @@ import  Link2 from 'next/link';
 import fire from '../config/fire-config';
 import { useRouter } from 'next/router';
 
-import React, { useState} from 'react';
+import React, { useEffect, useState} from 'react';
 import {Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox,Link ,Grid,Box, Typography} from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import MyBackDrop from './components/MyBackDrop';
+import { withIronSession } from "next-iron-session";
 
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
@@ -48,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-function Login() {
+function Login(props) {
   const classes = useStyles();
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -69,7 +70,19 @@ const handleClose = (event, reason) => {
   setAlertar(false);
 };
 
+useEffect(()=>{
+  console.log(props)
+  if(props.user != null){
+      setOpen(true);
+     const userid = (props.user.user.uid);
+     fire.database().ref("/user/"+userid).on('value', async(snapshot) => {
+        const data = snapshot.val();
+        const tipo = data.perfil;
+        return router.push("/"+tipo+"/classificados");
+     })
+  } 
 
+},[])
 const handlerSubmit = async (e) => {
   
   e.preventDefault();
@@ -86,7 +99,7 @@ const handlerSubmit = async (e) => {
         const response = await fetch("/api/sessions", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password,tipo})
+          body: JSON.stringify({ email, password,tipo,user})
         });
        
         if (response.ok) {
@@ -96,12 +109,7 @@ const handlerSubmit = async (e) => {
         } 
 
     });
-    
-    /*
-    console.log("acessou, ou seja, fez login no fire")
-    
-    console.log(response);
-   */
+ 
 
   })
   .catch((error) => {
@@ -201,3 +209,28 @@ const onChangeHandler = event => {
 }
 
 export default Login;
+
+
+export const getServerSideProps = withIronSession(
+  async ({ req, res }) => {
+    const user = req.session.get("filiado");
+    if (!user) {
+      const user = req.session.get("admin");
+      if(user){
+        return { props: {user} };
+      }else{
+        return { props: {} };
+      } 
+    }
+    return {
+      props: { user }
+    };
+  },
+  {
+    cookieName: "MYSITECOOKIE",
+    cookieOptions: {
+      secure: process.env.NODE_ENV === "production" ? true : false
+    },
+    password: process.env.APPLICATION_SECRET
+  }
+);

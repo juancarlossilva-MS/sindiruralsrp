@@ -4,6 +4,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
 import Header from './components/Header';
+import Footer from './components/Footer';
 import Mercado from './components/Mercado';
 import Classificado from './components/Classificado';
 import Parceiros from './components/Parceiros';
@@ -43,7 +44,7 @@ export default function Home() {
           />
       <Head>
         <title>Site Oficial do Sindicato Rural de Santa Rita do Pardo - MS</title>
-        <link rel="icon" href="/logo.png" />
+        <link rel="icon" href="/logosr.png" />
       </Head>
       <Header/>
       
@@ -118,8 +119,11 @@ export default function Home() {
 
             </Grid>
         </Grid>
+        
       </div>
-
+     
+          <Footer  />
+      
 
 
 

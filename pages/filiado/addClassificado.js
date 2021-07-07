@@ -84,7 +84,7 @@ const currencyConfig = {
 
 
 
-function AddClassificado() {
+function AddClassificado(props) {
   const classes = useStyles();
   const [value, setValue] = useState('');
   const [preco, setPreco] = React.useState(0);
@@ -92,7 +92,6 @@ function AddClassificado() {
   const [imgSel, setImgSel] = React.useState([]);
   const [open, setOpen] = React.useState(false);
 
-  
   const handleToggle = () => {
     setOpen(!open);
   };
@@ -153,10 +152,12 @@ function AddClassificado() {
   };
 
 function SubmitForm(){
+    if(img.length == 0){alert("Insira uma Image"); return;}
+    if(title == ""){alert("Insira um Titulo"); return;}
+
     handleToggle();
     var title = titulo.current.value;
-    if(img == null){alert("Insira uma Image"); return;}
-    if(title == ""){alert("Insira um Titulo"); return;}
+    
     
     var storageRef = fire.storage().ref();
     
@@ -179,7 +180,8 @@ function SubmitForm(){
                 data:dataPost,
                 imagem:JSON.stringify(imgs),
                 valor:preco,
-                slug_name: title.replace(/\s/g, '-')
+                slug_name: title.replace(/\s/g, '-'),
+                idUser:props.user.user.uid
     
             }).then(function(){
                 handleToggle();

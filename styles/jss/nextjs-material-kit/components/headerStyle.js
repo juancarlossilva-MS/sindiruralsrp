@@ -127,6 +127,14 @@ const headerStyle = {
       0.46
     )}`,
   },
+  backgreen: {
+    backgroundColor: "#023927",
+    color: "#fafafa",
+    boxShadow: `0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 12px -5px ${hexToRGBAlpha(
+      "fafafa",
+      0.46
+    )}`,
+  },
   transparent: {
     backgroundColor: "transparent !important",
     boxShadow: "none",
