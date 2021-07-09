@@ -106,11 +106,12 @@ React.useEffect(() =>{
                         );
                     })}
                     <TableCell>
+                        <a>
                         <Link  href={{
                                   pathname: '/admin/editNoticia',
                                   query: { id: row.id },
                                 }}
-                        ><Edit/></Link>
+                        ><Edit/></Link></a>
                         <Link href="/admin/editNoticia"><Delete/></Link>
                         
                         

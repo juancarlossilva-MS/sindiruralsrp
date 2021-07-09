@@ -42,12 +42,11 @@ const useStyles = makeStyles({
 function AddNoticia() {
   const classes = useStyles();
   const [value, setValue] = useState('');
-  const [tit, setTit] = useState('');
+  const [titulo, setTitulo] = useState('');
   const [age, setAge] = React.useState('noticias');
   const [img, setImg] = React.useState();
   const [imgSel, setImgSel] = React.useState();
-  
-  let titulo = useRef(tit);
+
   let data = useRef();
 
 
@@ -61,7 +60,9 @@ const [id,setId] = useState(router.query.id);
     console.log(id)
     fire.database().ref("noticias/"+id).on("value",(snapshot)=>{
           let nc = snapshot.val();
-          setTit(nc.titulo)
+          setTitulo(nc.titulo)
+          setAge(nc.tipo)
+          setValue(nc.materia)
           console.log(titulo)
     });
   },[]);
@@ -139,7 +140,9 @@ function SubmitForm(){
             <form style={{padding:25}} className={classes.root} noValidate autoComplete="off">
                     <Grid container style={{padding:25}}>
                       <Grid item xs={12}>
-                          <TextField style={{width:"100%"}} inputRef={titulo} required variant="standard" label="Titulo da Noticia" />
+                          <TextField style={{width:"100%"}} 
+                          onChange={(e)=> setTitulo(e.target.value)}
+                          value={titulo} required variant="standard" label="Titulo da Noticia" />
                           <Divider/>
                       </Grid>
                     <Grid item xs={12} style={{paddingTop:25}}>
