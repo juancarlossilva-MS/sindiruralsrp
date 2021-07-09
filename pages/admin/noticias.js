@@ -21,8 +21,8 @@ const columns = [
  
 ];
 
-function createData(titulo, tipo, dataPost) {
-  return { titulo, tipo, dataPost };
+function createData(titulo, tipo, dataPost,id) {
+  return { titulo, tipo, dataPost,id };
 }
 
 
@@ -57,7 +57,7 @@ React.useEffect(() =>{
         lc.on("value",(snap) => {
             snap.forEach((c) => {
                   var nc = c.val();
-                  setRows(prev=>[...prev,createData(nc.titulo,nc.tipo,nc.data)]);
+                  setRows(prev=>[...prev,createData(nc.titulo,nc.tipo,nc.data,c.key)]);
             });
         });
 
@@ -106,8 +106,12 @@ React.useEffect(() =>{
                         );
                     })}
                     <TableCell>
-                        <Link href="/admin/editNoticias"><Edit/></Link>
-                        <Link href="/admin/editNoticias"><Delete/></Link>
+                        <Link  href={{
+                                  pathname: '/admin/editNoticia',
+                                  query: { id: row.id },
+                                }}
+                        ><Edit/></Link>
+                        <Link href="/admin/editNoticia"><Delete/></Link>
                         
                         
                     </TableCell>
