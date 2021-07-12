@@ -1,18 +1,21 @@
-import React from 'react';
+import React,{useState,useRef} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import {Paper,Table,TableBody,TableCell,TableContainer,TableHead,TablePagination,TableRow} from "@material-ui/core"
+import {Dialog,DialogActions,DialogTitle,DialogContent,DialogContentText,Snackbar,Paper,Table,TableBody,TableCell,TableContainer,TableHead,TablePagination,TableRow,TextField} from "@material-ui/core"
 import {Edit,Delete,Add} from "@material-ui/icons"
 import Admin from "layout/admin";
 import Link from "next/link";
 import fire from "../../config/fire-config";
 import Button from "components/CustomButtons/Button.js";
 import { withIronSession } from "next-iron-session";
+import MuiAlert from '@material-ui/lab/Alert';
+import MyBackDrop from "../components/MyBackDrop"
+
 const columns = [
-  { id: 'titulo', label: 'Titulo', minWidth: 170 },
-  { id: 'tipo', label: 'Tipo', minWidth: 100 },
+  { id: 'nome', label: 'Nome', minWidth: 300 },
+  { id: 'email', label: 'Email', minWidth: 120 },
   {
-    id: 'dataPost',
-    label: 'Publicado em:',
+    id: 'tipo',
+    label: 'Tipo de Usuário',
     minWidth: 170,
     align: 'right',
     format: (value) => value.toLocaleString('en-US'),
@@ -21,10 +24,9 @@ const columns = [
  
 ];
 
-function createData(titulo, tipo, dataPost) {
-  return { titulo, tipo, dataPost };
+function createData(nome, email, tipo,id) {
+  return { nome, email, tipo,id };
 }
-
 
 
 const useStyles = makeStyles({
@@ -38,7 +40,8 @@ const useStyles = makeStyles({
 
 
 
-function Noticias() {
+function Usuarios(props) {
+
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -47,7 +50,7 @@ function Noticias() {
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
-  
+  /*
  async function vamosNessa(){
    
   fetch("/api/admin", {
@@ -60,24 +63,109 @@ function Noticias() {
 ))
  
   
+}*/
+
+
+const [refreshKey, setRefreshKey] = useState(0);
+
+  const [openModal, setOpenModal] = React.useState(false);
+  const [open, setOpen] = React.useState(false);
+  const [selUser, setSelUser] = React.useState(0);
+
+  let passToDel = useRef();
+function DelModal(){
+
+  return(
+    <Dialog
+        open={openModal}
+        onClose={()=>setOpenModal(false)}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+       <DialogTitle id="alert-dialog-title">Insira sua senha para deletar o Usuário: {selUser.displayName}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+
+            <TextField inputRef={passToDel} type="password" label="digite aqui sua senha" fullWidth variant="standard"/>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button  onClick={()=>setOpenModal(false)}  color="green">
+            Cancelar
+          </Button>
+          <Button onClick={confirmaDel} color="green" autoFocus>
+            Confirmar
+          </Button>
+        </DialogActions>
+       
+      </Dialog>
+  )
 }
+const [alertar, setAlertar] = useState(false);
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
+const handleClose = (event, reason) => {
+  if (reason === 'clickaway') {
+    return;
+  }
+
+  setAlertar(false);
+};
+
+function confirmaDel(){
+  setOpen(true);
+  var password = (passToDel.current.value);
+  var email = (props.user.user.email)
+  setOpenModal(false)
+  fire.auth().signInWithEmailAndPassword(email, password)
+  .then((userCredential) => {
+    var user = userCredential.user;
+    
+    fire.database().ref("/user/"+selUser.id).remove().then(()=>{
+      setRefreshKey(oldKey => oldKey +1)
+      setOpen(false)
+      /*fire.storage().ref().child('user/'+selUser.photoURL).delete().then(function() {
+          console.log("delete with success");
+          setRefreshKey(oldKey => oldKey +1)
+          setOpen(false)
+        }).catch(function(error) {
+        });*/
+    })
+ 
+  })
+  .catch((error) => {
+    var errorCode = error.code;
+    var errorMessage = error.message;
+    setOpenModal(true)
+    setOpen(false)
+    setAlertar(true)
+  });
+
+}
+
+
+
+
 
 React.useEffect(() =>{
 
-    vamosNessa();
+    //vamosNessa();
+    setRows([]);
 
-
-    var lc = fire.database().ref('noticias');
+    var lc = fire.database().ref('user');
       
 
         lc.on("value",(snap) => {
             snap.forEach((c) => {
                   var nc = c.val();
-                  setRows(prev=>[...prev,createData(nc.titulo,nc.tipo,nc.data)]);
+                  setRows(prev=>[...prev,createData(nc.displayName, nc.email, nc.perfil,c.key)]);
             });
         });
 
-},[]);
+},[refreshKey]);
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
@@ -122,9 +210,16 @@ React.useEffect(() =>{
                         );
                     })}
                     <TableCell>
-                        <Link href="/admin/editNoticias"><Edit/></Link>
-                        <Link href="/admin/editNoticias"><Delete/></Link>
-                        
+                    <Button>
+                        <Link  href={{
+                                  pathname: '/admin/editUsuario',
+                                  query: { id: row.id },
+                                }}
+                        ><Edit/></Link></Button>
+
+                        <Button onClick={()=>{setOpenModal(true);setSelUser(row)}}>
+                           <Delete/>
+                        </Button>
                         
                     </TableCell>
                     </TableRow>
@@ -144,16 +239,25 @@ React.useEffect(() =>{
         />
         </Paper>
         </main>
-       
+        <DelModal/>
+       <Snackbar open={alertar} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="error">
+          Email ou senha incorretos! tente novamente
+        </Alert>
+      </Snackbar>
+
+      {open &&
+        <MyBackDrop/>
+      }
     </>
   );
 }
 
 
 
-Noticias.layout = Admin;
+Usuarios.layout = Admin;
 
-export default Noticias;
+export default Usuarios;
 
 
 export const getServerSideProps = withIronSession(

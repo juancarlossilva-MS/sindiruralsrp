@@ -84,15 +84,13 @@ useEffect(()=>{
 
 },[])
 const handlerSubmit = async (e) => {
-  
   e.preventDefault();
   await setOpen(true);
-
   fire.auth().signInWithEmailAndPassword(email, password)
-  .then(async(userCredential) => {
+  .then((userCredential) => {
     var user = userCredential.user;
 
-    fire.database().ref("/user/"+user.uid).on('value', async(snapshot) => {
+    fire.database().ref("user/"+user.uid).on('value', async(snapshot) => {
       const data = snapshot.val();
       const tipo = data.perfil;
       console.log(tipo);
@@ -108,14 +106,12 @@ const handlerSubmit = async (e) => {
           setOpen(false);
         } 
 
-    });
- 
+    })
 
   })
   .catch((error) => {
     var errorCode = error.code;
     var errorMessage = error.message;
-
     setOpen(false)
     setAlertar(true)
     // ..

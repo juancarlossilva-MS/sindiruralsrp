@@ -14,6 +14,7 @@ import 'react-quill/dist/quill.snow.css';
 import Datetime from "react-datetime";
 import { now } from 'moment';
 import { withIronSession } from "next-iron-session";
+import MyBackDrop from '../components/MyBackDrop';
 
 const importJodit = () => import('react-quill');
 
@@ -45,6 +46,8 @@ function AddUsuario() {
   const [age, setAge] = React.useState('noticias');
   const [img, setImg] = React.useState();
   const [imgSel, setImgSel] = React.useState();
+  const [open, setOpen] = useState(false);
+
   const router = useRouter();
   let email = useRef();
   let nome = useRef();
@@ -73,6 +76,7 @@ function AddUsuario() {
 
 
 function SubmitForm(){
+  setOpen(true);
     var em = email.current.value;
     var pw = password.current.value;
     if(em == ""){alert("Insira um Email"); return;}
@@ -86,6 +90,8 @@ function SubmitForm(){
                 displayName: nome.current.value
               }).then(() => {
                 fire.database().ref("/user/"+user.uid).set({
+                    email:user.email,
+                    displayName: user.displayName,
                     perfil:age
                 }).then(()=>{
                    router.push("/admin/usuarios");
@@ -96,15 +102,21 @@ function SubmitForm(){
               });  
         
             }else{
+              const crypto = require("crypto");
+
+              const imgname = crypto.randomBytes(16).toString("hex")
               var storageRef = fire.storage().ref();
-              var ref = storageRef.child('usuarios/'+img.name);       
+              var ref = storageRef.child('usuarios/'+imgname);       
               ref.put(img).then(function(snapshot) {
                   user.updateProfile({
-                    photoURL: img.name,
+                    photoURL: imgname,
                     displayName: nome.current.value
                   }).then(() => {
-                    fire.database().ref("/user/"+user.uid).set({
-                        perfil:age
+                    fire.database().ref("/user/"+user.uid).set(user,{
+                      email:user.email,
+                      displayName: user.displayName,
+                      perfil:age,
+                      photoURL:user.photoURL
                     }).then(()=>{
                        router.push("/admin/usuarios");
     
@@ -198,6 +210,9 @@ function SubmitForm(){
                     </form>
         </Paper>
         </main>
+        {open &&
+            <MyBackDrop />
+      }
     </>
   );
 }

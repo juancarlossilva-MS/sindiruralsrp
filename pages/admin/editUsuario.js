@@ -1,4 +1,4 @@
-import React,{useRef,useState} from 'react';
+import React,{useRef,useState,useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {Paper,Table,Fab,TableBody,TableCell,TableContainer,MenuItem,FormControlLabel,Radio,Grid,
 TextField,FormControl, FormLabel, RadioGroup, TableHead,TablePagination,TableRow, Divider} from "@material-ui/core"
@@ -39,15 +39,16 @@ const useStyles = makeStyles({
   
 
 
-function AddUsuario() {
+function EditUsuario() {
   const classes = useStyles();
   const [value, setValue] = useState('');
   const [age, setAge] = React.useState('noticias');
   const [img, setImg] = React.useState();
+  const [nome, setNome] = React.useState('');
+  const [email, setEmail] = React.useState('');
   const [imgSel, setImgSel] = React.useState();
   const router = useRouter();
-  let email = useRef();
-  let nome = useRef();
+  
   let password = useRef();
   let data = useRef();
 
@@ -72,11 +73,48 @@ function AddUsuario() {
   };
 
 
+  
+
+
+const [id,setId] = useState(router.query.id);
+
+  useEffect(()=>{
+    fire.database().ref("user/"+id).on("value",(snapshot)=>{
+          let nc = snapshot.val();
+          setNome(nc.displayName)
+          setEmail(nc.email)
+          setAge(nc.perfil)
+          
+       //   setOld(nc.imagem)
+         
+         /* var storage = fire.storage();
+
+          storage.ref('noticias/').child(nc.imagem).getDownloadURL().then(function(url) {
+            getBase64FromUrl(url);
+          }).catch(function(error) {
+            // Handle any errors
+          });*/
+    });
+  },[]);
+
+
 function SubmitForm(){
     var em = email.current.value;
     var pw = password.current.value;
     if(em == ""){alert("Insira um Email"); return;}
-    if(pw == ""){alert("Insira uma Senha"); return;}
+    if(pw == ""){
+      
+    }else{
+      const user = firebase.auth().currentUser;
+      const newPassword = getASecureRandomPassword();
+
+      user.updatePassword(newPassword).then(() => {
+        // Update successful.
+      }).catch((error) => {
+        // An error ocurred
+        // ...
+      });
+    }
     
     fire.auth().createUserWithEmailAndPassword(em, pw)
     .then((userCredential) => {
@@ -138,11 +176,11 @@ function SubmitForm(){
             <form style={{padding:25}} className={classes.root} noValidate autoComplete="off">
                     <Grid container style={{padding:25}}>
                       <Grid item xs={12}>
-                          <TextField style={{width:"100%"}} type="text" inputRef={nome} required variant="standard" label="Nome do Usuário" />
+                          <TextField style={{width:"100%"}} type="text" value={nome} required variant="standard" label="Nome do Usuário" />
                           <Divider/>
                       </Grid>
                       <Grid item xs={12}>
-                          <TextField style={{width:"100%"}} type="email" inputRef={email} required variant="standard" label="E-Mail" />
+                          <TextField style={{width:"100%"}} type="email" value={email} required variant="standard" label="E-Mail" />
                           <Divider/>
                       </Grid>
                       <Grid item xs={12}>
@@ -202,9 +240,9 @@ function SubmitForm(){
   );
 }
 
-AddUsuario.layout = Admin;
+EditUsuario.layout = Admin;
 
-export default AddUsuario;
+export default EditUsuario;
 
 
 export const getServerSideProps = withIronSession(

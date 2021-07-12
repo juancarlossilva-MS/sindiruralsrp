@@ -14,6 +14,7 @@ import 'react-quill/dist/quill.snow.css';
 import Datetime from "react-datetime";
 import { now } from 'moment';
 import { withIronSession } from "next-iron-session";
+import MyBackDrop from "../components/MyBackDrop"
 
 const importJodit = () => import('react-quill');
 
@@ -45,9 +46,13 @@ function AddNoticia() {
   const [titulo, setTitulo] = useState('');
   const [age, setAge] = React.useState('noticias');
   const [img, setImg] = React.useState();
+  const [open, setOpen] = React.useState(false);
+  
   const [imgSel, setImgSel] = React.useState();
 
   let data = useRef();
+
+  const [oldimg,setOld] = useState('');
 
 
 
@@ -55,15 +60,39 @@ function AddNoticia() {
 
 const [id,setId] = useState(router.query.id);
 
+const getBase64FromUrl = async (url) => {
+  const data = await fetch(url);
+  const blob = await data.blob();
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(blob); 
+    reader.onloadend = () => {
+      const base64data = reader.result;   
+      setImgSel(base64data)
+
+      resolve(base64data);
+
+    }
+  });
+}
+
   
   useEffect(()=>{
-    console.log(id)
     fire.database().ref("noticias/"+id).on("value",(snapshot)=>{
           let nc = snapshot.val();
           setTitulo(nc.titulo)
           setAge(nc.tipo)
           setValue(nc.materia)
-          console.log(titulo)
+          
+          setOld(nc.imagem)
+         
+          var storage = fire.storage();
+
+          storage.ref('noticias/').child(nc.imagem).getDownloadURL().then(function(url) {
+            getBase64FromUrl(url);
+          }).catch(function(error) {
+            // Handle any errors
+          });
     });
   },[]);
   
@@ -81,50 +110,75 @@ const [id,setId] = useState(router.query.id);
      setImgSel(reader.result);
       
     }.bind(this);
-    console.log(url); 
   };
 
   const handleChange = (event) => {
     setAge(event.target.value);
-    console.log(titulo)
   };
 
 
 function SubmitForm(){
-    var title = titulo.current.value;
-    if(img == null){alert("Insira uma Image"); return;}
-    if(title == ""){alert("Insira um Titulo"); return;}
+    setOpen(true);
     
-     const crypto = require("crypto");
+    if(titulo == ""){alert("Insira um Titulo"); return;}
 
-     const imgname = crypto.randomBytes(16).toString("hex")
-    var storageRef = fire.storage().ref();
-
-    var ref = storageRef.child('noticias/'+imgname);       
-    
-     console.log(title);
-     console.log(age);
-     console.log(value);
-     var dataPost = data.current.state.inputValue;
-     var type = null;
+   
+    var dataPost = data.current.state.inputValue;
+    var type = null;
 
 
     if(age !== "noticias") type = true;
-     ref.put(img).then(function(snapshot) {
-        var news = fire.database().ref("noticias");
-        news.push().set({
-            titulo:title,
-            materia:value,
-            data:dataPost,
-            imagem:imgname,
-            tipo:age,
-            ehCurso:type,
-            slug_name: title.replace(/\s/g, '-')
 
+    var news = fire.database().ref("noticias/"+id);
+    if(img == null){
+          
+          news.update({
+              titulo:titulo,
+              materia:value,
+              data:dataPost,
+              tipo:age,
+              ehCurso:type,
+              slug_name: titulo.replace(/\s/g, '-')
+
+          });
+      
+    }else{ 
+    
+        const crypto = require("crypto");
+
+        const imgname = crypto.randomBytes(16).toString("hex")
+        var storageRef = fire.storage().ref();
+
+        var ref = storageRef.child('noticias/'+imgname);       
+      
+        ref.put(img).then(function(snapshot) {
+            
+            news.update({
+                titulo:titulo,
+                materia:value,
+                data:dataPost,
+                imagem:imgname,
+                tipo:age,
+                ehCurso:type,
+                slug_name: titulo.replace(/\s/g, '-')
+
+            });
         });
-    });
+        console.log(oldimg);
+      var imgref = storageRef.child('noticias/'+oldimg);
+
+        // Delete the file
+        imgref.delete().then(function() {
+          console.log("delete with success");
+        }).catch(function(error) {
+          // Uh-oh, an error occurred!
+        });
+    }
+    router.push("/admin/noticias");
      
 }
+
+
 
 
   return (
@@ -224,6 +278,9 @@ function SubmitForm(){
                     </form>
         </Paper>
         </main>
+        {open &&
+          <MyBackDrop/>
+        }
     </>
   );
 }

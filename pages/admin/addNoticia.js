@@ -5,6 +5,7 @@ TextField,FormControl, FormLabel, RadioGroup, TableHead,TablePagination,TableRow
 import {Edit,Delete,Add, AddPhotoAlternate,Send} from "@material-ui/icons"
 import Admin from "layout/admin";
 import Link from "next/link";
+import {useRouter} from "next/router";
 import fire from "../../config/fire-config";
 import Button from "components/CustomButtons/Button.js";
 import dynamic from 'next/dynamic';
@@ -13,6 +14,7 @@ import 'react-quill/dist/quill.snow.css';
 import Datetime from "react-datetime";
 import { now } from 'moment';
 import { withIronSession } from "next-iron-session";
+import MyBackDrop from "../components/MyBackDrop"
 
 const importJodit = () => import('react-quill');
 
@@ -44,9 +46,12 @@ function AddNoticia() {
   const [age, setAge] = React.useState('noticias');
   const [img, setImg] = React.useState();
   const [imgSel, setImgSel] = React.useState();
-  
+  const [open, setOpen] = React.useState(false);
+
   let titulo = useRef();
   let data = useRef();
+
+  const router = useRouter();
 
   function handleUploadClick(event){
    // console.log(event.target.files[0]);
@@ -70,12 +75,15 @@ function AddNoticia() {
 
 
 function SubmitForm(){
+    setOpen(true)
     var title = titulo.current.value;
     if(img == null){alert("Insira uma Image"); return;}
     if(title == ""){alert("Insira um Titulo"); return;}
-    
+    const crypto = require("crypto");
+
+    const imgname = crypto.randomBytes(16).toString("hex")
     var storageRef = fire.storage().ref();
-    var ref = storageRef.child('noticias/'+img.name);       
+    var ref = storageRef.child('noticias/'+imgname);       
     
      console.log(title);
      console.log(age);
@@ -89,13 +97,18 @@ function SubmitForm(){
             titulo:title,
             materia:value,
             data:dataPost,
-            imagem:img.name,
+            imagem:imgname,
             tipo:age,
             ehCurso:type,
             slug_name: title.replace(/\s/g, '-')
 
+        }).then(()=>{
+          setOpen(false);
+          window.location.href = "/admin/noticias";
         });
     });
+
+    
      
 }
 
@@ -195,6 +208,9 @@ function SubmitForm(){
                     </form>
         </Paper>
         </main>
+        {open &&
+          <MyBackDrop/>
+        }
     </>
   );
 }
