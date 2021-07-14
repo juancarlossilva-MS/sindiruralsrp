@@ -10,7 +10,7 @@ import { withIronSession } from "next-iron-session";
 
 const columns = [
   { id: 'titulo', label: 'Titulo', minWidth: 170 },
-  { id: 'tipo', label: 'Tipo', minWidth: 100 },
+  { id: 'valor', label: 'Valor', minWidth: 100 },
   {
     id: 'dataPost',
     label: 'Publicado em:',
@@ -22,8 +22,8 @@ const columns = [
  
 ];
 
-function createData(titulo, tipo, dataPost) {
-  return { titulo, tipo, dataPost };
+function createData(titulo, valor, dataPost) {
+  return { titulo, valor, dataPost };
 }
 
 
@@ -50,14 +50,14 @@ function Classificados() {
   };
 
 React.useEffect(() =>{
-    var lc = fire.database().ref('noticias');
+    var lc = fire.database().ref('classificados');
       
 
         lc.on("value",(snap) => {
             snap.forEach((c) => {
                   var nc = c.val();
                   console.log("toaki"+nc);
-                  setRows(prev=>[...prev,createData(nc.titulo,nc.tipo,nc.data)]);
+                  setRows(prev=>[...prev,createData(nc.titulo,nc.valor,nc.data)]);
             });
         });
 

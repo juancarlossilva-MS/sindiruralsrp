@@ -1,6 +1,6 @@
 import React,{useRef,useState,useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import {Paper,Table,Fab,TableBody,TableCell,TableContainer,MenuItem,FormControlLabel,Radio,Grid,
+import {Paper,Table,Fab,TableBody,TableCell,TableContainer,MenuItem,FormControlLabel,Radio,Grid,Snackbar,
 TextField,FormControl, FormLabel, RadioGroup, TableHead,TablePagination,TableRow, Divider} from "@material-ui/core"
 import {Edit,Delete,Add, AddPhotoAlternate,Send} from "@material-ui/icons"
 import Admin from "layout/admin";
@@ -14,6 +14,8 @@ import 'react-quill/dist/quill.snow.css';
 import Datetime from "react-datetime";
 import { now } from 'moment';
 import { withIronSession } from "next-iron-session";
+import MuiAlert from '@material-ui/lab/Alert';
+import MyBackDrop from "../components/MyBackDrop"
 
 const importJodit = () => import('react-quill');
 
@@ -73,10 +75,44 @@ function EditUsuario() {
   };
 
 
+
+  const [alertar, setAlertar] = useState(false);
+  
+  function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
+  
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+  
+    setAlertar(false);
+  };
+  
   
 
 
 const [id,setId] = useState(router.query.id);
+const [open, setOpen] = React.useState(false);
+
+const [oldimg,setOld] = useState('');
+const getBase64FromUrl = async (url) => {
+  const data = await fetch(url);
+  const blob = await data.blob();
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(blob); 
+    reader.onloadend = () => {
+      const base64data = reader.result;   
+      setImgSel(base64data)
+
+      resolve(base64data);
+
+    }
+  });
+}
+
 
   useEffect(()=>{
     fire.database().ref("user/"+id).on("value",(snapshot)=>{
@@ -85,79 +121,96 @@ const [id,setId] = useState(router.query.id);
           setEmail(nc.email)
           setAge(nc.perfil)
           
-       //   setOld(nc.imagem)
-         
-         /* var storage = fire.storage();
+          setOld(nc.photoURL)
 
-          storage.ref('noticias/').child(nc.imagem).getDownloadURL().then(function(url) {
-            getBase64FromUrl(url);
-          }).catch(function(error) {
-            // Handle any errors
-          });*/
+         
     });
   },[]);
 
+useEffect(()=>{
+  if(oldimg == null) return;
+    var storage = fire.storage();
 
-function SubmitForm(){
-    var em = email.current.value;
-    var pw = password.current.value;
-    if(em == ""){alert("Insira um Email"); return;}
-    if(pw == ""){
-      
-    }else{
-      const user = firebase.auth().currentUser;
-      const newPassword = getASecureRandomPassword();
-
-      user.updatePassword(newPassword).then(() => {
-        // Update successful.
-      }).catch((error) => {
-        // An error ocurred
-        // ...
-      });
-    }
-    
-    fire.auth().createUserWithEmailAndPassword(em, pw)
-    .then((userCredential) => {
-       var user = userCredential.user;
-            if(img == null){
-              user.updateProfile({
-                displayName: nome.current.value
-              }).then(() => {
-                fire.database().ref("/user/"+user.uid).set({
-                    perfil:age
-                }).then(()=>{
-                   router.push("/admin/usuarios");
-
-                })
-              }).catch((error) => {
-                console.log(error)
-              });  
-        
-            }else{
-              var storageRef = fire.storage().ref();
-              var ref = storageRef.child('usuarios/'+img.name);       
-              ref.put(img).then(function(snapshot) {
-                  user.updateProfile({
-                    photoURL: img.name,
-                    displayName: nome.current.value
-                  }).then(() => {
-                    fire.database().ref("/user/"+user.uid).set({
-                        perfil:age
-                    }).then(()=>{
-                       router.push("/admin/usuarios");
-    
-                    })
-                  }).catch((error) => {
-                    console.log(error)
-                  });  
+              storage.ref('usuarios/').child(oldimg).getDownloadURL().then(function(url) {
+                getBase64FromUrl(url);
+              }).catch(function(error) {
+                // Handle any errors
               });
+},[oldimg])
+
+
+function addSemImg(){
+  fire.database().ref("/user/"+id).set({
+    email:email,
+    displayName: nome,
+    perfil:age,
+    photoURL:oldimg
+  }).then(()=>{
+      router.push("/admin/usuarios");
+
+  })
+}
+
+function addComImg(){
+  const crypto = require("crypto");
+  const imgname = crypto.randomBytes(16).toString("hex")
+  var storageRef = fire.storage().ref();
+  var ref = storageRef.child('usuarios/'+imgname);       
+  ref.put(img).then(function(snapshot) {
+     
+        fire.database().ref("/user/"+id).set({
+          email:email,
+          displayName: nome,
+          perfil:age,
+          photoURL:imgname
+        }).then(()=>{
+           router.push("/admin/usuarios");
+
+        })
+
+        var imgref = storageRef.child('usuarios/'+oldimg);
+
+        // Delete the file
+        imgref.delete().then(function() {
+          console.log("delete with success");
+        }).catch(function(error) {
+          // Uh-oh, an error occurred!
+        });
+     
+  });
+
+}
+
+async function SubmitForm(){
+    setOpen(true)
+    var pw = password.current.value;
+    if(email == ""){alert("Insira um Email"); return;}
+    if(pw == ""){
+      if(img == null){
+          addSemImg()
+      }else{
+          addComImg()
+      }
+     }else{
+          const tipo = "updateUser";
+          const response = await fetch("/api/admin", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ tipo,id, pw})
+              })
+
+          
+          if (response.ok) {
+            if(img == null){
+                addSemImg()
+            }else{
+                addComImg()
             }
-       
-    })
-    .catch((error) => {
-      var errorCode = error.code;
-      var errorMessage = error.message;
-    });
+          }else{
+            setAlertar(true);
+            setOpen(false)
+          } 
+    }
 
   
 }
@@ -176,11 +229,11 @@ function SubmitForm(){
             <form style={{padding:25}} className={classes.root} noValidate autoComplete="off">
                     <Grid container style={{padding:25}}>
                       <Grid item xs={12}>
-                          <TextField style={{width:"100%"}} type="text" value={nome} required variant="standard" label="Nome do Usuário" />
+                          <TextField style={{width:"100%"}} type="text" onChange={(e)=>setNome(e.target.value)} value={nome} required variant="standard" label="Nome do Usuário" />
                           <Divider/>
                       </Grid>
                       <Grid item xs={12}>
-                          <TextField style={{width:"100%"}} type="email" value={email} required variant="standard" label="E-Mail" />
+                          <TextField style={{width:"100%"}} onChange={(e)=>setEmail(e.target.value)} type="email" value={email} required variant="standard" label="E-Mail" />
                           <Divider/>
                       </Grid>
                       <Grid item xs={12}>
@@ -236,6 +289,15 @@ function SubmitForm(){
                     </form>
         </Paper>
         </main>
+        <Snackbar open={alertar} autoHideDuration={6000} onClose={handleClose}>
+          <Alert onClose={handleClose} severity="error">
+            Email ou senha incorretos! tente novamente
+          </Alert>
+        </Snackbar>
+
+        {open &&
+          <MyBackDrop/>
+        }
     </>
   );
 }

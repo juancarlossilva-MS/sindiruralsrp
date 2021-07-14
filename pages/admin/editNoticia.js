@@ -52,7 +52,7 @@ function AddNoticia() {
 
   let data = useRef();
 
-  const [oldimg,setOld] = useState('');
+  
 
 
 
@@ -60,6 +60,7 @@ function AddNoticia() {
 
 const [id,setId] = useState(router.query.id);
 
+const [oldimg,setOld] = useState('');
 const getBase64FromUrl = async (url) => {
   const data = await fetch(url);
   const blob = await data.blob();
@@ -145,7 +146,6 @@ function SubmitForm(){
     }else{ 
     
         const crypto = require("crypto");
-
         const imgname = crypto.randomBytes(16).toString("hex")
         var storageRef = fire.storage().ref();
 

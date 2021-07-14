@@ -1,4 +1,4 @@
-import React,{useRef,useState} from 'react';
+import React,{useRef,useState,useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {Paper,GridList,Fab,GridListTile,GridListTileBar,Backdrop,CircularProgress,FormControlLabel,Radio,Grid,
 TextField,FormControl, FormLabel, InputLabel, Input,InputAdornment,TableRow, Divider} from "@material-ui/core"
@@ -17,6 +17,7 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import IntlCurrencyInput from "react-intl-currency-input"
 import { withIronSession } from "next-iron-session";
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 const importJodit = () => import('react-quill');
 
@@ -92,13 +93,23 @@ function AddClassificado() {
   const [imgSel, setImgSel] = React.useState([]);
   const [open, setOpen] = React.useState(false);
 
-  
+  const [options,setOptions] = useState([]);
+
   const handleToggle = () => {
     setOpen(!open);
   };
   let titulo = useRef();
   let data = useRef();
   
+useEffect(()=>{
+  fire.database().ref("user").on("value",(snap)=>{
+    snap.forEach((c)=>{
+          var us = c.val();
+          setOptions(prev=>[...prev,us])
+    });
+  })
+},[])
+
 
   const onClose = (event) => {
     var item = (event.currentTarget.name);
@@ -194,6 +205,9 @@ function SubmitForm(){
 }
 
 
+const [user, setUser] = React.useState(options[0]);
+
+
   return (
       <>
 <link rel="stylesheet" href="https://unpkg.com/react-quill@1.3.3/dist/quill.snow.css"/>
@@ -239,6 +253,21 @@ function SubmitForm(){
                      </FormControl>
                      </Grid>
 
+                      <Grid container style={{paddingTop:155}}>
+                        <Grid item xs={12}>
+                        <Autocomplete
+                          value={user}
+                          onChange={(event, newValue) => {
+                            setUser(newValue);
+                          }}
+                          id="controllable-states-demo"
+                          getOptionLabel={(option) => option.displayName}
+                          options={options}
+                          style={{ width: 300 }}
+                          renderInput={(params) => <TextField {...params} label="Anunciante" variant="outlined" />}
+                        />
+                        </Grid>
+                      </Grid>
                       <Grid container style={{paddingTop:155}}>
                         <Grid item xs={12}>
                           <InputLabel htmlFor="standard-adornment-amount">Preço</InputLabel>

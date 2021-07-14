@@ -4,6 +4,7 @@ import {Dialog,DialogActions,DialogTitle,DialogContent,DialogContentText,Snackba
 import {Edit,Delete,Add} from "@material-ui/icons"
 import Admin from "layout/admin";
 import Link from "next/link";
+import {useRouter} from "next/router";
 import fire from "../../config/fire-config";
 import Button from "components/CustomButtons/Button.js";
 import { withIronSession } from "next-iron-session";
@@ -50,6 +51,8 @@ function Usuarios(props) {
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
+
+  const router = useRouter();
   /*
  async function vamosNessa(){
    
@@ -101,6 +104,7 @@ function DelModal(){
       </Dialog>
   )
 }
+
 const [alertar, setAlertar] = useState(false);
 
 function Alert(props) {
@@ -172,6 +176,14 @@ React.useEffect(() =>{
     setPage(0);
   };
 
+  function openEdit(id){
+    setOpen(true);
+      router.push({
+        pathname: '/admin/editUsuario',
+        query: { id: id },
+      })
+  }
+
   return (
       <>
         <main  className={classes.content}>
@@ -210,12 +222,9 @@ React.useEffect(() =>{
                         );
                     })}
                     <TableCell>
-                    <Button>
-                        <Link  href={{
-                                  pathname: '/admin/editUsuario',
-                                  query: { id: row.id },
-                                }}
-                        ><Edit/></Link></Button>
+                    <Button onClick={()=>openEdit(row.id)}>
+                        
+                        <Edit/></Button>
 
                         <Button onClick={()=>{setOpenModal(true);setSelUser(row)}}>
                            <Delete/>

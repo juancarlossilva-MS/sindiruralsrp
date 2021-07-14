@@ -16,22 +16,43 @@ if (admin.apps.length === 0) {
 export default withIronSession(
   async (req, res) => {
     if (req.method === "POST") {
-    
-
-      var allUsers = [];
-      return admin.auth().listUsers()
-          .then(function (listUsersResult) {
-              listUsersResult.users.forEach(function (userRecord) {
-                  // For each user
-                  var userData = userRecord.toJSON();
-                  allUsers.push(userData);
+      
+      const {tipo} = req.body;
+      switch(tipo){
+        case "list":
+          var allUsers = [];
+          return admin.auth().listUsers()
+              .then(function (listUsersResult) {
+                  listUsersResult.users.forEach(function (userRecord) {
+                      // For each user
+                      var userData = userRecord.toJSON();
+                      allUsers.push(userData);
+                  });
+                  res.status(200).send(JSON.stringify(allUsers));
+              })
+              .catch(function (error) {
+                  console.log("Error listing users:", error);
+                  res.status(500).send(error);
               });
-              res.status(200).send(JSON.stringify(allUsers));
-          })
-          .catch(function (error) {
-              console.log("Error listing users:", error);
-              res.status(500).send(error);
-          });
+              break;
+
+        case "updateUser":
+              const {id,pw} = req.body;
+              return admin
+              .auth()
+              .updateUser(id, {
+                password: pw,
+              })
+              .then((userRecord) => {
+                res.status(200).send();
+              })
+              .catch((error) => {
+                  console.log("Error listing users:", error);
+                  res.status(500).send(error);
+              });
+
+        break;
+      }
     }
 	if (req.method === "DELETE") {
       
