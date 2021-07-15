@@ -125,19 +125,30 @@ function confirmaDel(){
   var email = (props.user.user.email)
   setOpenModal(false)
   fire.auth().signInWithEmailAndPassword(email, password)
-  .then((userCredential) => {
+  .then(async(userCredential) => {
     var user = userCredential.user;
+    const tipo = "deleteUser";
+    const response = await fetch("/api/admin", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ tipo,id:selUser.id})
+        })
     
-    fire.database().ref("/user/"+selUser.id).remove().then(()=>{
-      setRefreshKey(oldKey => oldKey +1)
-      setOpen(false)
-      /*fire.storage().ref().child('user/'+selUser.photoURL).delete().then(function() {
-          console.log("delete with success");
-          setRefreshKey(oldKey => oldKey +1)
-          setOpen(false)
-        }).catch(function(error) {
-        });*/
-    })
+    if(response.ok){
+        fire.database().ref("/user/"+selUser.id).remove().then(()=>{
+        setRefreshKey(oldKey => oldKey +1)
+        setOpen(false)
+        /*fire.storage().ref().child('user/'+selUser.photoURL).delete().then(function() {
+            console.log("delete with success");
+            setRefreshKey(oldKey => oldKey +1)
+            setOpen(false)
+          }).catch(function(error) {
+          });*/
+      })
+    }else{
+       setOpen(false)
+    }
+   
  
   })
   .catch((error) => {

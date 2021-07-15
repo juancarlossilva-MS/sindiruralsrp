@@ -101,11 +101,12 @@ function AddClassificado() {
   let titulo = useRef();
   let data = useRef();
   
+
 useEffect(()=>{
-  fire.database().ref("user").on("value",(snap)=>{
+  fire.database().ref("user").orderByChild("perfil").equalTo("filiado").on("value",(snap)=>{
     snap.forEach((c)=>{
           var us = c.val();
-          setOptions(prev=>[...prev,us])
+          setOptions(prev=>[...prev,{displayName:us.displayName,email:us.email,photoURL:us.photoURL,key:c.key}])
     });
   })
 },[])
@@ -164,11 +165,12 @@ useEffect(()=>{
   };
 
 function SubmitForm(){
-    handleToggle();
-    var title = titulo.current.value;
-    if(img == null){alert("Insira uma Image"); return;}
-    if(title == ""){alert("Insira um Titulo"); return;}
     
+    var title = titulo.current.value;
+    if(img.length == 0){alert("Insira uma Image"); return;}
+    if(filiado == null){alert("Por favor, selecione um Anunciante"); return;}
+    if(title == ""){alert("Insira um Titulo"); return;}
+    handleToggle();
     var storageRef = fire.storage().ref();
     
      var dataPost = data.current.state.inputValue;
@@ -190,7 +192,9 @@ function SubmitForm(){
                 data:dataPost,
                 imagem:JSON.stringify(imgs),
                 valor:preco,
-                slug_name: title.replace(/\s/g, '-')
+                slug_name: title.replace(/\s/g, '-'),
+                idFiliado: filiado.key,
+                nomeFiliado:filiado.displayName
     
             }).then(function(){
                 handleToggle();
@@ -205,7 +209,7 @@ function SubmitForm(){
 }
 
 
-const [user, setUser] = React.useState(options[0]);
+const [filiado, setFiliado] = React.useState();
 
 
   return (
@@ -256,15 +260,15 @@ const [user, setUser] = React.useState(options[0]);
                       <Grid container style={{paddingTop:155}}>
                         <Grid item xs={12}>
                         <Autocomplete
-                          value={user}
                           onChange={(event, newValue) => {
-                            setUser(newValue);
+                            setFiliado(newValue);
                           }}
+                          
                           id="controllable-states-demo"
                           getOptionLabel={(option) => option.displayName}
                           options={options}
                           style={{ width: 300 }}
-                          renderInput={(params) => <TextField ref={params.InputProps.ref} {...params} label="Anunciante" variant="outlined" />}
+                          renderInput={(params) => <TextField {...params} label="Anunciante" variant="outlined" />}
                         />
                         </Grid>
                       </Grid>

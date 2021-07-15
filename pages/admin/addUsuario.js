@@ -76,12 +76,12 @@ function AddUsuario() {
 
 
 function SubmitForm(){
-  setOpen(true);
     var em = email.current.value;
     var pw = password.current.value;
     if(em == ""){alert("Insira um Email"); return;}
     if(pw == ""){alert("Insira uma Senha"); return;}
-    
+      setOpen(true);
+
     fire.auth().createUserWithEmailAndPassword(em, pw)
     .then((userCredential) => {
        var user = userCredential.user;

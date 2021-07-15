@@ -17,7 +17,7 @@ export default withIronSession(
   async (req, res) => {
     if (req.method === "POST") {
       
-      const {tipo} = req.body;
+      const {tipo,id} = req.body;
       switch(tipo){
         case "list":
           var allUsers = [];
@@ -37,7 +37,7 @@ export default withIronSession(
               break;
 
         case "updateUser":
-              const {id,pw,email} = req.body;
+              const {pw,email} = req.body;
               return admin
               .auth()
               .updateUser(id, {
@@ -45,6 +45,19 @@ export default withIronSession(
                 email:email
               })
               .then((userRecord) => {
+                res.status(200).send();
+              })
+              .catch((error) => {
+                  console.log("Error listing users:", error);
+                  res.status(500).send(error);
+              });
+
+        break;
+        case "deleteUser":
+              return admin
+              .auth()
+              .deleteUser(id)
+              .then(() => {
                 res.status(200).send();
               })
               .catch((error) => {

@@ -75,10 +75,11 @@ function AddNoticia() {
 
 
 function SubmitForm(){
-    setOpen(true)
+    
     var title = titulo.current.value;
     if(img == null){alert("Insira uma Image"); return;}
     if(title == ""){alert("Insira um Titulo"); return;}
+    setOpen(true)
     const crypto = require("crypto");
 
     const imgname = crypto.randomBytes(16).toString("hex")
