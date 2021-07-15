@@ -22,7 +22,7 @@ export default function WeHeader(){
 const router = useRouter();
 return(
 <Header
-            brand={<Button2><Image src="/logoverde.png" width={300} height={72} /></Button2>}
+            brand={<Button2><Image src="/logoverde.png" width={320} height={72} /></Button2>}
             color="backgreen"
             leftLinks={
               <List className={classes.list}>

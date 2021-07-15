@@ -196,7 +196,7 @@ async function SubmitForm(){
           const response = await fetch("/api/admin", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ tipo,id, pw})
+                body: JSON.stringify({ tipo,id, pw,email})
               })
 
           

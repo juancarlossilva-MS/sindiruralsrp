@@ -37,11 +37,12 @@ export default withIronSession(
               break;
 
         case "updateUser":
-              const {id,pw} = req.body;
+              const {id,pw,email} = req.body;
               return admin
               .auth()
               .updateUser(id, {
                 password: pw,
+                email:email
               })
               .then((userRecord) => {
                 res.status(200).send();

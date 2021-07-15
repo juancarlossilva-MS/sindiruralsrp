@@ -92,7 +92,8 @@ function SubmitForm(){
                 fire.database().ref("/user/"+user.uid).set({
                     email:user.email,
                     displayName: user.displayName,
-                    perfil:age
+                    perfil:age,
+                    photoURL:""
                 }).then(()=>{
                    router.push("/admin/usuarios");
 

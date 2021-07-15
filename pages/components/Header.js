@@ -21,7 +21,7 @@ export default function WeHeader(){
 
 return(
 <Header
-            brand={<Button2><Image src="/logo.png" width={250} height={65} /></Button2>}
+            brand={<Button2><Image src="/logo.png" width={320} height={70} /></Button2>}
             color="green"
             leftLinks={
               <List className={classes.list}>

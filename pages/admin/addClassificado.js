@@ -264,7 +264,7 @@ const [user, setUser] = React.useState(options[0]);
                           getOptionLabel={(option) => option.displayName}
                           options={options}
                           style={{ width: 300 }}
-                          renderInput={(params) => <TextField {...params} label="Anunciante" variant="outlined" />}
+                          renderInput={(params) => <TextField ref={params.InputProps.ref} {...params} label="Anunciante" variant="outlined" />}
                         />
                         </Grid>
                       </Grid>
