@@ -1,19 +1,22 @@
-import React from 'react';
+import React,{useState,useRef,useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import {Paper,Table,TableBody,TableCell,TableContainer,TableHead,TablePagination,TableRow} from "@material-ui/core"
+import {Dialog,DialogActions,DialogTitle,DialogContent,DialogContentText,Snackbar,Paper,Table,TableBody,TableCell,TableContainer,TableHead,TablePagination,TableRow,TextField} from "@material-ui/core"
 import {Edit,Delete,Add} from "@material-ui/icons"
 import Admin from "layout/admin";
 import Link from "next/link";
 import fire from "../../config/fire-config";
 import Button from "components/CustomButtons/Button.js";
 import { withIronSession } from "next-iron-session";
+import {useRouter} from "next/router";
+import MuiAlert from '@material-ui/lab/Alert';
+import MyBackDrop from "../components/MyBackDrop"
 
 const columns = [
   { id: 'titulo', label: 'Titulo', minWidth: 170 },
   { id: 'valor', label: 'Valor', minWidth: 100 },
   {
-    id: 'dataPost',
-    label: 'Publicado em:',
+    id: 'nomeFiliado',
+    label: 'Anunciado por:',
     minWidth: 170,
     align: 'right',
     format: (value) => value.toLocaleString('en-US'),
@@ -22,8 +25,8 @@ const columns = [
  
 ];
 
-function createData(titulo, valor, dataPost) {
-  return { titulo, valor, dataPost };
+function createData(titulo, valor, nomeFiliado,id,pastaImgClass) {
+  return { titulo, valor, nomeFiliado,id,pastaImgClass };
 }
 
 
@@ -39,7 +42,7 @@ const useStyles = makeStyles({
 
 
 
-function Classificados() {
+function Classificados(props) {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -49,7 +52,109 @@ function Classificados() {
     setPage(newPage);
   };
 
+
+  const router = useRouter();
+
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  const [openModal, setOpenModal] = React.useState(false);
+  const [open, setOpen] = React.useState(false);
+  const [selClass, setSelClass] = React.useState(0);
+
+  let passToDel = useRef();
+
+function DelModal(){
+
+  return(
+    <Dialog
+        open={openModal}
+        onClose={()=>setOpenModal(false)}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+       <DialogTitle id="alert-dialog-title">Insira sua senha para deletar o classificado: {selClass.titulo}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Esse classificado foi anunciado por {selClass.nomeFiliado}
+            <TextField inputRef={passToDel} type="password" label="digite aqui sua senha" fullWidth variant="standard"/>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button  onClick={()=>setOpenModal(false)}  color="green">
+            Cancelar
+          </Button>
+          <Button onClick={confirmaDel} color="green" autoFocus>
+            Confirmar
+          </Button>
+        </DialogActions>
+       
+      </Dialog>
+  )
+}
+
+const [alertar, setAlertar] = useState(false);
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
+const handleClose = (event, reason) => {
+  if (reason === 'clickaway') {
+    return;
+  }
+
+  setAlertar(false);
+};
+
+useEffect(()=>{
+  console.log(alertar)
+  console.log(openModal)
+},[alertar])
+
+function confirmaDel(){
+    setOpen(true);
+    var password = (passToDel.current.value);
+    var email = (props.user.user.email);
+    setOpenModal(false)
+  
+    fire.auth().signInWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+      var user = userCredential.user;
+      fire.database().ref("/classificados/"+selClass.id).remove().then(()=>{
+          
+         var listRef = fire.storage().ref().child('classificados/'+selClass.pastaImgClass);
+
+        listRef.listAll().then(function(res) {
+         
+          res.items.forEach(function(itemRef) {
+              itemRef.delete()
+          })
+                console.log("delete with success");
+                setRefreshKey(oldKey => oldKey +1)
+                setOpen(false)
+              
+        }).catch(function(error) {
+          // Uh-oh, an error occurred!
+          console.log(error);
+                setOpen(false)
+        });
+        
+      })
+   
+    })
+    .catch((error) => {
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      setOpenModal(true)
+      setOpen(false)
+      setAlertar(true)
+    });
+  }
+  
+  
 React.useEffect(() =>{
+
+    setRows([]);
     var lc = fire.database().ref('classificados');
       
 
@@ -57,16 +162,24 @@ React.useEffect(() =>{
             snap.forEach((c) => {
                   var nc = c.val();
                   console.log("toaki"+nc);
-                  setRows(prev=>[...prev,createData(nc.titulo,nc.valor,nc.data)]);
+                  setRows(prev=>[...prev,createData(nc.titulo,nc.valor,nc.nomeFiliado,c.key,nc.pastaImgClass)]);
             });
         });
 
-},[]);
+},[refreshKey]);
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+
+  function openEdit(id){
+    setOpen(true);
+      router.push({
+        pathname: '/admin/editClassificado',
+        query: { id: id },
+      })
+  }
 
   return (
       <>
@@ -106,9 +219,13 @@ React.useEffect(() =>{
                         );
                     })}
                     <TableCell>
-                        <Link href="/admin/editClassificado"><Edit/></Link>
-                        <Link href="/admin/editClassificado"><Delete/></Link>
+                    <Button onClick={()=>openEdit(row.id)}>
                         
+                        <Edit/></Button>
+
+                        <Button onClick={()=>{setOpenModal(true);setSelClass(row)}}>
+                           <Delete/>
+                        </Button>
                         
                     </TableCell>
                     </TableRow>
@@ -128,6 +245,17 @@ React.useEffect(() =>{
         />
         </Paper>
         </main>
+        <DelModal/>
+        
+        <Snackbar open={alertar} autoHideDuration={1000} onClose={handleClose}>
+          <Alert onClose={handleClose} severity="error">
+            Email ou senha incorretos! tente novamente
+          </Alert>
+        </Snackbar>
+
+        {open &&
+          <MyBackDrop/>
+        }
     </>
   );
 }

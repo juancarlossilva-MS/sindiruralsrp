@@ -176,11 +176,18 @@ function SubmitForm(){
      var dataPost = data.current.state.inputValue;
 
     var imgs = [];
+    const crypto = require("crypto");
+    let tilclass = (title + "-" +crypto.randomBytes(8).toString("hex")).replaceAll("/","-");
+    
+
     Promise.all(
       img.map((i)=>{
-        var ref = storageRef.child('classificados/'+title+"/"+i.name);       
+
+        const imgname = crypto.randomBytes(16).toString("hex")
+          
+          var ref = storageRef.child('classificados/'+tilclass+"/"+imgname);       
           ref.put(i);
-          imgs = [...imgs,i.name];
+          imgs = [...imgs,imgname];
 
       }),
     )
@@ -192,9 +199,10 @@ function SubmitForm(){
                 data:dataPost,
                 imagem:JSON.stringify(imgs),
                 valor:preco,
-                slug_name: title.replace(/\s/g, '-'),
+                slug_name: title.replaceAll(/\s/g, '-'),
                 idFiliado: filiado.key,
-                nomeFiliado:filiado.displayName
+                nomeFiliado:filiado.displayName,
+                pastaImgClass: tilclass
     
             }).then(function(){
                 handleToggle();
