@@ -63,6 +63,7 @@ function Classificados(props) {
 
   let passToDel = useRef();
 
+
 function DelModal(){
 
   return(
@@ -106,10 +107,7 @@ const handleClose = (event, reason) => {
   setAlertar(false);
 };
 
-useEffect(()=>{
-  console.log(alertar)
-  console.log(openModal)
-},[alertar])
+
 
 function confirmaDel(){
     setOpen(true);
@@ -145,14 +143,13 @@ function confirmaDel(){
     .catch((error) => {
       var errorCode = error.code;
       var errorMessage = error.message;
-      setOpenModal(true)
       setOpen(false)
       setAlertar(true)
     });
   }
   
   
-React.useEffect(() =>{
+useEffect(() =>{
 
     setRows([]);
     var lc = fire.database().ref('classificados');
@@ -223,7 +220,7 @@ React.useEffect(() =>{
                         
                         <Edit/></Button>
 
-                        <Button onClick={()=>{setOpenModal(true);setSelClass(row)}}>
+                        <Button onClick={()=>{setAlertar(false);setOpenModal(true);setSelClass(row)}}>
                            <Delete/>
                         </Button>
                         
@@ -247,7 +244,7 @@ React.useEffect(() =>{
         </main>
         <DelModal/>
         
-        <Snackbar open={alertar} autoHideDuration={1000} onClose={handleClose}>
+        <Snackbar open={alertar} autoHideDuration={6000} onClose={handleClose}>
           <Alert onClose={handleClose} severity="error">
             Email ou senha incorretos! tente novamente
           </Alert>

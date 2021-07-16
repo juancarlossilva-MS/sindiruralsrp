@@ -35,7 +35,6 @@ export default function AdminNavbarLinks(props) {
   
 
  React.useEffect(()=>{
-
   if(props.user != null){
 
       setUser(props.user.displayName);

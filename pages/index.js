@@ -12,9 +12,11 @@ import CarouselNews from './components/CarouselNews';
 import Card from "components/Card/Card.js";
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import CardMedia from '@material-ui/core/CardMedia';
 import Send from '@material-ui/icons/Send';
 import fire from '../config/fire-config';
 import Image from 'next/image';
+import Link from 'next/link';
 
 
 export default function Home() {
@@ -101,9 +103,32 @@ export default function Home() {
 
          
             <Grid container style={{padding:0}} spacing={0} >
+               
+                <Grid item xs={12} sm={2} ></Grid>
+                <Grid item xs={12} sm={8} > 
+                
+                    <Card>
+                          <Button href={"https://facebook.com/sindicatoruraldesantaritadopardoms"}>
+                              <Image src="/conheca.png" width={1349} height={347} />
+                            </Button>
+
+                              
+                      </Card>
+                </Grid>
+                <Grid item xs={12} sm={2} ></Grid>
                 
                 <Grid item xs={12} sm={2} ></Grid>
-                <Grid item xs={12} sm={8} ><Image src="/associe.png" width={200} height={100} layout="responsive" /></Grid>
+                <Grid item xs={12} sm={8} >
+                                              <CardMedia
+                                          component='video'
+                                          
+                                          image={"/videosindi.mp4"}
+                                          autoPlay
+                                          controls
+                                          loop
+                                
+                                      />
+                </Grid>
                 <Grid item xs={12} sm={2} ></Grid>
 
                 <Grid item xs={12} sm={3}></Grid>
