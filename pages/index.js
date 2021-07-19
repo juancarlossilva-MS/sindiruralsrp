@@ -132,7 +132,7 @@ export default function Home() {
                 <Grid item xs={12} sm={2} ></Grid>
 
                 <Grid item xs={12} sm={3}></Grid>
-                <Grid item xs={12} sm={6} spacing={0} >
+                <Grid item xs={12} sm={6} >
                   <Card style={{padding:30}}>
                       <TextField required id="standard-required" label="Seu Nome"  />
                       <br/><TextField required id="standard-required" label="Seu Email"  />
