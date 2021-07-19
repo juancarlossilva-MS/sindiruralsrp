@@ -119,7 +119,7 @@ function confirmaDel(){
   .catch((error) => {
     var errorCode = error.code;
     var errorMessage = error.message;
-    setOpenModal(true)
+    //setOpenModal(true)
     setOpen(false)
     setAlertar(true)
   });
@@ -196,7 +196,7 @@ React.useEffect(() =>{
                                 }}
                         ><Edit/></Link></Button>
 
-                        <Button onClick={()=>{setOpenModal(true);setSelNews(row)}}>
+                        <Button onClick={()=>{setAlertar(false);setOpenModal(true);setSelNews(row)}}>
                            <Delete/>
                         </Button>
                         

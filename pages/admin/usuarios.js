@@ -25,8 +25,8 @@ const columns = [
  
 ];
 
-function createData(nome, email, tipo,id) {
-  return { nome, email, tipo,id };
+function createData(nome, email, tipo,id,photoURL) {
+  return { nome, email, tipo,id,photoURL };
 }
 
 
@@ -136,14 +136,14 @@ function confirmaDel(){
     
     if(response.ok){
         fire.database().ref("/user/"+selUser.id).remove().then(()=>{
-        setRefreshKey(oldKey => oldKey +1)
-        setOpen(false)
-        /*fire.storage().ref().child('user/'+selUser.photoURL).delete().then(function() {
+       // setRefreshKey(oldKey => oldKey +1)
+      //  setOpen(false)
+        fire.storage().ref().child('usuarios/'+selUser.photoURL).delete().then(function() {
             console.log("delete with success");
             setRefreshKey(oldKey => oldKey +1)
             setOpen(false)
           }).catch(function(error) {
-          });*/
+          });
       })
     }else{
        setOpen(false)
@@ -154,7 +154,7 @@ function confirmaDel(){
   .catch((error) => {
     var errorCode = error.code;
     var errorMessage = error.message;
-    setOpenModal(true)
+   // setOpenModal(true)
     setOpen(false)
     setAlertar(true)
   });
@@ -176,7 +176,7 @@ React.useEffect(() =>{
         lc.on("value",(snap) => {
             snap.forEach((c) => {
                   var nc = c.val();
-                  setRows(prev=>[...prev,createData(nc.displayName, nc.email, nc.perfil,c.key)]);
+                  setRows(prev=>[...prev,createData(nc.displayName, nc.email, nc.perfil,c.key,nc.photoURL)]);
             });
         });
 
@@ -237,7 +237,7 @@ React.useEffect(() =>{
                         
                         <Edit/></Button>
 
-                        <Button onClick={()=>{setOpenModal(true);setSelUser(row)}}>
+                        <Button onClick={()=>{setAlertar(false);setOpenModal(true);setSelUser(row)}}>
                            <Delete/>
                         </Button>
                         
