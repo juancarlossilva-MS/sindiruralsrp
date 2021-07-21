@@ -76,9 +76,22 @@ useEffect(()=>{
       setOpen(true);
      const userid = (props.user.user.uid);
      fire.database().ref("/user/"+userid).on('value', async(snapshot) => {
-        const data = snapshot.val();
-        const tipo = data.perfil;
-        return router.push("/"+tipo+"/classificados");
+       if(snapshot.val() == null){
+        const response = await fetch("/api/sessions", {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" }
+          
+        });
+    
+        if (response.ok) {
+          return router.push("/login");
+        }
+       }else{
+         const data = snapshot.val();
+         const tipo = data.perfil;
+         return router.push("/"+tipo+"/classificados");
+       }
+        
      })
   } 
 

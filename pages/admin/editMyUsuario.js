@@ -1,6 +1,6 @@
-import React,{useEffect, useRef,useState} from 'react';
+import React,{useRef,useState,useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import {Paper,Table,Fab,TableBody,TableCell,TableContainer,MenuItem,FormControlLabel,Radio,Grid,
+import {Paper,Table,Fab,TableBody,TableCell,TableContainer,MenuItem,FormControlLabel,Radio,Grid,Snackbar,
 TextField,FormControl, FormLabel, RadioGroup, TableHead,TablePagination,TableRow, Divider} from "@material-ui/core"
 import {Edit,Delete,Add, AddPhotoAlternate,Send} from "@material-ui/icons"
 import Admin from "layout/admin";
@@ -14,6 +14,7 @@ import 'react-quill/dist/quill.snow.css';
 import Datetime from "react-datetime";
 import { now } from 'moment';
 import { withIronSession } from "next-iron-session";
+import MuiAlert from '@material-ui/lab/Alert';
 import MyBackDrop from "../components/MyBackDrop"
 
 const importJodit = () => import('react-quill');
@@ -40,26 +41,61 @@ const useStyles = makeStyles({
   
 
 
-function AddNoticia() {
+function EditMyUsuario() {
   const classes = useStyles();
   const [value, setValue] = useState('');
-  const [titulo, setTitulo] = useState('');
   const [age, setAge] = React.useState('noticias');
   const [img, setImg] = React.useState();
-  const [autor, setAutor] = React.useState();
-  const [open, setOpen] = React.useState(false);
-  
+  const [nome, setNome] = React.useState('');
+  const [email, setEmail] = React.useState('');
   const [imgSel, setImgSel] = React.useState();
-
+  const router = useRouter();
+  
+  let password = useRef();
+  let actualpassword = useRef();
   let data = useRef();
 
+  function handleUploadClick(event){
+   // console.log(event.target.files[0]);
+    var file = event.target.files[0];
+    setImg(file);
+    //const reader = new FileReader();
+    //var url = reader.readAsDataURL(file);
+    //console.log(file.name); // Would see a path?
+    var reader = new FileReader();
+    var url = reader.readAsDataURL(file);
+    reader.onloadend = function (e) {
+     setImgSel(reader.result);
+      
+    }.bind(this);
+    console.log(url); 
+  };
+
+  const handleChange = (event) => {
+    setAge(event.target.value);
+  };
+
+
+
+  const [alertar, setAlertar] = useState(false);
+  
+  function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
+  
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+  
+    setAlertar(false);
+  };
+  
   
 
 
-
-  const router = useRouter();
-
 const [id,setId] = useState(router.query.id);
+const [open, setOpen] = React.useState(false);
 
 const [oldimg,setOld] = useState('');
 const getBase64FromUrl = async (url) => {
@@ -78,97 +114,62 @@ const getBase64FromUrl = async (url) => {
   });
 }
 
-  
-  useEffect(()=>{
-    fire.database().ref("noticias/"+id).on("value",(snapshot)=>{
-          let nc = snapshot.val();
-          setTitulo(nc.titulo)
-          setAge(nc.tipo)
-          setValue(nc.materia)
-          setAutor(nc.autor)
-          setOld(nc.imagem)
-         
-          var storage = fire.storage();
 
-          storage.ref('noticias/').child(nc.imagem).getDownloadURL().then(function(url) {
-            getBase64FromUrl(url);
-          }).catch(function(error) {
-            // Handle any errors
-          });
+  useEffect(()=>{
+    fire.database().ref("user/"+id).on("value",(snapshot)=>{
+          let nc = snapshot.val();
+          setNome(nc.displayName)
+          setEmail(nc.email)
+          setAge(nc.perfil)
+          
+          setOld(nc.photoURL)
+
+         
     });
   },[]);
-  
-  
-  function handleUploadClick(event){
-   // console.log(event.target.files[0]);
-    var file = event.target.files[0];
-    setImg(file);
-    //const reader = new FileReader();
-    //var url = reader.readAsDataURL(file);
-    //console.log(file.name); // Would see a path?
-    var reader = new FileReader();
-    var url = reader.readAsDataURL(file);
-    reader.onloadend = function (e) {
-     setImgSel(reader.result);
-      
-    }.bind(this);
-  };
 
-  const handleChange = (event) => {
-    setAge(event.target.value);
-  };
+useEffect(()=>{
+  if(oldimg == null) return;
+    var storage = fire.storage();
+
+              storage.ref('usuarios/').child(oldimg).getDownloadURL().then(function(url) {
+                getBase64FromUrl(url);
+              }).catch(function(error) {
+                // Handle any errors
+              });
+},[oldimg])
 
 
-function SubmitForm(){
-    setOpen(true);
-    
-    if(titulo == ""){alert("Insira um Titulo"); return;}
+function addSemImg(){
+  fire.database().ref("/user/"+id).set({
+    email:email,
+    displayName: nome,
+    perfil:age,
+    photoURL:oldimg
+  }).then(()=>{
+      router.push("/admin/usuarios");
 
-   
-    var dataPost = data.current.state.inputValue;
-    var type = null;
+  })
+}
 
+function addComImg(){
+  const crypto = require("crypto");
+  const imgname = crypto.randomBytes(16).toString("hex")
+  var storageRef = fire.storage().ref();
+  var ref = storageRef.child('usuarios/'+imgname);       
+  ref.put(img).then(function(snapshot) {
+     
+        fire.database().ref("/user/"+id).set({
+          email:email,
+          displayName: nome,
+          perfil:age,
+          photoURL:imgname
+        }).then(()=>{
+           router.push("/admin/usuarios");
 
-    if(age !== "noticias") type = true;
+        })
 
-    var news = fire.database().ref("noticias/"+id);
-    if(img == null){
-          
-          news.update({
-              titulo:titulo,
-              materia:value,
-              data:dataPost,
-              tipo:age,
-              ehCurso:type,
-              slug_name: titulo.replace(/\s/g, '-'),
-              autor:autor
-
-          });
-      
-    }else{ 
-    
-        const crypto = require("crypto");
-        const imgname = crypto.randomBytes(16).toString("hex")
-        var storageRef = fire.storage().ref();
-
-        var ref = storageRef.child('noticias/'+imgname);       
-      
-        ref.put(img).then(function(snapshot) {
-            
-            news.update({
-                titulo:titulo,
-                materia:value,
-                data:dataPost,
-                imagem:imgname,
-                tipo:age,
-                ehCurso:type,
-                slug_name: titulo.replace(/\s/g, '-'),
-                autor:autor
-
-            });
-        });
-        console.log(oldimg);
-      var imgref = storageRef.child('noticias/'+oldimg);
+        var imgref = storageRef.child('usuarios/'+oldimg);
 
         // Delete the file
         imgref.delete().then(function() {
@@ -176,12 +177,53 @@ function SubmitForm(){
         }).catch(function(error) {
           // Uh-oh, an error occurred!
         });
-    }
-    router.push("/admin/noticias");
      
+  });
+
 }
 
+async function SubmitForm(){
+    setOpen(true)
+    var pw = password.current.value;
+    var actualpw = actualpassword.current.value;
+    if(email == ""){alert("Insira um Email"); return;}
+    if(pw == ""){
+      if(img == null){
+          addSemImg()
+      }else{
+          addComImg()
+      }
+     }else{
+        if(actualpw == ""){alert("Insira a senha atual!"); setOpen(false);return;}
+        fire.auth().signInWithEmailAndPassword(email,actualpw).then(async()=>{
+            const tipo = "updateUser";
+            const response = await fetch("/api/admin", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ tipo,id, pw,email})
+                })
 
+            
+            if (response.ok) {
+              if(img == null){
+                  addSemImg()
+              }else{
+                  addComImg()
+              }
+            }else{
+              setAlertar(true);
+              setOpen(false)
+            } 
+
+        }).catch((error)=>{
+            setAlertar(true);
+            setOpen(false)
+        })
+          
+    }
+
+  
+}
 
 
   return (
@@ -197,53 +239,38 @@ function SubmitForm(){
             <form style={{padding:25}} className={classes.root} noValidate autoComplete="off">
                     <Grid container style={{padding:25}}>
                       <Grid item xs={12}>
-                          <TextField style={{width:"100%"}} 
-                          onChange={(e)=> setTitulo(e.target.value)}
-                          value={titulo} required variant="standard" label="Titulo da Noticia" />
+                          <TextField style={{width:"100%"}} type="text" onChange={(e)=>setNome(e.target.value)} value={nome} required variant="standard" label="Nome do Usuário" />
                           <Divider/>
                       </Grid>
-                      <Grid item xs={12} style={{paddingTop:25}}>
-                          <TextField style={{width:"100%"}} value={autor} onChange={(e)=>setAutor(e.target.value)} required variant="standard" label="Publicado por" />
+                      <Grid item xs={12}>
+                          <TextField style={{width:"100%"}} disabled type="email" value={email} required variant="standard" label="E-Mail" />
+                          <Divider/>
+                      </Grid>
+                      <Grid item xs={12}>
+                          <TextField style={{width:"100%"}} type="password" inputRef={actualpassword} required variant="standard" label="Senha Atual" />
+                          <Divider/>
+                      </Grid>
+                      <Grid item xs={12}>
+                          <TextField style={{width:"100%"}} type="password" inputRef={password} required variant="standard" label="Nova Senha" />
                           <Divider/>
                       </Grid>
                     <Grid item xs={12} style={{paddingTop:25}}>
                     <FormControl component="fieldset">
-                        <FormLabel component="legend">Tipo da Noticia</FormLabel>
+                        <FormLabel component="legend">Tipo da Usuário</FormLabel>
                         <RadioGroup aria-label="tipo" name="tipo" value={age} onChange={handleChange}>
                             <li style={{listStyle:"none"}}>
-                            <FormControlLabel value="noticias" control={<Radio />} label="Noticias" />
-                            <FormControlLabel value="cursos" control={<Radio />} label="Cursos" />
-                            <FormControlLabel value="acoes" control={<Radio />} label="Ações Sociais" />
+                            <FormControlLabel value="admin" control={<Radio />} label="Administrador" />
+                            <FormControlLabel value="filiado" control={<Radio />} label="Filiado" />
                             </li>
                         </RadioGroup>
                         </FormControl>
                         <Divider/>
                      </Grid>
-                     <Grid item xs={12} style={{paddingTop:25}}>   
-                     <ReactQuill 
-                     style={{height:"23rem"}}
-                     modules={{
-                        toolbar: [
-                          [{ 'header': '1'}, {'header': '2'}, { 'font': [] }],
-                          [{size: []}],
-                          ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-                          [{'list': 'ordered'}, {'list': 'bullet'}, 
-                           {'indent': '-1'}, {'indent': '+1'}],
-                          ['link', 'image', 'video'],
-                          ['clean']
-                        ],
-                        clipboard: {
-                          // toggle to add extra line breaks when pasting HTML:
-                          matchVisual: false,
-                        }
-                      }}
-                     theme="snow" value={value} onChange={setValue}/>
-
-                     </Grid>
+                    
                       <Grid container style={{paddingTop:55}}>
                         
                         <Grid item xs={12} sm={3}>
-                        <h4> Insira a Imagem de capa:</h4>
+                        <h4> Insira uma foto de Perfil:</h4>
                         <input
                         accept="image/*"
                         className={classes.input}
@@ -261,16 +288,7 @@ function SubmitForm(){
                         </label>
                         <img src={imgSel} style={{maxWidth:"50%"}} />
                         </Grid>
-                        <Grid item xs={12} sm={6}>
-
-                        <FormControl style={{marginLeft:40}}>
-                            <Datetime
-                            ref={data}
-                            initialValue={now()}
-                            inputProps={{ placeholder: "Insira a data aqui" }}
-                            />
-                        </FormControl>
-                        </Grid>
+                      
                         <Grid item xs={12} sm={3}>
 
                         <Button onClick={SubmitForm} style={{float:"right", backgroundColor:"#023723"}} size="lg">
@@ -285,6 +303,12 @@ function SubmitForm(){
                     </form>
         </Paper>
         </main>
+        <Snackbar open={alertar} autoHideDuration={6000} onClose={handleClose}>
+          <Alert onClose={handleClose} severity="error">
+            Email ou senha incorretos! tente novamente
+          </Alert>
+        </Snackbar>
+
         {open &&
           <MyBackDrop/>
         }
@@ -292,9 +316,9 @@ function SubmitForm(){
   );
 }
 
-AddNoticia.layout = Admin;
+EditMyUsuario.layout = Admin;
 
-export default AddNoticia;
+export default EditMyUsuario;
 
 
 export const getServerSideProps = withIronSession(

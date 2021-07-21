@@ -169,13 +169,14 @@ React.useEffect(() =>{
 
     //vamosNessa();
     setRows([]);
-
+console.log(props)
     var lc = fire.database().ref('user');
       
 
         lc.on("value",(snap) => {
             snap.forEach((c) => {
                   var nc = c.val();
+                  if(nc.email != props.user.user.email) 
                   setRows(prev=>[...prev,createData(nc.displayName, nc.email, nc.perfil,c.key,nc.photoURL)]);
             });
         });

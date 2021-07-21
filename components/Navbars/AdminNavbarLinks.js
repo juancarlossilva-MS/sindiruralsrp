@@ -88,6 +88,10 @@ export default function AdminNavbarLinks(props) {
  
    };
 
+   function openEditProfile(){
+     router.push({pathname:"/admin/editMyUsuario",query:{id:props.user.uid}})
+   }
+
   return (
     <div>
        {open &&
@@ -245,10 +249,10 @@ export default function AdminNavbarLinks(props) {
                       {user}
                     </MenuItem>
                     <MenuItem
-                      onClick={handleCloseProfile}
+                      onClick={openEditProfile}
                       className={classes.dropdownItem}
                     >
-                      Settings
+                      Editar meu Perfil
                     </MenuItem>
                     <Divider light />
                     <MenuItem

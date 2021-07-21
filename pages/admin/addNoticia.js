@@ -40,12 +40,13 @@ const useStyles = makeStyles({
   
 
 
-function AddNoticia() {
+function AddNoticia(props) {
   const classes = useStyles();
   const [value, setValue] = useState('');
   const [age, setAge] = React.useState('noticias');
   const [img, setImg] = React.useState();
   const [imgSel, setImgSel] = React.useState();
+  const [autor, setAutor] = React.useState(props.user.user.displayName);
   const [open, setOpen] = React.useState(false);
 
   let titulo = useRef();
@@ -101,7 +102,8 @@ function SubmitForm(){
             imagem:imgname,
             tipo:age,
             ehCurso:type,
-            slug_name: title.replace(/\s/g, '-')
+            slug_name: title.replace(/\s/g, '-'),
+            autor:autor
 
         }).then(()=>{
           setOpen(false);
@@ -128,6 +130,10 @@ function SubmitForm(){
                     <Grid container style={{padding:25}}>
                       <Grid item xs={12}>
                           <TextField style={{width:"100%"}} inputRef={titulo} required variant="standard" label="Titulo da Noticia" />
+                          <Divider/>
+                      </Grid>
+                      <Grid item xs={12} style={{paddingTop:25}}>
+                          <TextField style={{width:"100%"}} value={autor} onChange={(e)=>setAutor(e.target.value)} required variant="standard" label="Publicado por" />
                           <Divider/>
                       </Grid>
                     <Grid item xs={12} style={{paddingTop:25}}>
