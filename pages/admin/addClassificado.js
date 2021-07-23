@@ -18,6 +18,8 @@ import CloseIcon from '@material-ui/icons/Close';
 import IntlCurrencyInput from "react-intl-currency-input"
 import { withIronSession } from "next-iron-session";
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import InputMask from "react-input-mask";
+
 
 const importJodit = () => import('react-quill');
 
@@ -89,6 +91,7 @@ function AddClassificado() {
   const classes = useStyles();
   const [value, setValue] = useState('');
   const [preco, setPreco] = React.useState(0);
+  const [telefone, setTelefone] = React.useState(67);
   const [img, setImg] = React.useState([]);
   const [imgSel, setImgSel] = React.useState([]);
   const [open, setOpen] = React.useState(false);
@@ -265,7 +268,7 @@ const [filiado, setFiliado] = React.useState();
                      </FormControl>
                      </Grid>
 
-                      <Grid container style={{paddingTop:155}}>
+                      <Grid container style={{paddingTop:100}}>
                         <Grid item xs={12}>
                         <Autocomplete
                           onChange={(event, newValue) => {
@@ -280,7 +283,15 @@ const [filiado, setFiliado] = React.useState();
                         />
                         </Grid>
                       </Grid>
-                      <Grid container style={{paddingTop:155}}>
+                      <Grid container style={{paddingTop:40}}>
+                        <Grid item xs={12}>
+                          <InputLabel htmlFor="standard-adornment-amount">Telefone</InputLabel>
+
+                          <InputMask mask="(99) 99999-9999" style={vamostestar} value={telefone} onChange={(e)=>setTelefone(e.target.value)} />
+                        
+                        </Grid>
+                      </Grid>
+                      <Grid container style={{paddingTop:40}}>
                         <Grid item xs={12}>
                           <InputLabel htmlFor="standard-adornment-amount">Preço</InputLabel>
                           
