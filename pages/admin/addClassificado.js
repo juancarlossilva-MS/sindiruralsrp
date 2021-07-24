@@ -1,7 +1,7 @@
 import React,{useRef,useState,useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {Paper,GridList,Fab,GridListTile,GridListTileBar,Backdrop,CircularProgress,FormControlLabel,Radio,Grid,
-TextField,FormControl, FormLabel, InputLabel, Input,InputAdornment,TableRow, Divider} from "@material-ui/core"
+TextField,FormControl, FormLabel, InputLabel, Input,InputAdornment,TableRow, Divider, Checkbox} from "@material-ui/core"
 import {Edit,Delete,Add, AddPhotoAlternate,Send} from "@material-ui/icons"
 import Admin from "layout/admin";
 import Link from "next/link";
@@ -91,10 +91,11 @@ function AddClassificado() {
   const classes = useStyles();
   const [value, setValue] = useState('');
   const [preco, setPreco] = React.useState(0);
-  const [telefone, setTelefone] = React.useState(67);
   const [img, setImg] = React.useState([]);
   const [imgSel, setImgSel] = React.useState([]);
   const [open, setOpen] = React.useState(false);
+  const [ehZap, setEhZap] = React.useState(false);
+  const [telefone, setTelefone] = React.useState(67);
 
   const [options,setOptions] = useState([]);
 
@@ -205,7 +206,9 @@ function SubmitForm(){
                 slug_name: title.replaceAll(/\s/g, '-'),
                 idFiliado: filiado.key,
                 nomeFiliado:filiado.displayName,
-                pastaImgClass: tilclass
+                pastaImgClass: tilclass,
+                telefone:telefone,
+                ehZap:ehZap
     
             }).then(function(){
                 handleToggle();
@@ -288,7 +291,11 @@ const [filiado, setFiliado] = React.useState();
                           <InputLabel htmlFor="standard-adornment-amount">Telefone</InputLabel>
 
                           <InputMask mask="(99) 99999-9999" style={vamostestar} value={telefone} onChange={(e)=>setTelefone(e.target.value)} />
-                        
+
+                          <FormControlLabel
+        control={<Checkbox checked={ehZap} onChange={(e)=>setEhZap(!ehZap)} name="checkedA" />}
+        label="É Whatsapp?"
+      />
                         </Grid>
                       </Grid>
                       <Grid container style={{paddingTop:40}}>

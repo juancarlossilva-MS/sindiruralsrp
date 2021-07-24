@@ -1,8 +1,8 @@
 import React, { Component,useRef, useEffect,useState } from "react";
 import Slider from "react-slick";
 import { makeStyles } from '@material-ui/core/styles';
-import { AttachMoney } from '@material-ui/icons';
-import {Grid} from '@material-ui/core';
+import { AttachMoney,Phone, WhatsApp } from '@material-ui/icons';
+import {Divider, Grid, TextField} from '@material-ui/core';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
@@ -194,6 +194,8 @@ useEffect(()=>{
             
                   var nc = snap.val();
                   nc.imagem = JSON.parse(nc.imagem);
+                  
+                  
                   document.title = nc.titulo +" • SindiRural SRP";
                   setClassificado(nc);
             
@@ -227,11 +229,11 @@ function qtdImgs(){
 
 
     return (
-    <div>
-      <Grid container>
+    <div style={{paddingLeft:30,paddingRight:30}}>
+      <Grid container >
         <Grid item xs={12} sm={5}>
-          <h2 style={{fontWeight:"bold"}}>{classificado.titulo}</h2>
-         <h5>publicado {formataData(classificado.data)} • </h5>
+          <h2 style={{fontWeight:"bold",lineHeight:"2rem"}}>{classificado.titulo}</h2>
+         <h5>publicado {formataData(classificado.data)} • {classificado.nomeFiliado}</h5>
         </Grid>
         <Grid item xs={12} sm={7}>
               <Button round style={{backgroundColor:"#023927",fontSize:40}}>R$  {classificado.valor}</Button>
@@ -249,7 +251,7 @@ function qtdImgs(){
         <div style={fundo}></div>
           <img
            
-            src={"https://firebasestorage.googleapis.com/v0/b/sindiruralsrp.appspot.com/o/classificados%2F"+classificado.titulo+"%2F"+img+"?alt=media"}
+            src={"https://firebasestorage.googleapis.com/v0/b/sindiruralsrp.appspot.com/o/classificados%2F"+classificado.pastaImgClass+"%2F"+img+"?alt=media"}
                     
             title="Contemplative Reptile"
             style={{maxHeight: '320px',minHeight: '320px',width:"100%",position:"relative",
@@ -287,7 +289,7 @@ function qtdImgs(){
                     
                       <img
                       
-                        src={"https://firebasestorage.googleapis.com/v0/b/sindiruralsrp.appspot.com/o/classificados%2F"+classificado.titulo+"%2F"+img+"?alt=media"}
+                        src={"https://firebasestorage.googleapis.com/v0/b/sindiruralsrp.appspot.com/o/classificados%2F"+classificado.pastaImgClass+"%2F"+img+"?alt=media"}
                                 
                         title="Contemplative Reptile"
                         style={{maxHeight: '60px',minHeight: '60px',width:"100%",position:"relative",
@@ -304,13 +306,37 @@ function qtdImgs(){
     </Grid>
       }
 
-    <Grid item xs={12} xm={3}></Grid>
-    <Grid item xs={12} xm={6}>
+    <Grid item xs={12} sm={3}>
+      <Card style={{position: "relative",textAlign:"center"}}>
+        <h3>{classificado.nomeFiliado}</h3>
+        <h4 ><Phone style={{fontSize:"1.1rem"}} />     {"     "+classificado.telefone +"      " }
+        {classificado.ehZap && <WhatsApp style={{fontSize:"1.2rem"}} />}
+        
+        </h4>
+        <a href="/perfil" style={{color:"#023927"}}>Mais anuncios deste vendedor</a>
+        <Divider/>
+        <h5>Ficou interessado? Entre em contato!</h5>
+        <Divider/>
+        <TextField label="Seu Nome"></TextField>
+        <Divider/>
+        <TextField label="Seu Email"></TextField>
+        <Divider/>
+        <TextField label="Seu Telefone"></TextField>
+        <Divider/>
+        <Button style={{backgroundColor:"#023927"}}>ENVIAR!</Button>
+      </Card>
+    </Grid>
+    <Grid item xs={12} sm={6}>
+      <Card style={{paddingLeft:30}}>
       <h3>R$ {classificado.valor}</h3>
+      <h5><div dangerouslySetInnerHTML={{__html: classificado.materia}} /></h5>
+    </Card>
+    
     </Grid>
 
 
     </Grid>
+    
     </div>
   );
 }

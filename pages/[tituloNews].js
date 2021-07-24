@@ -2,8 +2,9 @@ import Head from 'next/head'
 import React, { useEffect,useState } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid,Card} from "@material-ui/core";
+import { Grid,Card,Breadcrumbs,Typography} from "@material-ui/core";
 import Header from './components/Header';
+import Footer from './components/Footer';
 import fire from '../config/fire-config';
 import { useRouter } from 'next/router'
 import  Image  from 'next/image'
@@ -63,6 +64,13 @@ function formataData(data){
   
   }
 
+function dataExtenso(data){
+    const meses = ["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"]
+    const date1 = new Date(data);
+    return(date1.getDate()+" de "+meses[date1.getMonth()]+" de "+date1.getFullYear()+" às "+date1.getHours()+"h"+date1.getMinutes());
+  
+  }
+
 
 useEffect(()=>{
     if(!router.isReady) return;
@@ -115,17 +123,24 @@ return(
         <Header/>
         <div style={{padding:paddingImg(),zIndex:"10",position:"absolute",color:"white"}}>
                 <Badge  color="success" >{noticia.tipo}</Badge>
-                <Badge color="success">{"publicado há " + formataData(noticia.data)}</Badge>
+                <Badge color="success">{"publicado " + formataData(noticia.data)}</Badge>
 
                 <h1 style={{fontWeight:"900",fontSize:sizeTxt()}}>{noticia.titulo}</h1>
         </div>
         <div style={back}>
             
         </div>
-        <Grid container>
+        <Grid container style={{backgroundColor:"#fff"}}>
+       
+
+          
             <Grid item xs></Grid>
-            <Grid item xs={12}  sm={8}>
-                <Card style={{padding:10}}>
+            
+            <Grid item xs={12}  sm={12}>
+                <Card style={{paddingLeft:"15rem",paddingRight:"15rem"}}>
+ <Breadcrumbs aria-label="breadcrumb" >
+        <h5 color="textPrimary">publicado dia {dataExtenso(noticia.data)} • {noticia.autor}</h5>
+                </Breadcrumbs>
                    <div style={{width:"80%",marginLeft:"10%",paddingBottom:50,paddingTop:10}}>
                        <Image 
                         src={"https://firebasestorage.googleapis.com/v0/b/sindiruralsrp.appspot.com/o/noticias%2F"+noticia.imagem+"?alt=media"}
@@ -145,7 +160,7 @@ return(
         
         
        
-                
+          <Footer/>
         </>
     );
 }

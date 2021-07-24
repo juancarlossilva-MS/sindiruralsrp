@@ -14,7 +14,8 @@ import Button from '@material-ui/core/Button';
 import Send from '@material-ui/icons/Send';
 import fire from '../config/fire-config';
 import Image from 'next/image';
-
+import Footer from "./components/Footer"
+import Classificado from "./components/Classificado"
 
 export default function Home() {
 
@@ -47,6 +48,14 @@ export default function Home() {
       </Head>
       <Header/>
       <ViewClassificado/>
+      <div style={{paddingRight:10,marginLeft:9,marginTop:60,marginBottom:-20}}>
+          <h2 style={{fontWeight:"bold",marginLeft:50}}>Mais anúncios</h2>
+         <Classificado/>
+      </div>
+      <div style={{marginTop:30,marginBottom:-20}}>
+          <Footer  />
+      </div>
+     
       </div>
   );
 }

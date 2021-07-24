@@ -1,7 +1,7 @@
 import React,{useRef,useState,useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {Paper,GridList,Fab,GridListTile,GridListTileBar,Backdrop,CircularProgress,FormControlLabel,Radio,Grid,
-TextField,FormControl, FormLabel, InputLabel, Input,InputAdornment,TableRow, Divider} from "@material-ui/core"
+TextField,FormControl, FormLabel, InputLabel,Checkbox, Input,InputAdornment,TableRow, Divider} from "@material-ui/core"
 import {Edit,Delete,Add, AddPhotoAlternate,Send} from "@material-ui/icons"
 import Admin from "layout/admin";
 import Link from "next/link";
@@ -18,6 +18,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import IntlCurrencyInput from "react-intl-currency-input"
 import { withIronSession } from "next-iron-session";
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import InputMask from "react-input-mask";
 
 const importJodit = () => import('react-quill');
 
@@ -96,6 +97,8 @@ function EditClassificado() {
   const [titulo,setTitulo] = useState('');
   const [filiado, setFiliado] = React.useState();
   const [options,setOptions] = useState([]);
+  const [ehZap, setEhZap] = React.useState(false);
+  const [telefone, setTelefone] = React.useState(67);
 
   const handleToggle = () => {
     setOpen(!open);
@@ -142,6 +145,8 @@ useEffect(()=>{
           setValue(nc.materia)
           setPreco(nc.valor)
           setOld(nc.imagem)
+          setEhZap(nc.ehZap)
+          setTelefone(nc.telefone)
           setNomePastaImgs(nc.pastaImgClass);
           fire.database().ref("user/"+nc.idFiliado).on("value",(snap)=>{
               const us = snap.val();
@@ -362,7 +367,9 @@ function SubmitForm(){
                 slug_name: title.replaceAll(/\s/g, '-'),
                 idFiliado: filiado.key,
                 nomeFiliado:filiado.displayName,
-                pastaImgClass: nomePastaImgs
+                pastaImgClass: nomePastaImgs,
+                telefone:telefone,
+                ehZap:ehZap
     
             }).then(function(){
                 handleToggle();
@@ -423,7 +430,7 @@ function SubmitForm(){
                           </FormControl>
                      </Grid>
 
-                      <Grid container style={{paddingTop:155}}>
+                      <Grid container style={{paddingTop:100}}>
                         <Grid item xs={12}>
                           {filiado &&
                             <Autocomplete
@@ -443,8 +450,19 @@ function SubmitForm(){
                           
                         </Grid>
                       </Grid>
+                      <Grid container style={{paddingTop:40}}>
+                        <Grid item xs={12}>
+                          <InputLabel htmlFor="standard-adornment-amount">Telefone</InputLabel>
 
-                      <Grid container style={{paddingTop:155}}>
+                          <InputMask mask="(99) 99999-9999" style={vamostestar} value={telefone} onChange={(e)=>setTelefone(e.target.value)} />
+
+                          <FormControlLabel
+        control={<Checkbox checked={ehZap} onChange={(e)=>setEhZap(!ehZap)} name="checkedA" />}
+        label="É Whatsapp?"
+      />
+                        </Grid>
+                      </Grid>
+                      <Grid container style={{paddingTop:40}}>
                         <Grid item xs={12}>
                           <InputLabel htmlFor="standard-adornment-amount">Preço</InputLabel>
                           
