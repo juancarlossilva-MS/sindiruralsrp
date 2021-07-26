@@ -106,6 +106,7 @@ export default function SectionCarousel(props) {
                        width={520}
                        height={410}
                        layout='responsive'
+                       placeholder="blur"
                      />
                      </Link>
                           <div style={{padding:"1%"}}>
@@ -168,6 +169,7 @@ export default function SectionCarousel(props) {
                         width={580}
                         height={410}
                         layout='responsive'
+                        placeholder="blur"
                       />
                       </Link>
                       <div style={{padding:"1%"}}>

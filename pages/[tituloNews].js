@@ -2,7 +2,7 @@ import Head from 'next/head'
 import React, { useEffect,useState } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid,Card,Breadcrumbs,Typography} from "@material-ui/core";
+import { Grid,Card,Breadcrumbs,Typography, Divider} from "@material-ui/core";
 import Header from './components/Header';
 import Footer from './components/Footer';
 import fire from '../config/fire-config';
@@ -86,6 +86,20 @@ useEffect(()=>{
         });
 
 },[])
+useEffect(()=>{
+  if (typeof(window) !== 'undefined') {
+    // code here
+    setUrl(window.location.href)
+  }
+  
+},[])
+const [url,setUrl] = useState("");
+function Coments(){
+  
+  return(
+    <div class="fb-comments" data-href={url} data-width="" data-numposts="5"></div>
+  )
+}
 
 useEffect(()=>{
    setImage("url(https://firebasestorage.googleapis.com/v0/b/sindiruralsrp.appspot.com/o/noticias%2F"+noticia.imagem+"?alt=media)");
@@ -120,6 +134,8 @@ function sizeTxt(){
 
 return(
         <>
+        <div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/pt_BR/sdk.js#xfbml=1&version=v11.0&appId=711091912818102&autoLogAppEvents=1" nonce="wTxeDoLX"></script>
         <Header/>
         <div style={{padding:paddingImg(),zIndex:"10",position:"absolute",color:"white"}}>
                 <Badge  color="success" >{noticia.tipo}</Badge>
@@ -141,21 +157,27 @@ return(
  <Breadcrumbs aria-label="breadcrumb" >
         <h5 color="textPrimary">publicado dia {dataExtenso(noticia.data)} • {noticia.autor}</h5>
                 </Breadcrumbs>
-                   <div style={{width:"80%",marginLeft:"10%",paddingBottom:50,paddingTop:10}}>
+                   <div style={{width:"100%",marginLeft:"0%",paddingBottom:50,paddingTop:10}}>
                        <Image 
                         src={"https://firebasestorage.googleapis.com/v0/b/sindiruralsrp.appspot.com/o/noticias%2F"+noticia.imagem+"?alt=media"}
-                        width={40}
-                        height={30}
-                        
+                        width={6}
+                        height={3.5}
+                        placeholder="blur"
                         layout='responsive'
                         />
                    </div>
-                   <div dangerouslySetInnerHTML={{__html: noticia.materia}} />
-                   
-                </Card>
+                   <Typography variant="body1" gutterBottom>
+
+                    <div dangerouslySetInnerHTML={{__html: noticia.materia}} />
+                    </Typography>
+                   <Divider/>
+                Comentários
+                <Coments/>
+                </Card> 
+                
             </Grid>
             <Grid item xs></Grid>
-
+           
         </Grid>
         
         
