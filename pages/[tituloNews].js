@@ -86,19 +86,24 @@ useEffect(()=>{
         });
 
 },[])
+
 useEffect(()=>{
   if (typeof(window) !== 'undefined') {
     // code here
     setUrl(window.location.href)
+    if (window.FB) {
+        window.FB.XFBML.parse();
+    }
   }
   
-},[])
+})
 const [url,setUrl] = useState("");
-function Coments(){
-  
+
+function Comments(){
   return(
-    <div class="fb-comments" data-href={url} data-width="" data-numposts="5"></div>
-  )
+    <div class="fb-comments" data-href={url} data-width="100%" data-numposts="5"></div>
+
+  );
 }
 
 useEffect(()=>{
@@ -134,8 +139,8 @@ function sizeTxt(){
 
 return(
         <>
-        <div id="fb-root"></div>
-<script async defer crossorigin="anonymous" src="https://connect.facebook.net/pt_BR/sdk.js#xfbml=1&version=v11.0&appId=711091912818102&autoLogAppEvents=1" nonce="wTxeDoLX"></script>
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/pt_BR/sdk.js#xfbml=1&version=v11.0&appId=513982276376854&autoLogAppEvents=1" nonce="LML6UvNI"></script>
         <Header/>
         <div style={{padding:paddingImg(),zIndex:"10",position:"absolute",color:"white"}}>
                 <Badge  color="success" >{noticia.tipo}</Badge>
@@ -152,8 +157,8 @@ return(
           
             <Grid item xs></Grid>
             
-            <Grid item xs={12}  sm={12}>
-                <Card style={{paddingLeft:"15rem",paddingRight:"15rem"}}>
+            <Grid item xs={12}  sm={8} style={{padding:25}}>
+                
  <Breadcrumbs aria-label="breadcrumb" >
         <h5 color="textPrimary">publicado dia {dataExtenso(noticia.data)} • {noticia.autor}</h5>
                 </Breadcrumbs>
@@ -171,10 +176,12 @@ return(
                     <div dangerouslySetInnerHTML={{__html: noticia.materia}} />
                     </Typography>
                    <Divider/>
-                Comentários
-                <Coments/>
-                </Card> 
+                  {url &&
+                    <Comments/>
+                  }
                 
+
+
             </Grid>
             <Grid item xs></Grid>
            
