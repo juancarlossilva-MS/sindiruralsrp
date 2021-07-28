@@ -161,7 +161,7 @@ export default function SectionCarousel(props) {
 
                   return(
                     <div>
-                     <Link href={"/"+noticia.slug_name } >
+                     <Link href={"/noticias/"+noticia.slug_name } >
 
                       <Image
                         src={"https://firebasestorage.googleapis.com/v0/b/sindiruralsrp.appspot.com/o/noticias%2F"+noticia.imagem+"?alt=media"}

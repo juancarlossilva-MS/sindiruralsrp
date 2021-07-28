@@ -11,6 +11,7 @@ import styles from "styles/jss/nextjs-material-kit/pages/componentsSections/navb
 import CustomInput from "components/CustomInput/CustomInput.js";
 import { makeStyles } from "@material-ui/core/styles";
 import Image from 'next/image';
+import Link from 'next/link';
 import LocationOn from '@material-ui/icons/LocationOn';
 
 export default function WeHeader(){
@@ -27,9 +28,8 @@ return(
               <List className={classes.list}>
                 <ListItem className={classes.listItem}>
                   <Button
-                    href="#pablo"
+                    href="/"
                     className={classes.navLink}
-                    onClick={(e) => e.preventDefault()}
                     color="transparent"
                   >
                     Início
@@ -57,12 +57,11 @@ return(
                 </ListItem>
                 <ListItem className={classes.listItem}>
                   <Button
-                    href="#pablo"
+                    
                     className={classes.navLink}
-                    onClick={(e) => e.preventDefault()}
                     color="transparent"
                   >
-                    Noticias
+                   <Link href="/noticias"> Noticias</Link>
                   </Button>
                 </ListItem>
                 <ListItem className={classes.listItem}>
