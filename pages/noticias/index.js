@@ -75,7 +75,9 @@ function dataExtenso(data){
 
 
 useEffect(()=>{
-  fire.database().ref('noticias/').orderByChild("tipo").equalTo("noticias").once("value").then((snap) => {
+  var query = fire.database().ref('noticias/').orderByChild("tipo").equalTo("noticias");
+  query.startAt(2).once("value")
+  /*.limitToFirst(2).once("value").then((snap) => {
 
             snap.forEach((not) => {
 
@@ -85,7 +87,7 @@ useEffect(()=>{
                   setNoticias((prev)=>[...prev,nc])
             })
         });
-
+*/
 },[])
 
 const [width, setWindowWidth] = useState(0);
