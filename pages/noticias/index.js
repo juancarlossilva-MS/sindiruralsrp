@@ -75,9 +75,7 @@ function dataExtenso(data){
 
 
 useEffect(()=>{
-  var query = fire.database().ref('noticias/').orderByChild("tipo").equalTo("noticias");
-  query.startAt(2).once("value")
-  /*.limitToFirst(2).once("value").then((snap) => {
+  var query = fire.database().ref('noticias/').orderByChild("tipo").equalTo("noticias").once("value").then((snap) => {
 
             snap.forEach((not) => {
 
@@ -87,7 +85,7 @@ useEffect(()=>{
                   setNoticias((prev)=>[...prev,nc])
             })
         });
-*/
+
 },[])
 
 const [width, setWindowWidth] = useState(0);
@@ -117,7 +115,10 @@ function sizeTxt(){
 }
 
 let refBusca = useRef();
+
+const [load,setLoad] = useState(2);
 return(
+
         <>
         <Header/>
         <Grid container>
@@ -148,7 +149,7 @@ return(
                 
                 <Divider/>
 
-                {noticias.map(news=>{
+                {noticias.slice(0,load).map(news=>{
                     return(
                        <Link href={"/noticias/"+news.slug_name}><Button>
                         <Card style={{padding:15}}>
@@ -179,13 +180,15 @@ return(
                 })
 
                 }
-
+                <Button fullWidth style={{backgroundColor:"#023927",color:"#fafafa"}} onClick={()=>setLoad(load+5)}>Carregar Mais Noticias</Button>
             </Grid> 
             <Grid item xs></Grid>
 
         </Grid>
-       
-          <Footer/>
+           <div style={{marginTop:80,marginBottom:-20}}>
+              <Footer />
+             </div>     
+         
         </>
     );
 }

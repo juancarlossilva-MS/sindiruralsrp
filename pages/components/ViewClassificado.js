@@ -18,6 +18,9 @@ import { useRouter } from 'next/router'
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
 
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+
 const useStyles = makeStyles({
   root: {
     maxWidth: 700,
@@ -146,6 +149,22 @@ export default function SyncSlider() {
 
   const [classificado,setClassificado] = useState({});
 
+  const [open, setOpen] = useState(false);
+const [alertar, setAlertar] = useState(false);
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
+const handleClose = (event, reason) => {
+  if (reason === 'clickaway') {
+    return;
+  }
+
+  setAlertar(false);
+};
+
+
   const router = useRouter();
   const id = router.query.id;
 
@@ -226,6 +245,51 @@ function qtdImgs(){
   if(classificado.imagem.length < 5) return classificado.imagem.length;
   else return 5
 }
+
+async function enviarNotificacao(idFili){
+
+  /*fire.database().ref("notificacoes/"+idFili).push({
+      titulo:"Você recebeu um contato no Classificado"+classificado.titulo,
+      data:now(),
+      lida:false,
+      mensagem:"Nome: "+nomeCont.current.value+" - Email: "+emailCont.current.value+" - Telefone: "+phoneCont.current.value
+  }).then(()=>{
+    setAlertar(true);
+    nomeCont.current.value= "" 
+    emailCont.current.value=""
+    phoneCont.current.value=""
+  })*/
+
+  fire.database().ref("tokens").orderByChild("user").equalTo(idFili).once("value").then((snap) => {
+
+        snap.forEach((not) => {
+
+              var nc = not.val();
+              
+              console.log(not.key)
+            
+        })
+    });
+
+    const response = await fetch("https://fcm.googleapis.com/fcm/send", {
+      method: "POST",
+      headers: { "Content-Type": "application/json",Authorization: key="AAAAHmAtzlw:APA91bFKjuVSusYd1P4HVj3qDoPP9xyLtjhY6UJeCbuw2O3QMAUz3WAGjuU1cnQ1RfDqmHezP7UqRepVq55eijLFquwFsSwTLnwtNYrbKSkGDMLefxnaOHcX6OWs2E9BHcD0WbTk_hfq" },
+      body: JSON.stringify({
+            "notification": {
+                "title": "Título da notificação",
+                "body": "Texto da notificação",
+                "click_action": "http://localhost:3000/",
+                "icon": "http://localhost:3000/icon.png"
+            },
+            "to": "TOKEN DO USUÁRIO QUE IRÁ RECEBER"
+        })
+    });
+
+}
+
+let nomeCont = useRef("");
+let emailCont = useRef("");
+let phoneCont = useRef("");
 
 
     return (
@@ -317,13 +381,13 @@ function qtdImgs(){
         <Divider/>
         <h5>Ficou interessado? Entre em contato!</h5>
         <Divider/>
-        <TextField label="Seu Nome"></TextField>
+        <TextField inputRef={nomeCont} label="Seu Nome"></TextField>
         <Divider/>
-        <TextField label="Seu Email"></TextField>
+        <TextField inputRef={emailCont} label="Seu Email"></TextField>
         <Divider/>
-        <TextField label="Seu Telefone"></TextField>
+        <TextField inputRef={phoneCont} label="Seu Telefone"></TextField>
         <Divider/>
-        <Button style={{backgroundColor:"#023927"}}>ENVIAR!</Button>
+        <Button onClick={()=>enviarNotificacao(classificado.idFiliado)} style={{backgroundColor:"#023927"}}>ENVIAR!</Button>
       </Card>
     </Grid>
     <Grid item xs={12} sm={6}>
@@ -336,6 +400,12 @@ function qtdImgs(){
 
 
     </Grid>
+
+    <Snackbar open={alertar} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success">
+          Seu contato foi enviado com sucesso!
+        </Alert>
+      </Snackbar>
     
     </div>
   );

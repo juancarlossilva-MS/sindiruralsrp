@@ -26,15 +26,12 @@ export default  fire;
 
 export async function askForPermissionToReceiveNotifications(uid){
   try {
-    alert("dasdasdasdasdas")
     
     const messaging = firebase.messaging();
-    alert("aquiii")
     await messaging.requestPermission();
     const token = await messaging.getToken();
-    alert('user token: '+ token);
-    alert('user id: '+ uid);
-    fire.database().ref("tokens").set({[token]:uid})
+
+    fire.database().ref("tokens/"+token).set({user:uid})
     return token;
 
   } catch (error) {
