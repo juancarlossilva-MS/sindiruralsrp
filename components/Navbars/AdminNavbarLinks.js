@@ -22,6 +22,7 @@ import useWindowSize from "components/Hooks/useWindowSize.js";
 import { useRouter } from 'next/router';
 import styles from "assets/jss/nextjs-material-dashboard/components/headerLinksStyle.js";
 import MyBackDrop from "pages/components/MyBackDrop"
+import {askForPermissionToReceiveNotifications} from "config/fire-config"
 
 export default function AdminNavbarLinks(props) {
   const size = useWindowSize();
@@ -92,27 +93,37 @@ export default function AdminNavbarLinks(props) {
      router.push({pathname:"/admin/editMyUsuario",query:{id:props.user.uid}})
    }
 
+  const FalaToken = async()=>{
+     console.log("aqui");
+     try{
+        const res = await askForPermissionToReceiveNotifications(props.user.uid);
+      console.log("hehe");
+      console.log(res)
+      
+     }catch(error){
+       console.log(error)
+     }
+     
+   }
+
   return (
     <div>
        {open &&
           <MyBackDrop/>
         }
-      <div className={classes.searchWrapper}>
-        <CustomInput
-          formControlProps={{
-            className: classes.margin + " " + classes.search,
-          }}
-          inputProps={{
-            placeholder: "Search",
-            inputProps: {
-              "aria-label": "Search",
-            },
-          }}
-        />
-        <Button color="white" aria-label="edit" justIcon round>
-          <Search />
-        </Button>
-      </div>
+        
+            <div className={classes.searchWrapper}>
+              
+              <Button onClick={()=>askForPermissionToReceiveNotifications(props.user.uid)}>
+              Ativar as Notificações
+              </Button>
+            </div>
+
+        
+            
+
+        
+      
       <Button
         color={size.width > 959 ? "transparent" : "white"}
         justIcon={size.width > 959}
@@ -120,6 +131,7 @@ export default function AdminNavbarLinks(props) {
         aria-label="Dashboard"
         className={classes.buttonLink}
       >
+      
         <Dashboard className={classes.icons} />
         <Hidden mdUp implementation="css">
           <p className={classes.linkText}>Dashboard</p>
