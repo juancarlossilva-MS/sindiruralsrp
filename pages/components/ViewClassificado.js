@@ -273,12 +273,15 @@ async function enviarNotificacao(idFili){
                           "title": "Você recebeu uma notificação",
                           "body": "Alguém teve interesse no item "+classificado.titulo,
                           "click_action": "http://localhost:3000/",
-                          "badge": "https://sindiruralsrp.vercel.app/badge.png",
+                          badge: "https://sindiruralsrp.vercel.app/ic_stat_badge.png",
                           "icon": "https://sindiruralsrp.vercel.app/logo.png"
                       },
                       "to": not.key
                   })
               });
+              response.then((re)=>{
+                console.log(re)
+              })
               console.log(response)
             
         })
