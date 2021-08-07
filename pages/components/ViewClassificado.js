@@ -262,18 +262,19 @@ async function enviarNotificacao(idFili){
 
   fire.database().ref("tokens").orderByChild("user").equalTo(idFili).once("value").then((snap) => {
 
-        snap.forEach(async(not) => {
+        snap.forEach((not) => {
 
               //var nc = not.val();
-              const response = await fetch("https://fcm.googleapis.com/fcm/send", {
+              const response = fetch("https://fcm.googleapis.com/fcm/send", {
                 method: "POST",
                 headers: { "Content-Type": "application/json",Authorization: "key=AAAAHmAtzlw:APA91bFKjuVSusYd1P4HVj3qDoPP9xyLtjhY6UJeCbuw2O3QMAUz3WAGjuU1cnQ1RfDqmHezP7UqRepVq55eijLFquwFsSwTLnwtNYrbKSkGDMLefxnaOHcX6OWs2E9BHcD0WbTk_hfq" },
                 body: JSON.stringify({
                       "notification": {
-                          "title": "Título da notificação",
-                          "body": "Texto da notificação",
+                          "title": "Você recebeu uma notificação",
+                          "body": "Alguém teve interesse no item "+classificado.titulo,
                           "click_action": "http://localhost:3000/",
-                          "icon": "http://localhost:3000/icon.png"
+                          "badge": "https://sindiruralsrp.vercel.app/badge.png",
+                          "icon": "https://sindiruralsrp.vercel.app/logo.png"
                       },
                       "to": not.key
                   })
