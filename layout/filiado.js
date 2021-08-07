@@ -87,14 +87,14 @@ export default function Filiado({ children, ...rest }) {
         handleDrawerToggle={handleDrawerToggle}
         open={mobileOpen}
         color={color}
-        props={children.props.user}
+        props={children.props.user.user}
         {...rest}
       />
       <div className={classes.mainPanel} ref={mainPanel}>
         <Navbar
           routes={routes}
           handleDrawerToggle={handleDrawerToggle}
-          props={children.props.user}
+          props={children.props.user.user}
           {...rest}
         />
         {/* On the /maps route we want the map to be on full screen - this is not possible if the content and conatiner classes are present because they have some paddings which would make the map smaller */}
