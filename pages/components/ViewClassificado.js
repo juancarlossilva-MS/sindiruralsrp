@@ -262,28 +262,28 @@ async function enviarNotificacao(idFili){
 
   fire.database().ref("tokens").orderByChild("user").equalTo(idFili).once("value").then((snap) => {
 
-        snap.forEach((not) => {
+        snap.forEach(async(not) => {
 
-              var nc = not.val();
-              
-              console.log(not.key)
+              //var nc = not.val();
+              const response = await fetch("https://fcm.googleapis.com/fcm/send", {
+                method: "POST",
+                headers: { "Content-Type": "application/json",Authorization: "key=AAAAHmAtzlw:APA91bFKjuVSusYd1P4HVj3qDoPP9xyLtjhY6UJeCbuw2O3QMAUz3WAGjuU1cnQ1RfDqmHezP7UqRepVq55eijLFquwFsSwTLnwtNYrbKSkGDMLefxnaOHcX6OWs2E9BHcD0WbTk_hfq" },
+                body: JSON.stringify({
+                      "notification": {
+                          "title": "Título da notificação",
+                          "body": "Texto da notificação",
+                          "click_action": "http://localhost:3000/",
+                          "icon": "http://localhost:3000/icon.png"
+                      },
+                      "to": not.key
+                  })
+              });
+              console.log(response)
             
         })
     });
 
-    const response = await fetch("https://fcm.googleapis.com/fcm/send", {
-      method: "POST",
-      headers: { "Content-Type": "application/json",Authorization: key="AAAAHmAtzlw:APA91bFKjuVSusYd1P4HVj3qDoPP9xyLtjhY6UJeCbuw2O3QMAUz3WAGjuU1cnQ1RfDqmHezP7UqRepVq55eijLFquwFsSwTLnwtNYrbKSkGDMLefxnaOHcX6OWs2E9BHcD0WbTk_hfq" },
-      body: JSON.stringify({
-            "notification": {
-                "title": "Título da notificação",
-                "body": "Texto da notificação",
-                "click_action": "http://localhost:3000/",
-                "icon": "http://localhost:3000/icon.png"
-            },
-            "to": "TOKEN DO USUÁRIO QUE IRÁ RECEBER"
-        })
-    });
+   
 
 }
 
