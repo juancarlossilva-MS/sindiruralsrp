@@ -260,6 +260,8 @@ async function enviarNotificacao(idFili){
     phoneCont.current.value=""
   })*/
 
+  fire.database().ref("authkey").once("value").then((snap) => {
+    var key = snap.val();
   fire.database().ref("tokens").orderByChild("user").equalTo(idFili).once("value").then((snap) => {
 
         snap.forEach((not) => {
@@ -267,14 +269,14 @@ async function enviarNotificacao(idFili){
               //var nc = not.val();
               const response = fetch("https://fcm.googleapis.com/fcm/send", {
                 method: "POST",
-                headers: { "Content-Type": "application/json",Authorization: "key=AAAAHmAtzlw:APA91bFKjuVSusYd1P4HVj3qDoPP9xyLtjhY6UJeCbuw2O3QMAUz3WAGjuU1cnQ1RfDqmHezP7UqRepVq55eijLFquwFsSwTLnwtNYrbKSkGDMLefxnaOHcX6OWs2E9BHcD0WbTk_hfq" },
+                headers: { "Content-Type": "application/json",Authorization: key },
                 body: JSON.stringify({
                       "notification": {
-                          "title": "Você recebeu uma notificação",
-                          "body": "Alguém teve interesse no item "+classificado.titulo,
-                          "click_action": "http://localhost:3000/",
-                          badge: "https://sindiruralsrp.vercel.app/ic_stat_badge.png",
-                          "icon": "https://sindiruralsrp.vercel.app/logo.png"
+                          title: "Você recebeu uma notificação",
+                          body: "Alguém teve interesse no item "+classificado.titulo,
+                          click_action: "http://localhost:3000/",
+                          //badge: "https://gazetalocal.com.br/assets/img/iconBadge.png",
+                          icon: "https://sindiruralsrp.vercel.app/logosr.png"
                       },
                       "to": not.key
                   })
@@ -285,6 +287,7 @@ async function enviarNotificacao(idFili){
               console.log(response)
             
         })
+    });
     });
 
    
