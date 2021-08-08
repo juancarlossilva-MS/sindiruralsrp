@@ -7,7 +7,12 @@
 
 // To learn more about the benefits of this model, read https://goo.gl/KwvDNy.
 // This link also includes instructions on opting out of this behavior.
+import * as React from "react";
 
+React.useEffect(()=>{
+  if (typeof window === 'undefined') {
+    return;
+}
 const isLocalhost = Boolean(
   window.location.hostname === '192.168.0.107' ||
   window.location.hostname === 'localhost' ||
@@ -18,7 +23,7 @@ const isLocalhost = Boolean(
       /^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/
     )
 );
-    
+},[])
 
 export default function register() {
   if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
@@ -111,9 +116,12 @@ function checkValidServiceWorker(swUrl) {
 }
 
 export function unregister() {
+
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.ready.then(registration => {
       registration.unregister();
     });
   }
 }
+
+
