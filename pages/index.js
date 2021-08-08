@@ -18,8 +18,8 @@ import {fire,askForPermissionToReceiveNotifications} from '../config/fire-config
 import Image from 'next/image';
 import Link from 'next/link';
 
-
 export default function Home() {
+
 
   React.useEffect(() => {
     const jssStyles = document.querySelector('#jss-server-side');
@@ -155,4 +155,5 @@ export default function Home() {
       
     </div>
   )
+  
 }
