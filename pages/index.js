@@ -122,7 +122,7 @@ export default function Home() {
                                               <CardMedia
                                           component='video'
                                           
-                                          image={"/videosindi.mp4"}
+                                          image={"https://firebasestorage.googleapis.com/v0/b/sindiruralsrp.appspot.com/o/video%2Fvideosindi.mp4?alt=media&token=9348217a-bd54-4364-b214-531efdae4496"}
                                           autoPlay
                                           controls
                                           loop

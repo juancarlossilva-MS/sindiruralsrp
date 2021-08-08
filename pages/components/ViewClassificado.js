@@ -272,10 +272,9 @@ async function enviarNotificacao(idFili){
                 headers: { "Content-Type": "application/json",Authorization: key },
                 body: JSON.stringify({
                       "notification": {
-                          title: "Você recebeu uma notificação",
-                          body: "Alguém teve interesse no item "+classificado.titulo,
-                          click_action: "http://localhost:3000/",
-                          //badge: "https://gazetalocal.com.br/assets/img/iconBadge.png",
+                          title: "Sindicato Rural de Santa Rita do Pardo informa",
+                          body: "Alguém se interessou no item "+classificado.titulo,
+                          click_action: "https://sindiruralsrp.vercel.app/filiado/classificados",
                           icon: "https://sindiruralsrp.vercel.app/logosr.png"
                       },
                       "to": not.key
