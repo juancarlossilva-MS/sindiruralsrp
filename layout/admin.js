@@ -13,11 +13,14 @@ import FixedPlugin from "components/FixedPlugin/FixedPlugin.js";
 import { withIronSession } from "next-iron-session";
 
 import routes from "routes.js";
+import Button from "@material-ui/core/Button";
 
 import styles from "assets/jss/nextjs-material-dashboard/layouts/adminStyle.js";
 
 import bgImage from "assets/img/sidebar-2.jpg";
 import logo from "public/logo.png";
+import fire,{askForPermissionToReceiveNotifications} from "config/fire-config"
+
 
 let ps;
 
@@ -58,6 +61,31 @@ export default function Admin({ children, ...rest }) {
       setMobileOpen(false);
     }
   };
+
+
+
+  const [notOk, setNotOk] = React.useState(true);
+  React.useEffect(async()=>{
+    if (typeof Notification !== 'undefined') {
+        if(Notification.permission === "granted"){
+          const messaging = fire.messaging();
+                  const token = await messaging.getToken();
+          
+         
+          fire.database().ref("tokens/"+token).set({
+            user:children.props.user.user.uid
+          })
+          setNotOk(false);
+        }
+    }
+  },[])
+    
+
+
+
+
+
+
   // initialize and destroy the PerfectScrollbar plugin
   React.useEffect(() => {
     if (navigator.platform.indexOf("Win") > -1) {
@@ -78,6 +106,7 @@ export default function Admin({ children, ...rest }) {
   }, [mainPanel]);
   return (
     <div className={classes.wrapper}>
+   
       <Sidebar
         routes={routes}
         logoText={"SindiRuralSRP"}
@@ -96,9 +125,19 @@ export default function Admin({ children, ...rest }) {
           props={children.props.user.user}
           {...rest}
         />
+        
         {/* On the /maps route we want the map to be on full screen - this is not possible if the content and conatiner classes are present because they have some paddings which would make the map smaller */}
         {getRoute() ? (
+          
           <div className={classes.content}>
+               {notOk && 
+                    <div className={classes.searchWrapper}>
+                      
+                      <Button style={{backgroundColor:"#023927",color:"#fafafa"}} onClick={()=>askForPermissionToReceiveNotifications(children.props.user.user.uid).then(()=>setNotOk(false))}>
+                        Deseja receber Notificações?
+                      </Button>
+                    </div>
+                }
             <div className={classes.container}>{children}</div>
           </div>
         ) : (
@@ -106,6 +145,7 @@ export default function Admin({ children, ...rest }) {
         )}
 
       </div>
+      
     </div>
   );
 }
