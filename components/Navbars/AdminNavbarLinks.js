@@ -22,7 +22,7 @@ import useWindowSize from "components/Hooks/useWindowSize.js";
 import { useRouter } from 'next/router';
 import styles from "assets/jss/nextjs-material-dashboard/components/headerLinksStyle.js";
 import MyBackDrop from "pages/components/MyBackDrop"
-import {askForPermissionToReceiveNotifications} from "config/fire-config"
+import fire,{askForPermissionToReceiveNotifications} from "config/fire-config"
 
 export default function AdminNavbarLinks(props) {
   const size = useWindowSize();
@@ -105,6 +105,22 @@ export default function AdminNavbarLinks(props) {
      }
      
    }
+   const [notOk, setNotOk] = React.useState(true);
+React.useEffect(async()=>{
+  if (typeof Notification !== 'undefined') {
+      if(Notification.permission === "granted"){
+        const messaging = fire.messaging();
+                const token = await messaging.getToken();
+        
+       
+        fire.database().ref("tokens/"+token).set({
+          user:props.user.uid
+        })
+        setNotOk(false);
+      }
+  }
+},[])
+  
 
   return (
     <div>
@@ -112,13 +128,14 @@ export default function AdminNavbarLinks(props) {
           <MyBackDrop/>
         }
         
+        {notOk && 
             <div className={classes.searchWrapper}>
               
               <Button onClick={()=>askForPermissionToReceiveNotifications(props.user.uid)}>
               Ativar as Notificações
               </Button>
             </div>
-
+        }
         
             
 
