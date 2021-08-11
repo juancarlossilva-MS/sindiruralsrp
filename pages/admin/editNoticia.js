@@ -140,7 +140,7 @@ function SubmitForm(){
               data:dataPost,
               tipo:age,
               ehCurso:type,
-              slug_name: titulo.replace(/\s/g, '-'),
+              slug_name: titulo.replaceAll(/\s/g, '-').replaceAll(/\//g, "-"),
               autor:autor
 
           });
@@ -162,7 +162,7 @@ function SubmitForm(){
                 imagem:imgname,
                 tipo:age,
                 ehCurso:type,
-                slug_name: titulo.replace(/\s/g, '-'),
+                slug_name: titulo.replaceAll(/\s/g, '-').replaceAll(/\//g, "-"),
                 autor:autor
 
             });
@@ -177,7 +177,9 @@ function SubmitForm(){
           // Uh-oh, an error occurred!
         });
     }
-    router.push("/admin/noticias");
+ 
+  
+      router.push("/admin/noticias");
      
 }
 

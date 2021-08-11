@@ -102,7 +102,7 @@ function SubmitForm(){
             imagem:imgname,
             tipo:age,
             ehCurso:type,
-            slug_name: title.replace(/\s/g, '-'),
+            slug_name: title.replaceAll(/\s/g, '-').replaceAll(/\//g, "-"),
             autor:autor
 
         }).then(()=>{

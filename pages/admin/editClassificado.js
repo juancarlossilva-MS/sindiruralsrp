@@ -364,7 +364,7 @@ function SubmitForm(){
                 data:dataPost,
                 imagem:JSON.stringify(imgquefica),
                 valor:preco,
-                slug_name: title.replaceAll(/\s/g, '-'),
+                slug_name: title.replaceAll(/\s/g, '-').replaceAll(/\//g, "-"),
                 idFiliado: filiado.key,
                 nomeFiliado:filiado.displayName,
                 pastaImgClass: nomePastaImgs,
