@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import {Paper,Table,TableBody,TableCell,TableContainer,Card,TableHead,TablePagination,TableRow,Typography,Chip,Modal} from "@material-ui/core"
+import {Paper,Table,TableBody,TableCell,TableContainer,Card,TableHead,TablePagination,TableRow,Typography,Chip,Modal, TextField} from "@material-ui/core"
 import {Edit,Delete,Add} from "@material-ui/icons"
 import Filiado from "layout/filiado";
 import Link from "next/link";
@@ -57,6 +57,7 @@ React.useEffect(() =>{
         lc.on("value",(snap) => {
             snap.forEach((c) => {
                   var nc = c.val();
+              
                   console.log("toaki"+nc);
                   setRows(prev=>[...prev,nc]);
             });
@@ -119,10 +120,10 @@ const useStyles2 = makeStyles((theme) => ({
         aria-describedby="simple-modal-description"
       >
          <div style={modalStyle} className={classes2.paper}>
-          <h2 id="simple-modal-title">{tilSel}</h2>
-          <p id="simple-modal-description">
-            {matSel}
-          </p>
+          <h4 id="simple-modal-title">{tilSel}</h4>
+          <Typography variant="h5">
+            {matSel.Nome}
+          </Typography>
           
         </div>
       </Modal>
@@ -146,7 +147,7 @@ const useStyles2 = makeStyles((theme) => ({
                     <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
                       <Card variant="outlined">
                         
-                        <TableCell onClick={()=>{setOpen(true),setTilSel(row.titulo),setMatSel(row.mensagem)}}>
+                        <TableCell onClick={()=>{setOpen(true),setTilSel(row.titulo),setMatSel(JSON.parse(row.mensagem))}}>
                           <Typography style={{ fontSize: 14}} color="textSecondary" gutterBottom>
                               Word of the Day 
                             </Typography>

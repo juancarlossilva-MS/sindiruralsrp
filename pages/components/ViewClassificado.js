@@ -248,17 +248,17 @@ function qtdImgs(){
 
 async function enviarNotificacao(idFili){
 
-  /*fire.database().ref("notificacoes/"+idFili).push({
+  fire.database().ref("notificacoes/"+idFili).push({
       titulo:"Você recebeu um contato no Classificado"+classificado.titulo,
       data:now(),
       lida:false,
-      mensagem:"Nome: "+nomeCont.current.value+" - Email: "+emailCont.current.value+" - Telefone: "+phoneCont.current.value
+      mensagem:JSON.stringify({"Nome":nomeCont.current.value, "Email":emailCont.current.value,"Telefone":phoneCont.current.value})
   }).then(()=>{
     setAlertar(true);
     nomeCont.current.value= "" 
     emailCont.current.value=""
     phoneCont.current.value=""
-  })*/
+  })
 
   fire.database().ref("authkey").once("value").then((snap) => {
     var key = snap.val();
