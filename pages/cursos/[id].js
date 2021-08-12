@@ -101,13 +101,20 @@ const updateDimensions = () => {
 }
 
 function paddingImg(){
-   if(width > 1100) return 90;
+   if(width > 1100) return 30;
    if(width < 600) return 20;
 }
 
 function sizeTxt(){
-    if(width<600) return 40;
+    if(width<600) return 26.5;
 }
+
+useEffect(()=>{
+  for(let i =3; i<document.getElementsByTagName("img").length;i++){
+     document.getElementsByTagName("img")[i].style = "width:100%";
+  }
+ 
+})
 
 
 return(

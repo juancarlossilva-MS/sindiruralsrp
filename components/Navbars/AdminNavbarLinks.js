@@ -10,6 +10,7 @@ import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import Hidden from "@material-ui/core/Hidden";
 import Poppers from "@material-ui/core/Popper";
 import Divider from "@material-ui/core/Divider";
+import Chip from "@material-ui/core/Chip";
 // @material-ui/icons
 import Person from "@material-ui/icons/Person";
 import Notifications from "@material-ui/icons/Notifications";
@@ -22,6 +23,8 @@ import useWindowSize from "components/Hooks/useWindowSize.js";
 import { useRouter } from 'next/router';
 import styles from "assets/jss/nextjs-material-dashboard/components/headerLinksStyle.js";
 import MyBackDrop from "pages/components/MyBackDrop"
+
+import fire from "config/fire-config";
 
 export default function AdminNavbarLinks(props) {
   const size = useWindowSize();
@@ -106,6 +109,28 @@ export default function AdminNavbarLinks(props) {
     }
     */
 
+
+    const[notificacoes,setNotificacoes] = React.useState([]);
+    const[notNoLida,setNotNoLida] = React.useState(0);
+    const[tipoUser,setTipoUser] = React.useState("");
+
+    React.useEffect(()=>{
+
+      if(typeof window !== undefined){
+        setTipoUser(window.location.pathname.split("/")[1])
+      }
+        fire.database().ref("notificacoes/"+props.user.uid).limitToLast(5).on("value",(snap)=>{
+          snap.forEach((sn) => {
+            let n = sn.val()
+            setNotificacoes(prev => [...prev,n])
+            if(!n.lida){
+              setNotNoLida(prev=>prev+1);
+            }
+          })
+            
+        })
+    },[])
+
   return (
     <div>
        {open &&
@@ -142,7 +167,7 @@ export default function AdminNavbarLinks(props) {
           className={classes.buttonLink}
         >
           <Notifications className={classes.icons} />
-          <span className={classes.notifications}>5</span>
+          <span className={classes.notifications}>{notNoLida}</span>
           <Hidden mdUp implementation="css">
             <p onClick={handleCloseNotification} className={classes.linkText}>
               Notification
@@ -172,35 +197,32 @@ export default function AdminNavbarLinks(props) {
               <Paper>
                 <ClickAwayListener onClickAway={handleCloseNotification}>
                   <MenuList role="menu">
+                    {notificacoes.map((not) =>{
+                 
+                  
+                      return(
+                          <MenuItem
+                            onClick={handleCloseNotification}
+                            className={classes.dropdownItem}
+                          >
+                             {!not.lida && <Chip  label="Não Lida" />}
+                            {"   "+not.titulo}
+
+                           
+                          </MenuItem>
+                        
+                     )
+                    
+                    }
+                     )
+
+                    }
+                    
                     <MenuItem
-                      onClick={handleCloseNotification}
+                      onClick={()=>router.push("/"+tipoUser+"/notificacoes")}
                       className={classes.dropdownItem}
                     >
-                      Mike John responded to your email
-                    </MenuItem>
-                    <MenuItem
-                      onClick={handleCloseNotification}
-                      className={classes.dropdownItem}
-                    >
-                      You have 5 new tasks
-                    </MenuItem>
-                    <MenuItem
-                      onClick={handleCloseNotification}
-                      className={classes.dropdownItem}
-                    >
-                      You{"'"}re now friend with Andrew
-                    </MenuItem>
-                    <MenuItem
-                      onClick={handleCloseNotification}
-                      className={classes.dropdownItem}
-                    >
-                      Another Notification
-                    </MenuItem>
-                    <MenuItem
-                      onClick={handleCloseNotification}
-                      className={classes.dropdownItem}
-                    >
-                      Another One
+                      Ver todas as notificações {"/"+tipoUser+"/notificacoes"}
                     </MenuItem>
                   </MenuList>
                 </ClickAwayListener>

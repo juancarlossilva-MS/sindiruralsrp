@@ -201,7 +201,7 @@ function SubmitForm(){
                       <Grid item xs={12}>
                           <TextField style={{width:"100%"}} 
                           onChange={(e)=> setTitulo(e.target.value)}
-                          value={titulo} required variant="standard" label="Titulo da Noticia" />
+                          value={titulo} multiline required variant="standard" label="Titulo da Noticia" />
                           <Divider/>
                       </Grid>
                       <Grid item xs={12} style={{paddingTop:25}}>

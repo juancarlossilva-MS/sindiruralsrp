@@ -152,6 +152,8 @@ if(diff < 60){
               return(console.log(classificados),
                <div >
                <Card className={classes.root}>
+               <Link href={{ pathname: '/produto', query: { id: classi.key } }} className={{    marginLeft: "43%"}}>
+
            <CardActionArea>
              <CardMedia
                className={classes.media}
@@ -171,6 +173,7 @@ if(diff < 60){
                </Typography>
              </CardContent>
            </CardActionArea>
+            </Link>
            <CardActions>
              <Typography style={{color:"#023927"}} variant="h5" component="h2" >
                R$ {classi.valor}

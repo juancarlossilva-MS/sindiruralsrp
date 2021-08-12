@@ -14,7 +14,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import CardMedia from '@material-ui/core/CardMedia';
 import Send from '@material-ui/icons/Send';
-import {fire,askForPermissionToReceiveNotifications} from '../config/fire-config';
+//import {fire,askForPermissionToReceiveNotifications} from '../config/fire-config';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -146,7 +146,7 @@ export default function Home() {
         </Grid>
         
       </div>
-     <Button onClick={askForPermissionToReceiveNotifications}>ATIVAR NOTIFICATION</Button>
+
           <Footer  />
       
 
