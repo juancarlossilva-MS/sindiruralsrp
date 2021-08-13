@@ -122,13 +122,17 @@ export default function AdminNavbarLinks(props) {
         fire.database().ref("notificacoes/"+props.user.uid).limitToLast(5).on("value",(snap)=>{
           snap.forEach((sn) => {
             let n = sn.val()
-            setNotificacoes(prev => [...prev,n])
-            if(!n.lida){
-              setNotNoLida(prev=>prev+1);
-            }
+            setNotificacoes(prev => [n,...prev])
+          
           })
             
         })
+        fire.database().ref("notificacoes/"+props.user.uid).orderByChild("lida").equalTo(false).on("value",(snap)=>{
+
+          setNotNoLida(snap.numChildren())
+            
+        });
+
     },[])
 
   return (
@@ -202,7 +206,7 @@ export default function AdminNavbarLinks(props) {
                   
                       return(
                           <MenuItem
-                            onClick={handleCloseNotification}
+                          onClick={()=>router.push("/"+tipoUser+"/notificacoes")}
                             className={classes.dropdownItem}
                           >
                              {!not.lida && <Chip  label="Não Lida" />}
@@ -222,7 +226,7 @@ export default function AdminNavbarLinks(props) {
                       onClick={()=>router.push("/"+tipoUser+"/notificacoes")}
                       className={classes.dropdownItem}
                     >
-                      Ver todas as notificações {"/"+tipoUser+"/notificacoes"}
+                      Ver todas as notificações
                     </MenuItem>
                   </MenuList>
                 </ClickAwayListener>

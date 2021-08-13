@@ -17,6 +17,7 @@ import Button from "components/CustomButtons/Button.js";
 import { useRouter } from 'next/router'
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
+import MyBackDrop from '../components/MyBackDrop';
 
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
@@ -247,14 +248,16 @@ function qtdImgs(){
 }
 
 async function enviarNotificacao(idFili){
-
+  
   fire.database().ref("notificacoes/"+idFili).push({
-      titulo:"Você recebeu um contato no Classificado"+classificado.titulo,
+      titulo:"Você recebeu um contato no Classificado "+classificado.titulo,
       data:now(),
+      tipo:"classificado",
       lida:false,
       mensagem:JSON.stringify({"Nome":nomeCont.current.value, "Email":emailCont.current.value,"Telefone":phoneCont.current.value})
   }).then(()=>{
     setAlertar(true);
+    setOpen(false);
     nomeCont.current.value= "" 
     emailCont.current.value=""
     phoneCont.current.value=""
@@ -393,7 +396,7 @@ let phoneCont = useRef("");
         <Divider/>
         <TextField inputRef={phoneCont} label="Seu Telefone"></TextField>
         <Divider/>
-        <Button onClick={()=>enviarNotificacao(classificado.idFiliado)} style={{backgroundColor:"#023927"}}>ENVIAR!</Button>
+        <Button onClick={()=>{setOpen(true),enviarNotificacao(classificado.idFiliado)}} style={{backgroundColor:"#023927"}}>ENVIAR!</Button>
       </Card>
     </Grid>
     <Grid item xs={12} sm={6}>
@@ -412,7 +415,9 @@ let phoneCont = useRef("");
           Seu contato foi enviado com sucesso!
         </Alert>
       </Snackbar>
-    
+    {open &&
+      <MyBackDrop/>
+    }
     </div>
   );
 }

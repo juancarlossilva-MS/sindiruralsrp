@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {Paper,Table,TableBody,TableCell,TableContainer,Card,TableHead,TablePagination,TableRow,Typography,Chip,Modal, TextField} from "@material-ui/core"
-import {Edit,Delete,Add} from "@material-ui/icons"
+import {Edit,Delete,Add, CodeSharp} from "@material-ui/icons"
 import Filiado from "layout/filiado";
 import Link from "next/link";
 import fire from "../../config/fire-config";
@@ -49,34 +49,84 @@ function Classificados(props) {
     setPage(newPage);
   };
 
+const lc = fire.database().ref('notificacoes/'+props.user.user.uid);
+
 React.useEffect(() =>{
-    setRows([]);
-    var lc = fire.database().ref('notificacoes/'+props.user.user.uid);
+ //
       
 
-        lc.on("value",(snap) => {
+    /*    lc.once("value",(snap) => {
             snap.forEach((c) => {
                   var nc = c.val();
                   nc.key = c.key;
                //   console.log("toaki"+nc.key);
                   setRows(prev=>[...prev,nc]);
             });
-        });
-
-        lc.on("child_changed",(snap)=>{
-          rows.filter((fil)=>console.log(fil))
-                setRows()
-                  var nc = snap.val();
-                  console.log(nc)
-                  console.log(snap.key)
-                  nc.key = snap.key;
-              //   console.log("toaki"+nc.key);
-                  setRows(prev=>[...prev,nc]);
+        });*/
+        lc.on("child_added",(snap)=>{
+    
             
-        })
+          // setRows(rows.filter((row) => row.key !== snap.key));
+            var nc = snap.val();
+            console.log(nc)
+            console.log(snap.key)
+            nc.key = snap.key;
+        //   console.log("toaki"+nc.key);
+            setRows(prev=>[nc,...prev]);
+      
+       })  
+       
 
 },[]);
 
+
+function formataData(data){
+
+  const date1 = new Date(data);
+const date2 = new Date();
+const diffTime = Math.abs(date2 - date1);
+const diff= Math.ceil(diffTime / (1000 )); 
+if(diff < 60){
+  return "Há menos de um minuto"
+}else{
+  const diff = Math.ceil(diffTime / (1000 * 60)); 
+  if(diff < 60){
+    return "Há menos de "+diff+" minutos";
+  }else{
+    const diff = Math.ceil(diffTime / (1000 * 60 * 60)); 
+    if(diff < 24){
+      return "Há menos de "+diff+" horas";
+    }else{
+       
+      if(diff < 48){
+        return "ontem";
+      }else{
+        const diff = Math.round(diffTime / (1000 * 60 * 60 * 24));
+        return "há "+diff+" dias";
+      }
+    }
+  }
+}
+
+}
+
+
+React.useEffect(()=>{
+
+    lc.on("child_changed",(snap)=>{
+    
+            
+        setRows(rows.filter((row) => row.key !== snap.key));
+         var nc = snap.val();
+         console.log(nc)
+         console.log(snap.key)
+         nc.key = snap.key;
+     //   console.log("toaki"+nc.key);
+         setRows(prev=>[...prev,nc]);
+   
+    })  
+    
+})
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
@@ -154,8 +204,13 @@ const useStyles2 = makeStyles((theme) => ({
   return (
       <>
         <main  className={classes.content}>
-  
+      <Typography variant="h5" component="h2">
+                                Notificações
+                                </Typography>
+
+                                <br/>
             <Paper className={classes.root}>
+           
         <TableContainer className={classes.container}>
             <Table stickyHeader aria-label="sticky table">
            
@@ -167,7 +222,7 @@ const useStyles2 = makeStyles((theme) => ({
                         
                         <TableCell onClick={()=>{fire.database().ref("notificacoes/"+props.user.user.uid+"/"+row.key).update({lida:true}),setOpen(true),setTilSel(row.titulo),setMatSel(JSON.parse(row.mensagem))}}>
                           <Typography style={{ fontSize: 14}} color="textSecondary" gutterBottom>
-                              Word of the Day 
+                             {row.tipo} - {formataData(row.data)}
                             </Typography>
                           <Typography variant="h5" component="h2">
                               {row.titulo}
