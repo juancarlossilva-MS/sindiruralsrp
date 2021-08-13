@@ -50,18 +50,30 @@ function Classificados(props) {
   };
 
 React.useEffect(() =>{
-  console.log(props.user.user.uid)
+    setRows([]);
     var lc = fire.database().ref('notificacoes/'+props.user.user.uid);
       
 
         lc.on("value",(snap) => {
             snap.forEach((c) => {
                   var nc = c.val();
-              
-                  console.log("toaki"+nc);
+                  nc.key = c.key;
+               //   console.log("toaki"+nc.key);
                   setRows(prev=>[...prev,nc]);
             });
         });
+
+        lc.on("child_changed",(snap)=>{
+          rows.filter((fil)=>console.log(fil))
+                setRows()
+                  var nc = snap.val();
+                  console.log(nc)
+                  console.log(snap.key)
+                  nc.key = snap.key;
+              //   console.log("toaki"+nc.key);
+                  setRows(prev=>[...prev,nc]);
+            
+        })
 
 },[]);
 
@@ -122,7 +134,13 @@ const useStyles2 = makeStyles((theme) => ({
          <div style={modalStyle} className={classes2.paper}>
           <h4 id="simple-modal-title">{tilSel}</h4>
           <Typography variant="h5">
-            {matSel.Nome}
+            Nome: {matSel.Nome}
+          </Typography>
+          <Typography variant="h5">
+            Email: <a href={"mailto:"+matSel.Email}>{matSel.Email}</a>
+          </Typography>
+          <Typography variant="h5">
+            Telefone: <a href={"tel:"+matSel.Telefone}>{matSel.Telefone}</a>
           </Typography>
           
         </div>
@@ -147,7 +165,7 @@ const useStyles2 = makeStyles((theme) => ({
                     <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
                       <Card variant="outlined">
                         
-                        <TableCell onClick={()=>{setOpen(true),setTilSel(row.titulo),setMatSel(JSON.parse(row.mensagem))}}>
+                        <TableCell onClick={()=>{fire.database().ref("notificacoes/"+props.user.user.uid+"/"+row.key).update({lida:true}),setOpen(true),setTilSel(row.titulo),setMatSel(JSON.parse(row.mensagem))}}>
                           <Typography style={{ fontSize: 14}} color="textSecondary" gutterBottom>
                               Word of the Day 
                             </Typography>
