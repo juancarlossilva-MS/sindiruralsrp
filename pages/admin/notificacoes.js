@@ -1,6 +1,6 @@
 import React,{useState,useRef,useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import {Dialog,DialogActions,DialogTitle,DialogContent,DialogContentText,Snackbar,Paper,Table,TableBody,TableCell,TableContainer,TableHead,TablePagination,TableRow,TextField} from "@material-ui/core"
+import {Paper,Table,TableBody,TableCell,TableContainer,Card,TableHead,TablePagination,TableRow,Typography,Chip,Modal, TextField} from "@material-ui/core"
 import {Edit,Delete,Add} from "@material-ui/icons"
 import Admin from "layout/admin";
 import Link from "next/link";
@@ -13,10 +13,10 @@ import MyBackDrop from "../components/MyBackDrop"
 
 const columns = [
   { id: 'titulo', label: 'Titulo', minWidth: 170 },
-  { id: 'valor', label: 'Valor', minWidth: 100 },
+  { id: 'tipo', label: 'Tipo', minWidth: 100 },
   {
-    id: 'nomeFiliado',
-    label: 'Anunciado por:',
+    id: 'dataPost',
+    label: 'Publicado em:',
     minWidth: 170,
     align: 'right',
     format: (value) => value.toLocaleString('en-US'),
@@ -25,8 +25,8 @@ const columns = [
  
 ];
 
-function createData(titulo, valor, nomeFiliado,id,pastaImgClass) {
-  return { titulo, valor, nomeFiliado,id,pastaImgClass };
+function createData(titulo, tipo, dataPost) {
+  return { titulo, tipo, dataPost };
 }
 
 
@@ -52,179 +52,188 @@ function Classificados(props) {
     setPage(newPage);
   };
 
+const lc = fire.database().ref('notificacoes/'+props.user.user.uid);
 
-  const router = useRouter();
-
-  const [refreshKey, setRefreshKey] = useState(0);
-
-  const [openModal, setOpenModal] = React.useState(false);
-  const [open, setOpen] = React.useState(false);
-  const [selClass, setSelClass] = React.useState(0);
-
-  let passToDel = useRef();
-
-
-function DelModal(){
-
-  return(
-    <Dialog
-        open={openModal}
-        onClose={()=>setOpenModal(false)}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-      >
-       <DialogTitle id="alert-dialog-title">Insira sua senha para deletar o classificado: {selClass.titulo}</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Esse classificado foi anunciado por {selClass.nomeFiliado}
-            <TextField inputRef={passToDel} type="password" label="digite aqui sua senha" fullWidth variant="standard"/>
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button  onClick={()=>setOpenModal(false)}  color="green">
-            Cancelar
-          </Button>
-          <Button onClick={confirmaDel} color="green" autoFocus>
-            Confirmar
-          </Button>
-        </DialogActions>
-       
-      </Dialog>
-  )
-}
-
-const [alertar, setAlertar] = useState(false);
-
-function Alert(props) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
-
-const handleClose = (event, reason) => {
-  if (reason === 'clickaway') {
-    return;
-  }
-
-  setAlertar(false);
-};
-
-
-
-function confirmaDel(){
-    setOpen(true);
-    var password = (passToDel.current.value);
-    var email = (props.user.user.email);
-    setOpenModal(false)
-  
-    fire.auth().signInWithEmailAndPassword(email, password)
-    .then((userCredential) => {
-      var user = userCredential.user;
-      fire.database().ref("/classificados/"+selClass.id).remove().then(()=>{
-          
-         var listRef = fire.storage().ref().child('classificados/'+selClass.pastaImgClass);
-
-        listRef.listAll().then(function(res) {
-         
-          res.items.forEach(function(itemRef) {
-              itemRef.delete()
-          })
-                console.log("delete with success");
-                setRefreshKey(oldKey => oldKey +1)
-                setOpen(false)
-              
-        }).catch(function(error) {
-          // Uh-oh, an error occurred!
-          console.log(error);
-                setOpen(false)
-        });
-        
-      })
-   
-    })
-    .catch((error) => {
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      setOpen(false)
-      setAlertar(true)
-    });
-  }
-  
-  
-useEffect(() =>{
-
-    setRows([]);
-    var lc = fire.database().ref('classificados');
+React.useEffect(() =>{
+ //
       
 
-        lc.on("value",(snap) => {
+    /*    lc.once("value",(snap) => {
             snap.forEach((c) => {
                   var nc = c.val();
-                  console.log("toaki"+nc);
-                  setRows(prev=>[...prev,createData(nc.titulo,nc.valor,nc.nomeFiliado,c.key,nc.pastaImgClass)]);
+                  nc.key = c.key;
+               //   console.log("toaki"+nc.key);
+                  setRows(prev=>[...prev,nc]);
             });
-        });
+        });*/
+        lc.on("child_added",(snap)=>{
+    
+            
+          // setRows(rows.filter((row) => row.key !== snap.key));
+            var nc = snap.val();
+            console.log(nc)
+            console.log(snap.key)
+            nc.key = snap.key;
+        //   console.log("toaki"+nc.key);
+            setRows(prev=>[nc,...prev]);
+      
+       })  
+       
 
-},[refreshKey]);
+},[]);
 
+
+function formataData(data){
+
+  const date1 = new Date(data);
+const date2 = new Date();
+const diffTime = Math.abs(date2 - date1);
+const diff= Math.ceil(diffTime / (1000 )); 
+if(diff < 60){
+  return "Há menos de um minuto"
+}else{
+  const diff = Math.ceil(diffTime / (1000 * 60)); 
+  if(diff < 60){
+    return "Há menos de "+diff+" minutos";
+  }else{
+    const diff = Math.ceil(diffTime / (1000 * 60 * 60)); 
+    if(diff < 24){
+      return "Há menos de "+diff+" horas";
+    }else{
+       
+      if(diff < 48){
+        return "ontem";
+      }else{
+        const diff = Math.round(diffTime / (1000 * 60 * 60 * 24));
+        return "há "+diff+" dias";
+      }
+    }
+  }
+}
+
+}
+
+
+React.useEffect(()=>{
+
+    lc.on("child_changed",(snap)=>{
+    
+            
+        setRows(rows.filter((row) => row.key !== snap.key));
+         var nc = snap.val();
+         console.log(nc)
+         console.log(snap.key)
+         nc.key = snap.key;
+     //   console.log("toaki"+nc.key);
+         setRows(prev=>[nc,...prev]);
+   
+    })  
+    
+})
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
 
-  function openEdit(id){
+  const handleOpen = () => {
     setOpen(true);
-      router.push({
-        pathname: '/admin/editClassificado',
-        query: { id: id },
-      })
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+
+
+
+function getModalStyle() {
+  const top = 50;
+  const left = 50;
+
+  return {
+    top: `${top}%`,
+    left: `${left}%`,
+    transform: `translate(-${top}%, -${left}%)`,
+  };
+}
+
+const useStyles2 = makeStyles((theme) => ({
+  paper: {
+    position: 'absolute',
+    width: 700,
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  },
+}));
+
+  const classes2 = useStyles2();
+  // getModalStyle is not a pure function, we roll the style only on the first render
+  const [modalStyle] = React.useState(getModalStyle);
+  const [open, setOpen] = React.useState(false);
+  const [tilSel, setTilSel] = React.useState("");
+  const [matSel, setMatSel] = React.useState("");
+
+  function ModalNot(){
+ return (
+    <div>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+         <div style={modalStyle} className={classes2.paper}>
+          <h4 id="simple-modal-title">{tilSel}</h4>
+          <Typography variant="h5">
+            Nome: {matSel.Nome}
+          </Typography>
+          <Typography variant="h5">
+            Email: <a href={"mailto:"+matSel.Email}>{matSel.Email}</a>
+          </Typography>
+          <Typography variant="h5">
+            Telefone: <a href={"tel:"+matSel.Telefone}>{matSel.Telefone}</a>
+          </Typography>
+          
+        </div>
+      </Modal>
+    </div>
+  );
+
   }
+ 
 
   return (
       <>
         <main  className={classes.content}>
-          <Link href="/admin/addClassificado" >
-            <Button style={{backgroundColor:"#023723",float:"right"}} round>
-                <Add className={classes.icons} /> Notificações
-              </Button>
-          </Link>
+      <Typography variant="h5" component="h2">
+                                Notificações
+                                </Typography>
+
+                                <br/>
             <Paper className={classes.root}>
+           
         <TableContainer className={classes.container}>
             <Table stickyHeader aria-label="sticky table">
-            <TableHead>
-                <TableRow>
-                {columns.map((column) => (
-                    <TableCell
-                    key={column.id}
-                    align={column.align}
-                    style={{ minWidth: column.minWidth }}
-                    >
-                    {column.label}
-                    </TableCell>
-                ))}
-                <TableCell>Ações</TableCell>
-                </TableRow>
-            </TableHead>
+           
             <TableBody>
                 {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                 return (
                     <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                    {columns.map((column) => {
-                        const value = row[column.id];
-                        return (
-                        <TableCell key={column.id} align={column.align}>
-                            {column.format && typeof value === 'number' ? column.format(value) : value}
+                      <Card variant="outlined">
+                        
+                        <TableCell onClick={()=>{fire.database().ref("notificacoes/"+props.user.user.uid+"/"+row.key).update({lida:true}),setOpen(true),setTilSel(row.titulo),setMatSel(JSON.parse(row.mensagem))}}>
+                          <Typography style={{ fontSize: 14}} color="textSecondary" gutterBottom>
+                             {row.tipo} - {formataData(row.data)}
+                            </Typography>
+                          <Typography variant="h5" component="h2">
+                              {row.titulo}
+                            </Typography>
+                            {!row.lida && <Chip  label="Não Lida" />}
+                            
                         </TableCell>
-                        );
-                    })}
-                    <TableCell>
-                    <Button onClick={()=>openEdit(row.id)}>
-                        
-                        <Edit/></Button>
-
-                        <Button onClick={()=>{setAlertar(false);setOpenModal(true);setSelClass(row)}}>
-                           <Delete/>
-                        </Button>
-                        
-                    </TableCell>
+                       </Card>
                     </TableRow>
                 );
                 })}
@@ -242,17 +251,7 @@ useEffect(() =>{
         />
         </Paper>
         </main>
-        <DelModal/>
-        
-        <Snackbar open={alertar} autoHideDuration={6000} onClose={handleClose}>
-          <Alert onClose={handleClose} severity="error">
-            Email ou senha incorretos! tente novamente
-          </Alert>
-        </Snackbar>
-
-        {open &&
-          <MyBackDrop/>
-        }
+        <ModalNot/>
     </>
   );
 }

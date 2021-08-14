@@ -122,7 +122,7 @@ React.useEffect(()=>{
          console.log(snap.key)
          nc.key = snap.key;
      //   console.log("toaki"+nc.key);
-         setRows(prev=>[...prev,nc]);
+         setRows(prev=>[nc,...prev]);
    
     })  
     

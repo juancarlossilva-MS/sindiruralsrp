@@ -119,7 +119,11 @@ export default function AdminNavbarLinks(props) {
       if(typeof window !== undefined){
         setTipoUser(window.location.pathname.split("/")[1])
       }
-        fire.database().ref("notificacoes/"+props.user.uid).limitToLast(5).on("value",(snap)=>{
+       const firenot =  fire.database().ref("notificacoes/"+props.user.uid).limitToLast(5);
+
+        firenot.on("child_added",()=>{setNotificacoes([])})
+        
+       firenot.on("value",(snap)=>{
           snap.forEach((sn) => {
             let n = sn.val()
             setNotificacoes(prev => [n,...prev])
@@ -127,6 +131,8 @@ export default function AdminNavbarLinks(props) {
           })
             
         })
+       
+
         fire.database().ref("notificacoes/"+props.user.uid).orderByChild("lida").equalTo(false).on("value",(snap)=>{
 
           setNotNoLida(snap.numChildren())

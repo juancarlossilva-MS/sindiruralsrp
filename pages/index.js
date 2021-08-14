@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import React from "react";
+import React,{useState} from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
@@ -17,9 +17,29 @@ import Send from '@material-ui/icons/Send';
 //import {fire,askForPermissionToReceiveNotifications} from '../config/fire-config';
 import Image from 'next/image';
 import Link from 'next/link';
+import fire from "config/fire-config"
+import {now} from "moment"
+import MyBackDrop from './components/MyBackDrop';
+
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 
 export default function Home() {
 
+  const [open, setOpen] = useState(false);
+const [alertar, setAlertar] = useState(false);
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
+const handleClose = (event, reason) => {
+  if (reason === 'clickaway') {
+    return;
+  }
+
+  setAlertar(false);
+};
 
   React.useEffect(() => {
     const jssStyles = document.querySelector('#jss-server-side');
@@ -32,6 +52,64 @@ export default function Home() {
   React.useEffect(() => {
 
   }, []);
+
+  let name = React.useRef("");
+  let email = React.useRef("");
+  let phone = React.useRef("");
+
+async function EnviarNovoFili(){
+  fire.database().ref("user").orderByChild("perfil").equalTo("admin").on("value",(snap)=>{
+      snap.forEach((admin)=>{
+          let adm = admin.key;
+     
+            fire.database().ref("notificacoes/"+adm).push({
+                titulo:"Uma pessoa deseja conhecer mais sobre o Sindicato!",
+                data:now(),
+                tipo:"novo filiado",
+                lida:false,
+                mensagem:JSON.stringify({"Nome":name.current.value, "Email":email.current.value,"Telefone":phone.current.value})
+            }).then(()=>{
+              setAlertar(true);
+              setOpen(false);
+              name.current.value= "" 
+              email.current.value=""
+              phone.current.value=""
+            })
+
+            fire.database().ref("authkey").once("value").then((snap) => {
+              var key = snap.val();
+            fire.database().ref("tokens").orderByChild("user").equalTo(adm).once("value").then((snap) => {
+
+                  snap.forEach((not) => {
+
+                        //var nc = not.val();
+                        const response = fetch("https://fcm.googleapis.com/fcm/send", {
+                          method: "POST",
+                          headers: { "Content-Type": "application/json",Authorization: key },
+                          body: JSON.stringify({
+                                "notification": {
+                                    title: "Sindicato Rural de Santa Rita do Pardo informa",
+                                    body: "Alguém deseja conhecer mais sobre o sindicato!",
+                                    click_action: "https://sindiruralsrp.vercel.app/filiado/classificados",
+                                    icon: "https://sindiruralsrp.vercel.app/logosr.png"
+                                },
+                                "to": not.key
+                            })
+                        });
+                        response.then((re)=>{
+                          console.log(re)
+                        })
+                        console.log(response)
+                      
+                  })
+              });
+              });
+
+   
+    })
+  })
+
+  }
 
   return (
     <div >
@@ -134,10 +212,10 @@ export default function Home() {
                 <Grid item xs={12} sm={3}></Grid>
                 <Grid item xs={12} sm={6} >
                   <Card style={{padding:30}}>
-                      <TextField required id="standard-required" label="Seu Nome"  />
-                      <br/><TextField required id="standard-required" label="Seu Email"  />
-                      <br/><TextField required id="standard-required" label="Seu Telefone"  />
-                      <br/><Button style={{color:"white",backgroundColor:"#023928"}} fullWidth> Enviar!<Send/></Button>
+                      <TextField inputRef={name} required id="standard-required" label="Seu Nome"  />
+                      <br/><TextField inputRef={email} required id="standard-required" label="Seu Email"  />
+                      <br/><TextField inputRef={phone} required id="standard-required" label="Seu Telefone"  />
+                      <br/><Button style={{color:"white",backgroundColor:"#023928"}} onClick={()=> setOpen(true),EnviarNovoFili} fullWidth> Enviar!<Send/></Button>
                   </Card>
                 </Grid>
                 <Grid item xs={12} sm={3}></Grid>
@@ -150,6 +228,14 @@ export default function Home() {
           <Footer  />
       
 
+          <Snackbar open={alertar} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success">
+          Seu contato foi enviado com sucesso!
+        </Alert>
+      </Snackbar>
+    {open &&
+      <MyBackDrop/>
+    }
 
 
       
