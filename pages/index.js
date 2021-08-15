@@ -142,7 +142,39 @@ async function EnviarNovoFili(){
                 <CarouselNews tipoCar="cursos"/>
             </Grid>
           </Grid>
+
+
+
+
+
+          
+          <Grid item xs={12} style={{}}>
+                 <div style={{backgroundColor:"#023927",padding:5,display: "flex",alignItems: "center",justifyContent: "center"}}>
+                  <span style={{width: "100%",color:"white",position: "relative",textAlign:"center",fontWeight:"bold",fontSize: "28px"}}>PARCEIROS</span>
+                </div>
+            </Grid>
+
+          <Card>
+
+          <Grid container style={{display:"block",padding:25}} spacing={0} >
+              <Parceiros/>
+            
+          </Grid>
+
+
+          </Card>
+
+
+
+
+
+
+
+
+
+
           <Card > 
+            
             
             <Grid item xs={12} style={{}}>
                  <div style={{backgroundColor:"#023927",padding:5,display: "flex",alignItems: "center",justifyContent: "center"}}>
@@ -162,23 +194,9 @@ async function EnviarNovoFili(){
            <Grid container style={{display:"block",padding:25}} spacing={0} >
                <Classificado/>
           </Grid>
-          <Grid item xs={12} style={{}}>
-                 <div style={{backgroundColor:"#023927",padding:5,display: "flex",alignItems: "center",justifyContent: "center"}}>
-                  <span style={{width: "100%",color:"white",position: "relative",textAlign:"center",fontWeight:"bold",fontSize: "28px"}}>PARCEIROS</span>
-                </div>
-            </Grid>
+         
 
-         <Card>
-
-           <Grid container style={{display:"block",padding:25}} spacing={0} >
-               <Parceiros/>
-               <br/>
-               <Parceiros/>
-          </Grid>
-
-
-         </Card>
-
+       
          
             <Grid container style={{padding:0}} spacing={0} >
                

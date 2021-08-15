@@ -82,6 +82,8 @@ useEffect(()=>{
                   
                   console.log(nc)
                   setNoticia(nc)
+                  document.title = nc.titulo +" • SindiRural SRP";
+
             })
         });
 
@@ -127,14 +129,22 @@ const updateDimensions = () => {
   setWindowWidth(width)
 }
 
+
 function paddingImg(){
-   if(width > 1100) return 90;
-   if(width < 600) return 20;
+  if(width > 1100) return 30;
+  if(width < 600) return 20;
 }
 
 function sizeTxt(){
-    if(width<600) return 40;
+   if(width<600) return 26.5;
 }
+
+useEffect(()=>{
+ for(let i =3; i<document.getElementsByTagName("img").length-1;i++){
+    document.getElementsByTagName("img")[i].style = "width:100%";
+ }
+
+})
 
 
 return(
