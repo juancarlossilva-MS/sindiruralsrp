@@ -48,7 +48,7 @@ export default function MediaCard() {
       speed: 4000,
       autoplaySpeed: 4000,
       cssEase: "linear",
-      
+      pauseOnHover: true,
       responsive: [
         {
           breakpoint: 1024,
@@ -60,7 +60,8 @@ export default function MediaCard() {
             autoplay: true,
             speed: 4000,
             autoplaySpeed: 4000,
-            cssEase: "linear"
+            cssEase: "linear",
+            pauseOnHover: true
           }
         },
         {
