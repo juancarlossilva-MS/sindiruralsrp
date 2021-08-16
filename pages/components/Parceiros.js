@@ -12,7 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import Skeleton from '@material-ui/lab/Skeleton';
 import fire from '../../config/fire-config';
 import Link from 'next/link';
-import Image from 'next/Image';
+import Image from 'next/image';
 import { now } from 'moment';
 import Button from "components/CustomButtons/Button.js";
 
