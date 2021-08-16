@@ -56,6 +56,14 @@ const dashboardRoutes = [
   },
   
   {
+    path: "/parceiros",
+    name: "Empresas Parceiras",
+    rtlName: "إخطارات",
+    icon: HomeWork,
+
+    layout: "/admin",
+  },
+  {
     path: "/typography",
     name: "Diretoria",
     rtlName: "طباعة",
@@ -76,14 +84,6 @@ const dashboardRoutes = [
     name: "Estrutura Física",
     rtlName: "خرائط",
     icon: AccountBalance,
-
-    layout: "/admin",
-  },
-  {
-    path: "/notifications",
-    name: "Empresas Parceiras",
-    rtlName: "إخطارات",
-    icon: HomeWork,
 
     layout: "/admin",
   },

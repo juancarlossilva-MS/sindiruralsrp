@@ -1,4 +1,4 @@
-import React,{useState,useRef} from "react";
+import React,{useState,useRef, useEffect} from "react";
 // react component for creating beautiful carousel
 import Carousel from "react-slick";
 // @material-ui/core components
@@ -9,6 +9,7 @@ import LocationOn from "@material-ui/icons/LocationOn";
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 import Card from "components/Card/Card.js";
+import Skeleton from '@material-ui/lab/Skeleton';
 
 import styles from "styles/jss/nextjs-material-kit/pages/componentsSections/carouselStyle.js";
 import Badge from "components/Badge/Badge.js";
@@ -71,13 +72,17 @@ export default function SectionCarousel(props) {
       var lc = fire.database().ref('noticias').orderByChild("ehCurso").equalTo(true).limitToLast(2);
       
 
-        lc.on("value",(snap) => {
-            snap.forEach((c) => {
+        lc.on("value",async(snap) => {
+            await snap.forEach((c) => {
                   var nc = c.val();
                    setCursos(prev =>[...prev, nc]);
             });
+            setLoading(false);
         });
   }, []);
+  const [loading,setLoading] = useState(true);
+
+
     return (
         <div >
           <div className={classes.container} >
@@ -86,7 +91,9 @@ export default function SectionCarousel(props) {
               <GridItem xs={12} sm={12} >
                                      
 
-
+              {loading ? (<Skeleton animation="wave" height={490} variant="rect" className={classes.media} />)
+            :
+            (
                 <Card carousel style={{marginTop:0}}>
                   <div style={{backgroundColor:"#023927",padding:5}}>
                     <span style={{width: "100%",color:"white",marginLeft:"40%",fontWeight:"bold",fontSize: "28px"}}>CURSOS</span>
@@ -127,7 +134,7 @@ export default function SectionCarousel(props) {
                   }
                    
                    </Carousel>
-                </Card>
+                </Card>)}
               </GridItem>
             </GridContainer>
           </div>
@@ -139,14 +146,19 @@ export default function SectionCarousel(props) {
       var news = fire.database().ref('noticias').orderByChild("ehCurso").equalTo(null).limitToLast(5);
       
 
-        news.on("value",(snap) => {
-            snap.forEach((n) => {
+        news.on("value",async(snap) => {
+            await snap.forEach((n) => {
                   var np = n.val();
-                   setNoticias(prev =>[...prev, np]);
-            });
-        });
-  }, []);
+                   setNoticias(prev =>[ np,...prev]);
+            })
+            setLoading(false);
+        })
+  }, []);  
   
+
+
+  const [loading,setLoading] = useState(true);
+ 
   return (
     
     <div >
@@ -154,6 +166,9 @@ export default function SectionCarousel(props) {
 
         <GridContainer>
           <GridItem xs={12} sm={12} >
+            {loading ? (<Skeleton animation="wave" height={490} variant="rect" className={classes.media} />)
+            :
+            (
             <Card carousel style={{marginTop:0,marginBottom:15}}>
               <Carousel {...settings} >
                 {noticias.map((noticia)=>{ 
@@ -192,6 +207,7 @@ export default function SectionCarousel(props) {
                
                </Carousel>
             </Card>
+            )}
           </GridItem>
         </GridContainer>
       </div>
