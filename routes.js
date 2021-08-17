@@ -28,6 +28,8 @@ import Museum from "@material-ui/icons/Museum";
 import Web from "@material-ui/icons/Web";
 import AddShoppingCart from "@material-ui/icons/AddShoppingCart";
 import EmojiPeople from "@material-ui/icons/EmojiPeople";
+import {GiDiploma} from  "react-icons/gi";
+import {RiUserSearchFill} from  "react-icons/ri";
 
 const dashboardRoutes = [
   {
@@ -60,6 +62,20 @@ const dashboardRoutes = [
     name: "Empresas Parceiras",
     rtlName: "إخطارات",
     icon: HomeWork,
+
+    layout: "/admin",
+  },
+  {
+    path: "/cursos",
+    name: "Cursos",
+    icon: GiDiploma,
+    layout: "/admin",
+  },
+  
+  {
+    path: "/empregos",
+    name: "Balcão de Empregos",
+    icon: RiUserSearchFill,
 
     layout: "/admin",
   },
