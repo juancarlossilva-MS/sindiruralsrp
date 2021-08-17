@@ -18,6 +18,8 @@ import Small from "components/Typography/Small.js";
 import fire from '../../config/fire-config';
 import Image from 'next/image'
 import Link from 'next/link'
+import { Typography } from "@material-ui/core";
+import { GrClock } from "react-icons/gr";
 
 const useStyles = makeStyles(styles);
 const useStylesTypo = makeStyles(stylesTypo);
@@ -65,6 +67,12 @@ export default function SectionCarousel(props) {
   }
 
  
+function dataExtenso(data){
+  const meses = ["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"]
+  const date1 = new Date(data);
+  return(date1.getDate()+" de "+meses[date1.getMonth()]+" de "+date1.getFullYear()+" às "+date1.getHours()+"h"+date1.getMinutes());
+
+}
 
   if(tipoCar == "cursos"){
     const [cursos,setCursos] = useState([]);
@@ -177,27 +185,35 @@ export default function SectionCarousel(props) {
                   return(
                     <div>
                      <Link href={"/noticias/"+noticia.slug_name } >
+                    
 
                       <Image
                         src={"https://firebasestorage.googleapis.com/v0/b/sindiruralsrp.appspot.com/o/noticias%2F"+noticia.imagem+"?alt=media"}
                         alt={noticia.titulo}
                         width={580}
-                        height={410}
+                        height={330}
                         layout='responsive'
                         placeholder="blur"
                       />
                       </Link>
+                       <Link href={"/noticias/"+noticia.slug_name } >
                       <div style={{padding:"1%"}}>
-                        <Badge color="success">{noticia.tipo}</Badge>
+                           <Typography variant="caption" display="block" gutterBottom>
+                              <GrClock/> {dataExtenso(noticia.data)}   •   {noticia.tipo}
+                            </Typography>
                         <div className={classesTypo.typo} style={{padding:"0px",marginBottom:"0px"}}>
-                        <h4 style={{fontWeight:"bold"}}>
-                            {noticia.titulo}</h4>
-                           
-                            <Small>{noticia.materia.slice(0,500).replace(/<[^>]+>/g, '') }...</Small>
+                          <Typography style={{fontWeight:"bold",lineHeight:1,maxHeight: "3rem",minHeight: "3rem",overflow: "hidden !important"}} variant="h5">
+                                {noticia.titulo}
+                          </Typography>
                         
                         </div>
-                        
+
+                          <Typography style={{lineHeight:1,marginTop:10}} variant="body2">
+                                {noticia.materia.replace(/<[^>]+>/g, '').slice(0,300) }...
+                            </Typography>
                       </div>
+                      </Link>  
+
                     </div>
                   )
 

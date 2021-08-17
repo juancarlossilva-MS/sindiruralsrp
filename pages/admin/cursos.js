@@ -12,12 +12,23 @@ import MyBackDrop from "../components/MyBackDrop"
 import {useRouter} from "next/router"
 
 const columns = [
-  { id: 'nome', label: 'Nome', minWidth: 170 },
-  { id: 'url', label: 'Url', minWidth: 100 },
+  { id: 'desc', label: 'Descrição', minWidth: 200 },
+  { id: 'local', label: 'Local', minWidth: 100 },
+  { id: 'ch', label: 'Carga Horária', minWidth: 100 },
+  { id: 'obs', label: 'Obs:', minWidth: 100 },
+  { id: 'req', label: 'Requisitos', minWidth: 100 },
+  { id: 'ins', label: 'Inscrições abertas?', minWidth: 20 },
   {
-    id: 'dataPost',
-    label: 'Curso desde:',
-    minWidth: 170,
+    id: 'dataInicio',
+    label: 'Inicio:',
+    minWidth: 80,
+    align: 'right',
+    format: (value) => value.toLocaleString('en-US'),
+  },
+  {
+    id: 'dataFim',
+    label: 'Fim:',
+    minWidth: 80,
     align: 'right',
     format: (value) => value.toLocaleString('en-US'),
   },
@@ -25,8 +36,8 @@ const columns = [
  
 ];
 
-function createData(nome, url, dataPost,id,imagem) {
-  return { nome, url, dataPost,id,imagem };
+function createData(desc, local,ch,obs,req,ins,dataInicio, dataFim,id) {
+  return { desc, local,ch,obs,req,ins,dataInicio, dataFim,id };
 }
 
 
@@ -54,6 +65,7 @@ function Cursos(props) {
   const [open, setOpen] = React.useState(false);
 
   let passToDel = useRef();
+
 function DelModal(){
 
   return(
@@ -141,7 +153,8 @@ React.useEffect(() =>{
         lc.on("value",(snap) => {
             snap.forEach((c) => {
                   var nc = c.val();
-                  setRows(prev=>[...prev,createData(nc.descricao,nc.local,nc.dataInicio,c.key,nc.imagem)]);
+                  let insc = nc.recebendoInscricao ? "SIM" : "NÃO";
+                  setRows(prev=>[...prev,createData(nc.descricao,nc.local,nc.cargaHoraria,nc.obs,nc.requisitos,insc, nc.dataInicio,nc.dataFim,c.key)]);
             });
         });
 
@@ -193,7 +206,7 @@ React.useEffect(() =>{
                         const value = row[column.id];
                         return (
                         <TableCell key={column.id} align={column.align}>
-                            {column.format && typeof value === 'number' ? column.format(value) : value}
+                            {column.format && typeof value === 'number' ? column.format(value) : value }
                         </TableCell>
                         );
                     })}

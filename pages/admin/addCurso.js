@@ -1,7 +1,7 @@
 import React,{useRef,useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import {Paper,Table,Fab,TableBody,TableCell,TableContainer,MenuItem,FormControlLabel,Radio,Grid,
-TextField,FormControl, FormLabel, RadioGroup, TableHead,TablePagination,TableRow, Divider} from "@material-ui/core"
+import {Paper,Table,Fab,TableBody,TableCell,TableContainer,MenuItem,FormControlLabel,Radio,Grid,Switch,
+TextField,FormControl, FormLabel, RadioGroup, TableHead,TablePagination,TableRow, Divider, Typography} from "@material-ui/core"
 import {Edit,Delete,Add, AddPhotoAlternate,Send} from "@material-ui/icons"
 import Admin from "layout/admin";
 import Link from "next/link";
@@ -40,17 +40,21 @@ const useStyles = makeStyles({
   
 
 
-function AddParceiro(props) {
+function AddCurso(props) {
   const classes = useStyles();
   const [value, setValue] = useState('');
-  const [age, setAge] = React.useState('noticias');
   const [img, setImg] = React.useState();
   const [imgSel, setImgSel] = React.useState();
-  const [autor, setAutor] = React.useState("");
+  const [obs, setObs] = React.useState("");
+  const [req, setReq] = React.useState("");
+  const [local, setLocal] = React.useState("");
+  const [insc, setInsc] = React.useState("");
+  const [ch, setCh] = React.useState("");
   const [open, setOpen] = React.useState(false);
 
   let titulo = useRef();
-  let data = useRef();
+  let dataInicio = useRef();
+  let dataFim = useRef();
 
   const router = useRouter();
 
@@ -78,32 +82,59 @@ function AddParceiro(props) {
 function SubmitForm(){
     
     var title = titulo.current.value;
-    if(img == null){alert("Insira uma Image"); return;}
+    var dataI = dataInicio.current.state.inputValue;
+    var dataF = dataFim.current.state.inputValue;
+
     if(title == ""){alert("Insira um Nome"); return;}
     setOpen(true)
     const crypto = require("crypto");
 
     const imgname = crypto.randomBytes(16).toString("hex")
     var storageRef = fire.storage().ref();
-    var ref = storageRef.child('parceiros/'+imgname);       
-    
-     console.log(title);
-     console.log(value);
-     var dataPost = data.current.state.inputValue;
-     var type = null;
-     ref.put(img).then(function(snapshot) {
-        var news = fire.database().ref("parceiros");
-        news.push().set({
-            nome:title,
-            data:dataPost,
-            imagem:imgname,
-            url:autor
+    var ref = storageRef.child('cursos/'+imgname);       
 
-        }).then(()=>{
-          setOpen(false);
-          window.location.href = "/admin/parceiros";
-        });
-    });
+    if(img == null){
+      var news = fire.database().ref("cursos");
+      news.push().set({
+          descricao:title,
+          dataInicio:dataI,
+          dataFim:dataF,
+          obs:obs,
+          requisitos:req,
+          local:local,
+          cargaHoraria:ch,
+          recebendoInscricao:insc,
+
+      }).then(()=>{
+        setOpen(false);
+        window.location.href = "/admin/cursos";
+      }).catch(()=>{
+        setOpen(false);
+      });
+    }else{
+          ref.put(img).then(function(snapshot) {
+                  var news = fire.database().ref("cursos");
+                  news.push().set({
+                      descricao:title,
+                      dataInicio:dataI,
+                      dataFim:dataF,
+                      obs:obs,
+                      requisitos:req,
+                      local:local,
+                      cargaHoraria:ch,
+                      recebendoInscricao:insc,
+                      imagem:imgname,
+
+                  }).then(()=>{
+                    setOpen(false);
+                    window.location.href = "/admin/cursos";
+                  }).catch(()=>{
+                    setOpen(false);
+                  });
+              });
+    }
+
+    
 
     
      
@@ -123,18 +154,36 @@ function SubmitForm(){
             <form style={{padding:25}} className={classes.root} noValidate autoComplete="off">
                     <Grid container style={{padding:25}}>
                       <Grid item xs={12}>
-                          <TextField style={{width:"100%"}} inputRef={titulo} required variant="standard" label="Nome do Parceiro" />
+                          <TextField style={{width:"100%"}} inputRef={titulo} required variant="standard" label="Nome do Curso" />
                           <Divider/>
                       </Grid>
                       <Grid item xs={12} style={{paddingTop:25}}>
-                          <TextField style={{width:"100%"}} value={autor} onChange={(e)=>setAutor(e.target.value)} required variant="standard" label="URL" />
+                          <TextField style={{width:"100%"}} value={obs} onChange={(e)=>setObs(e.target.value)} required variant="standard" label="Observação" />
                           <Divider/>
+                      </Grid>
+                      <Grid item xs={12} style={{paddingTop:25}}>
+                          <TextField style={{width:"100%"}} value={req} onChange={(e)=>setReq(e.target.value)} required variant="standard" label="Requisitos para participação" />
+                          <Divider/>
+                      </Grid>
+                      <Grid item xs={12} style={{paddingTop:25}}>
+                          <TextField style={{width:"100%"}} value={local} onChange={(e)=>setLocal(e.target.value)} required variant="standard" label="Local" />
+                          <Divider/>
+                      </Grid>
+                      <Grid item xs={12} style={{paddingTop:25}}>
+                          <TextField style={{width:"100%"}} value={ch} onChange={(e)=>setCh(e.target.value)} required variant="standard" label="Carga Horária" />
+                          <Divider/>
+                      </Grid>
+                      <Grid item xs={12} style={{paddingTop:25}}>
+                             <FormControlLabel
+                                control={<Switch checked={insc} onChange={()=>setInsc(!insc)} name="checkedA" />}
+                                label="Inscrições abertas?"
+                              />
                       </Grid>
                     
                       <Grid container style={{paddingTop:55}}>
                         
                         <Grid item xs={12} sm={3}>
-                        <h4> Insira a Imagem da logo do Parceiro:</h4>
+                        <h4> Insira a Imagem da logo do curso:</h4>
                         <input
                         accept="image/*"
                         className={classes.input}
@@ -153,14 +202,22 @@ function SubmitForm(){
                         <img src={imgSel} style={{maxWidth:"50%"}} />
                         </Grid>
                         <Grid item xs={12} sm={6}>
-
-                        <FormControl style={{marginLeft:40}}>
-                            <Datetime
-                            ref={data}
-                            initialValue={now()}
-                            inputProps={{ placeholder: "Insira a data aqui" }}
-                            />
-                        </FormControl>
+                        <Typography variant="h6" > Data de Inicio do Curso </Typography>
+                            <FormControl style={{marginLeft:40}}>
+                                <Datetime
+                                ref={dataInicio}
+                                initialValue={now()}
+                                inputProps={{ placeholder: "Insira a data aqui" }}
+                                />
+                            </FormControl>
+                            <Typography variant="h6" > Data do Fim do Curso </Typography>
+                            <FormControl style={{marginLeft:40}}>
+                                <Datetime
+                                ref={dataFim}
+                                initialValue={now()}
+                                inputProps={{ placeholder: "Insira a data aqui" }}
+                                />
+                            </FormControl>
                         </Grid>
                         <Grid item xs={12} sm={3}>
 
@@ -183,9 +240,9 @@ function SubmitForm(){
   );
 }
 
-AddParceiro.layout = Admin;
+AddCurso.layout = Admin;
 
-export default AddParceiro;
+export default AddCurso;
 
 
 export const getServerSideProps = withIronSession(
