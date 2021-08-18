@@ -12,9 +12,9 @@ import MyBackDrop from "../components/MyBackDrop"
 import {useRouter} from "next/router"
 
 const columns = [
-  { id: 'desc', label: 'Descrição', minWidth: 200 },
+  { id: 'desc', label: 'Descrição', minWidth: 150 },
   { id: 'local', label: 'Local', minWidth: 100 },
-  { id: 'ch', label: 'Carga Horária', minWidth: 100 },
+  { id: 'ch', label: 'Carga Horária', minWidth: 20 },
   { id: 'obs', label: 'Obs:', minWidth: 100 },
   { id: 'req', label: 'Requisitos', minWidth: 100 },
   { id: 'ins', label: 'Inscrições abertas?', minWidth: 20 },

@@ -1,6 +1,6 @@
 import React,{useEffect, useRef,useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import {Paper,Table,Fab,TableBody,TableCell,TableContainer,MenuItem,FormControlLabel,Radio,Grid,
+import {Paper,Table,Fab,TableBody,TableCell,TableContainer,MenuItem,FormControlLabel,Radio,Grid,Switch,Typography,
 TextField,FormControl, FormLabel, RadioGroup, TableHead,TablePagination,TableRow, Divider} from "@material-ui/core"
 import {Edit,Delete,Add, AddPhotoAlternate,Send} from "@material-ui/icons"
 import Admin from "layout/admin";
@@ -40,20 +40,21 @@ const useStyles = makeStyles({
   
 
 
-function EditParceiro() {
+function EditCurso() {
   const classes = useStyles();
   const [value, setValue] = useState('');
-  const [titulo, setTitulo] = useState('');
-  const [age, setAge] = React.useState('parceiros');
-  const [img, setImg] = React.useState();
-  const [autor, setAutor] = React.useState();
-  const [open, setOpen] = React.useState(false);
-  
   const [imgSel, setImgSel] = React.useState();
+  const [img, setImg] = React.useState();
+  const [obs, setObs] = React.useState("");
+  const [req, setReq] = React.useState("");
+  const [local, setLocal] = React.useState("");
+  const [insc, setInsc] = React.useState("");
+  const [ch, setCh] = React.useState("");
+  const [titulo, setTitulo] = React.useState("");
+  const [open, setOpen] = React.useState(false);
 
-  let data = useRef();
-
-  
+  let dataInicio = useRef();
+  let dataFim = useRef();
 
 
 
@@ -80,19 +81,27 @@ const getBase64FromUrl = async (url) => {
 
   
   useEffect(()=>{
-    fire.database().ref("parceiros/"+id).on("value",(snapshot)=>{
+    fire.database().ref("cursos/"+id).on("value",(snapshot)=>{
           let nc = snapshot.val();
-          setTitulo(nc.nome)
-          setAutor(nc.url)
-          setOld(nc.imagem)
+                      setTitulo(nc.descricao);
+                      setObs(nc.obs);
+                      setReq(nc.requisitos);
+                      setLocal(nc.local);
+                      setCh(nc.cargaHoraria);
+                      setInsc(nc.recebendoInscricao);
+                      setOld(nc.imagem)
          
-          var storage = fire.storage();
 
-          storage.ref('parceiros/').child(nc.imagem).getDownloadURL().then(function(url) {
-            getBase64FromUrl(url);
-          }).catch(function(error) {
-            // Handle any errors
-          });
+          if(nc.imagem !== undefined){
+            var storage = fire.storage();
+  
+            storage.ref('cursos/').child(nc.imagem).getDownloadURL().then(function(url) {
+              getBase64FromUrl(url);
+            }).catch(function(error) {
+              // Handle any errors
+            });
+
+          }
     });
   },[]);
   
@@ -122,20 +131,22 @@ function SubmitForm(){
     
     if(titulo == ""){alert("Insira um Nome"); return;}
 
-   
-    var dataPost = data.current.state.inputValue;
-    var type = null;
+    //var titulo = titulo.current.value;
+    var dataI = dataInicio.current.state.inputValue;
+    var dataF = dataFim.current.state.inputValue;
 
-
-    if(age !== "parceiros") type = true;
-
-    var news = fire.database().ref("parceiros/"+id);
+    var news = fire.database().ref("cursos/"+id);
     if(img == null){
           
           news.update({
-              nome:titulo,
-              data:dataPost,
-              url:autor
+            descricao:titulo,
+            dataInicio:dataI,
+            dataFim:dataF,
+            obs:obs,
+            requisitos:req,
+            local:local,
+            cargaHoraria:ch,
+            recebendoInscricao:insc,
 
           });
       
@@ -145,20 +156,25 @@ function SubmitForm(){
         const imgname = crypto.randomBytes(16).toString("hex")
         var storageRef = fire.storage().ref();
 
-        var ref = storageRef.child('parceiros/'+imgname);       
+        var ref = storageRef.child('cursos/'+imgname);       
       
         ref.put(img).then(function(snapshot) {
             
             news.update({
-                nome:titulo,
-                data:dataPost,
+                descricao:titulo,
+                dataInicio:dataI,
+                dataFim:dataF,
+                obs:obs,
+                requisitos:req,
+                local:local,
+                cargaHoraria:ch,
+                recebendoInscricao:insc,
                 imagem:imgname,
-                url:autor
 
             });
         });
         console.log(oldimg);
-      var imgref = storageRef.child('parceiros/'+oldimg);
+      var imgref = storageRef.child('cursos/'+oldimg);
 
         // Delete the file
         imgref.delete().then(function() {
@@ -169,7 +185,7 @@ function SubmitForm(){
     }
  
   
-      router.push("/admin/parceiros");
+      router.push("/admin/cursos");
      
 }
 
@@ -187,22 +203,38 @@ function SubmitForm(){
         <main  className={classes.content}>
           <Paper className={classes.root}>
             <form style={{padding:25}} className={classes.root} noValidate autoComplete="off">
-                    <Grid container style={{padding:25}}>
+            <Grid container style={{padding:25}}>
                       <Grid item xs={12}>
-                          <TextField style={{width:"100%"}} 
-                          onChange={(e)=> setTitulo(e.target.value)}
-                          value={titulo} multiline required variant="standard" label="Nome do parceiro" />
+                          <TextField style={{width:"100%"}} value={titulo} onChange={(e)=>setTitulo(e.target.value)} required variant="standard" label="Nome do Curso" />
                           <Divider/>
                       </Grid>
                       <Grid item xs={12} style={{paddingTop:25}}>
-                          <TextField style={{width:"100%"}} value={autor} onChange={(e)=>setAutor(e.target.value)} required variant="standard" label="URL" />
+                          <TextField style={{width:"100%"}} value={obs} onChange={(e)=>setObs(e.target.value)} required variant="standard" label="Observação" />
                           <Divider/>
                       </Grid>
-                   
+                      <Grid item xs={12} style={{paddingTop:25}}>
+                          <TextField style={{width:"100%"}} value={req} onChange={(e)=>setReq(e.target.value)} required variant="standard" label="Requisitos para participação" />
+                          <Divider/>
+                      </Grid>
+                      <Grid item xs={12} style={{paddingTop:25}}>
+                          <TextField style={{width:"100%"}} value={local} onChange={(e)=>setLocal(e.target.value)} required variant="standard" label="Local" />
+                          <Divider/>
+                      </Grid>
+                      <Grid item xs={12} style={{paddingTop:25}}>
+                          <TextField style={{width:"100%"}} value={ch} onChange={(e)=>setCh(e.target.value)} required variant="standard" label="Carga Horária" />
+                          <Divider/>
+                      </Grid>
+                      <Grid item xs={12} style={{paddingTop:25}}>
+                             <FormControlLabel
+                                control={<Switch checked={insc} onChange={()=>setInsc(!insc)} name="checkedA" />}
+                                label="Inscrições abertas?"
+                              />
+                      </Grid>
+                    
                       <Grid container style={{paddingTop:55}}>
                         
                         <Grid item xs={12} sm={3}>
-                        <h4> Insira a Imagem de capa:</h4>
+                        <h4> Insira a Imagem da logo do curso:</h4>
                         <input
                         accept="image/*"
                         className={classes.input}
@@ -221,14 +253,22 @@ function SubmitForm(){
                         <img src={imgSel} style={{maxWidth:"50%"}} />
                         </Grid>
                         <Grid item xs={12} sm={6}>
-
-                        <FormControl style={{marginLeft:40}}>
-                            <Datetime
-                            ref={data}
-                            initialValue={now()}
-                            inputProps={{ placeholder: "Insira a data aqui" }}
-                            />
-                        </FormControl>
+                        <Typography variant="h6" > Data de Inicio do Curso </Typography>
+                            <FormControl style={{marginLeft:40}}>
+                                <Datetime
+                                ref={dataInicio}
+                                initialValue={now()}
+                                inputProps={{ placeholder: "Insira a data aqui" }}
+                                />
+                            </FormControl>
+                            <Typography variant="h6" > Data do Fim do Curso </Typography>
+                            <FormControl style={{marginLeft:40}}>
+                                <Datetime
+                                ref={dataFim}
+                                initialValue={now()}
+                                inputProps={{ placeholder: "Insira a data aqui" }}
+                                />
+                            </FormControl>
                         </Grid>
                         <Grid item xs={12} sm={3}>
 
@@ -240,7 +280,6 @@ function SubmitForm(){
                     </Grid>
                      
                        
-                    
                     </form>
         </Paper>
         </main>
@@ -251,9 +290,9 @@ function SubmitForm(){
   );
 }
 
-EditParceiro.layout = Admin;
+EditCurso.layout = Admin;
 
-export default EditParceiro;
+export default EditCurso;
 
 
 export const getServerSideProps = withIronSession(
