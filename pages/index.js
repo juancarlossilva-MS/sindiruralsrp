@@ -154,15 +154,13 @@ async function EnviarNovoFili(){
                 </div>
             </Grid>
 
-          <Card>
 
-          <Grid container style={{display:"block",padding:25}} spacing={0} >
+          <Grid container style={{display:"block",paddingTop:10,paddingLeft:25,paddingRight:25}} spacing={0} >
               <Parceiros/>
             
           </Grid>
 
 
-          </Card>
 
 
 
@@ -218,7 +216,7 @@ async function EnviarNovoFili(){
                                               <CardMedia
                                           component='video'
                                           
-                                          image={"https://firebasestorage.googleapis.com/v0/b/sindiruralsrp.appspot.com/o/video%2Fvideosindi.mp4?alt=media&token=9348217a-bd54-4364-b214-531efdae4496"}
+                                          image={"http://btgnews.com.br/vendor/videosindi.mp4"}
                                           autoPlay
                                           controls
                                           loop

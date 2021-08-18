@@ -18,10 +18,10 @@ import Button from "components/CustomButtons/Button.js";
 
 const useStyles = makeStyles({
   root: {
-    maxWidth: 485,
+    maxWidth: 350,
   },
   media: {
-    height: 285,
+    height: 205,
   },
   hiddenOverTitle:{
     maxHeight: "2rem",
@@ -137,11 +137,10 @@ const [img,setImg] = useState('');
         <Slider {...settings}>
         {loading ? (
              <Card className={classes.root}>
-              <Skeleton animation="wave" variant="rect" style={{width:400,height:250}} />
+              <Skeleton animation="wave" variant="rect" style={{width:350,height:205}} />
               </Card>
             ) : 
          ( classificados.map((classi)=>{ 
-            console.log(classificados)
               return(
                <div >
                  <Link href={classi.url}>

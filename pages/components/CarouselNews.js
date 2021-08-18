@@ -19,7 +19,8 @@ import fire from '../../config/fire-config';
 import Image from 'next/image'
 import Link from 'next/link'
 import { Typography } from "@material-ui/core";
-import { GrClock } from "react-icons/gr";
+import { AccessTime } from "@material-ui/icons";
+import { IconContext } from "react-icons";
 
 const useStyles = makeStyles(styles);
 const useStylesTypo = makeStyles(stylesTypo);
@@ -37,34 +38,6 @@ export default function SectionCarousel(props) {
     autoplay: true,
   };
 
-  const styleCaption = {
-    paddingBottom: "0px",
-    position: "absolute",
-    right: "0%",
-    bottom: "-3%",
-    left: "0%",
-    zIndex: "10",
-    paddingTop: "0",
-    color: "#ffffff",
-    textAlign: "center",
-    zIndex: "3",
-    display: "block",
-    backgroundColor: "#0000005f",
-
-  }
-
-  const styleImgCursos ={
-    maxWidth: "100%",
-    maxHeight: "20.4rem",
-    minHeight: "20.4rem",
-    minWidth: "100%",
-  }
-  const styleImg ={
-    maxWidth: "100%",
-    maxHeight: "28rem",
-    minHeight: "28rem",
-    minWidth: "100%",
-  }
 
  
 function dataExtenso(data){
@@ -115,27 +88,42 @@ function dataExtenso(data){
                  return(
                    <div>
                      <Link href={"/cursos/"+curso.slug_name } >
-                     <Image
-                       src={"https://firebasestorage.googleapis.com/v0/b/sindiruralsrp.appspot.com/o/noticias%2F"+curso.imagem+"?alt=media"}
-                       alt={curso.titulo}
-                       width={520}
-                       height={410}
-                       layout='responsive'
-                       placeholder="blur"
-                     />
-                     </Link>
-                          <div style={{padding:"1%"}}>
-                            <Badge color="success">{curso.tipo}</Badge>
-                            <div className={classesTypo.typo} style={{padding:"0px",marginBottom:"0px"}}>
-                            <h4 style={{fontWeight:"400"}}>
-                                {curso.titulo} </h4>
-                               
-                                <Small>{curso.materia.slice(0,500).replace(/<[^>]+>/g, '') }...</Small>
-                           
+                        <>
+                        <div style={{padding:"1%",marginBottom:"-6%",position:"absolute",zIndex:1000}}>
+                                <Typography variant="body2" display="block" style={{color:"#fafafa",fontWeight:"bold",webkitTextStrokeWidth: "1px",textShadow: "black 0.2em 0.2em 0.3em",webkitTextStrokeColor: "#023927",overflow: "hidden !important"}} gutterBottom>
+                                  
+                                  <AccessTime style={{marginBottom:"-1.65%"}}/> {dataExtenso(curso.data)}
+                                
+
+                                </Typography>
                             </div>
-                            
-                          </div>
+                          <Image
+                            src={"https://firebasestorage.googleapis.com/v0/b/sindiruralsrp.appspot.com/o/noticias%2F"+curso.imagem+"?alt=media"}
+                            alt={curso.titulo}
+                            width={520}
+                            height={460}
+                            layout='responsive'
+                            placeholder="blur"
+                            />
+                
+                     
+                              <div className={classesTypo.typo} style={{padding:"1%",marginTop:-120}}>
+                                  <Typography style={{color:"#fafafa",fontWeight:"bold",webkitTextStrokeWidth: "1px",textShadow: "black 0.2em 0.2em 0.3em",webkitTextStrokeColor: "#023927",lineHeight:1,maxHeight: "3rem",minHeight: "3rem",overflow: "hidden !important"}} variant="h5">
+                                        {curso.titulo}
+                                  </Typography>
+                                
+                                </div>
+                              </>
+                              </Link>
                         </div>
+
+  
+
+
+
+
+
+                        
                       )
 
                     })
@@ -183,38 +171,38 @@ function dataExtenso(data){
                  
 
                   return(
+
                     <div>
                      <Link href={"/noticias/"+noticia.slug_name } >
-                    
+                        <>
+                        <div style={{padding:"1%",marginBottom:"-6%",position:"absolute",zIndex:1000}}>
+                           <Typography variant="subtitle1" display="block" style={{color:"#fafafa",fontWeight:"bold",webkitTextStrokeWidth: "1px",textShadow: "black 0.2em 0.2em 0.3em",webkitTextStrokeColor: "#023927",overflow: "hidden !important"}} gutterBottom>
+                             
+                              <AccessTime style={{marginBottom:"-1.65%"}}/> {dataExtenso(noticia.data)}   •   {noticia.tipo}
+                            
 
+                            </Typography>
+                        </div>
                       <Image
                         src={"https://firebasestorage.googleapis.com/v0/b/sindiruralsrp.appspot.com/o/noticias%2F"+noticia.imagem+"?alt=media"}
                         alt={noticia.titulo}
-                        width={580}
-                        height={330}
+                        width={550}
+                        height={410}
                         layout='responsive'
                         placeholder="blur"
                       />
-                      </Link>
-                       <Link href={"/noticias/"+noticia.slug_name } >
-                      <div style={{padding:"1%"}}>
-                           <Typography variant="caption" display="block" gutterBottom>
-                              <GrClock/> {dataExtenso(noticia.data)}   •   {noticia.tipo}
-                            </Typography>
-                        <div className={classesTypo.typo} style={{padding:"0px",marginBottom:"0px"}}>
-                          <Typography style={{fontWeight:"bold",lineHeight:1,maxHeight: "3rem",minHeight: "3rem",overflow: "hidden !important"}} variant="h5">
+                      <div className={classesTypo.typo} style={{padding:"1%",marginTop:-120}}>
+                          <Typography style={{color:"#fafafa",fontWeight:"bold",webkitTextStrokeWidth: "1px",textShadow: "black 0.2em 0.2em 0.3em",webkitTextStrokeColor: "#023927",lineHeight:1,maxHeight: "3rem",minHeight: "3rem",overflow: "hidden !important"}} variant="h4">
                                 {noticia.titulo}
                           </Typography>
                         
                         </div>
-
-                          <Typography style={{lineHeight:1,marginTop:10}} variant="body2">
-                                {noticia.materia.replace(/<[^>]+>/g, '').slice(0,300) }...
-                            </Typography>
-                      </div>
-                      </Link>  
+                      </>
+                      </Link>
+                       
 
                     </div>
+                  
                   )
 
                 })

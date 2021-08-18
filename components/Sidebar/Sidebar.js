@@ -26,7 +26,12 @@ export default function Sidebar(props) {
   const classes = useStyles();
   // verifies if routeName is the one active (in browser input)
   function activeRoute(routeName) {
-    if(router.route == "/admin/addNoticia" && routeName == "/admin/noticias") return true; 
+    if((router.route == "/admin/addNoticia" || router.route == "/admin/editNoticia") && routeName == "/admin/noticias") return true; 
+    if((router.route == "/admin/addUsuario" || router.route == "/admin/editUsuario") && routeName == "/admin/usuarios") return true; 
+    if((router.route == "/admin/addClassificado" || router.route == "/admin/editClassificado") && routeName == "/admin/classificados") return true; 
+    if((router.route == "/admin/addParceiro" || router.route == "/admin/editParceiro") && routeName == "/admin/parceiros") return true; 
+    if((router.route == "/admin/addCurso" || router.route == "/admin/editCurso") && routeName == "/admin/cursos") return true; 
+    if((router.route == "/admin/addEmprego" || router.route == "/admin/editEmprego") && routeName == "/admin/empregos") return true; 
     return router.route.indexOf(routeName) > -1 ? true : false;
   }
   const { color, logo, image, logoText, routes } = props;
