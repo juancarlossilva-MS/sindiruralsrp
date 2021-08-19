@@ -42,7 +42,7 @@ export default function MediaCard() {
       dots: false,
       infinite: true,
       arrows:false,
-      slidesToShow: 3,
+      slidesToShow: 4,
       slidesToScroll: 1,
       autoplay: true,
       speed: 4000,
@@ -53,7 +53,7 @@ export default function MediaCard() {
         {
           breakpoint: 1024,
           settings: {
-            slidesToShow: 3,
+            slidesToShow: 4,
             slidesToScroll: 1,
             infinite: true,
             dots: false,
@@ -142,25 +142,16 @@ const [img,setImg] = useState('');
             ) : 
          ( classificados.map((classi)=>{ 
               return(
-               <div >
+               <div style={{paddingleft:15,paddingRight:15}} >
                  <Link href={classi.url}>
-               <Card className={classes.root}>
-              
+            
+                        <img 
+                        style={{maxHeight: '280px',minHeight: '280px',width:"100%",position:"relative",
+                        objectFit: "contain"}}
+                        src={"https://firebasestorage.googleapis.com/v0/b/sindiruralsrp.appspot.com/o/parceiros%2F"+classi.imagem+"?alt=media"}
+                         />
 
-                      <CardActionArea>
-                      
-                        <Image
-                          src={"https://firebasestorage.googleapis.com/v0/b/sindiruralsrp.appspot.com/o/parceiros%2F"+classi.imagem+"?alt=media"}
-                          layout="responsive"
-                          width={450}
-                          height={250}
-                          title={classi.nome}
-                        />
-                    
-                      </CardActionArea>
-                    
-                        </Card>
-                        </Link>
+                 </Link>
                </div>
               );
 
