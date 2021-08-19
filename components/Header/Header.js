@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
 import Link from "next/link";
 // nodejs library that concatenates classes
 import classNames from "classnames";
@@ -14,6 +14,10 @@ import Hidden from "@material-ui/core/Hidden";
 import Drawer from "@material-ui/core/Drawer";
 // @material-ui/icons
 import Menu from "@material-ui/icons/Menu";
+
+import Image from 'next/image';
+import Button2 from "@material-ui/core/Button";
+
 // core components
 import styles from "styles/jss/nextjs-material-kit/components/headerStyle.js";
 
@@ -61,27 +65,86 @@ export default function Header(props) {
     [classes.absolute]: absolute,
     [classes.fixed]: fixed,
   });
+
+  
+const [width, setWindowWidth] = useState(0);
+
+useEffect(() => { 
+
+  updateDimensions();
+
+  window.addEventListener("resize", updateDimensions);
+  return () => 
+    window.removeEventListener("resize",updateDimensions);
+ }, [])
+
+
+const updateDimensions = () => {
+const width = window.innerWidth
+setWindowWidth(width)
+}
+
+/*const brandComponent = () => {
+      
+  console.log("here"+width)
+    
+        return(
+          <Link href="/" as="/" >
+              <div className={classes.logo}>
+        
+              <Button2><Image src="../../logo.png" width={320} height={70} /></Button2>
+        
+              </div>
+            </Link>
+        )
+    }else{
+        return(
+          <Link href="/" as="/" >
+              <div className={classes.logo}>
+        
+            
+        
+              </div>
+            </Link>
+        )
+    }
+  
+  }  */
+  
   const brandComponent = (
     <Link href="/" as="/" >
       <div className={classes.logo}>
-
-      {brand}
-
+      {brand  ? brand :
+      <Button2><Image src="/logo.png" width={389} height={85} /></Button2>
+      }
       </div>
     </Link>
   );
+
+  const brandComponentResp = (
+    <Link href="/" as="/" >
+      <div className={classes.logo}>
+      {brand  ? brand :
+      <Button2><Image src="/logo.png" width={320} height={70} /></Button2>
+      }
+      </div>
+    </Link>
+  );
+
   return (
     <AppBar className={appBarClasses}>
       <Toolbar className={classes.container} style={{maxWidth:"100%"}}>
-        {leftLinks !== undefined ? brandComponent : null}
+        {leftLinks !== undefined ?  width < 600 ? brandComponentResp:brandComponent : null}
         <div style={{marginTop:"2%"}}>
           {leftLinks !== undefined ? (
             <Hidden smDown implementation="css">
               {leftLinks}
             </Hidden>
-          ) : (
-            brandComponent
-          )}
+          ) : width < 600 ?            
+            brandComponentResp
+          :
+           brandComponent
+          }
         </div>
         <div style={{marginLeft: "-65%",marginTop: "-3%"}}> 
         <Hidden  smDown implementation="css">

@@ -216,7 +216,7 @@ async function EnviarNovoFili(){
                                               <CardMedia
                                           component='video'
                                           
-                                          image={"http://btgnews.com.br/vendor/videosindi.mp4"}
+                                          image={"https://btgnews.com.br/vendor/videosindi.mp4"}
                                           autoPlay
                                           controls
                                           loop

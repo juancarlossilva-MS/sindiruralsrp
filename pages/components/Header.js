@@ -1,7 +1,6 @@
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import Icon from "@material-ui/core/Icon";
-import Button2 from "@material-ui/core/Button";
 import Button from "components/CustomButtons/Button.js";
 import Search from "@material-ui/icons/Search";
 import Facebook from '@material-ui/icons/Facebook';
@@ -11,6 +10,8 @@ import styles from "styles/jss/nextjs-material-kit/pages/componentsSections/navb
 import CustomInput from "components/CustomInput/CustomInput.js";
 import { makeStyles } from "@material-ui/core/styles";
 import Image from 'next/image';
+import Button2 from "@material-ui/core/Button";
+
 import Link from 'next/link';
 import LocationOn from '@material-ui/icons/LocationOn';
 
@@ -22,7 +23,7 @@ export default function WeHeader(){
 
 return(
 <Header
-            brand={<Button2><Image src="/logo.png" width={457} height={100} /></Button2>}
+            
             color="green"
             leftLinks={
               <List className={classes.list}>

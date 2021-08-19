@@ -47,6 +47,25 @@ function dataExtenso(data){
 
 }
 
+
+const [width, setWindowWidth] = useState(0);
+
+useEffect(() => { 
+
+  updateDimensions();
+
+  window.addEventListener("resize", updateDimensions);
+  return () => 
+    window.removeEventListener("resize",updateDimensions);
+ }, [])
+
+
+const updateDimensions = () => {
+const width = window.innerWidth
+setWindowWidth(width)
+}
+
+
   if(tipoCar == "cursos"){
     const [cursos,setCursos] = useState([]);
     React.useEffect(() => {
@@ -101,16 +120,18 @@ function dataExtenso(data){
                             src={"https://firebasestorage.googleapis.com/v0/b/sindiruralsrp.appspot.com/o/noticias%2F"+curso.imagem+"?alt=media"}
                             alt={curso.titulo}
                             width={520}
-                            height={460}
+                            height={480}
                             layout='responsive'
                             placeholder="blur"
                             />
                 
                      
-                              <div className={classesTypo.typo} style={{padding:"1%",marginTop:-120}}>
+                              <div className={classesTypo.typo} style={{padding:"1%",marginTop:-155}}>
                                   <Typography style={{color:"#fafafa",fontWeight:"bold",webkitTextStrokeWidth: "1px",textShadow: "black 0.2em 0.2em 0.3em",webkitTextStrokeColor: "#023927",lineHeight:1,maxHeight: "3rem",minHeight: "3rem",overflow: "hidden !important"}} variant="h5">
+
                                         {curso.titulo}
                                   </Typography>
+                                  
                                 
                                 </div>
                               </>
@@ -187,12 +208,12 @@ function dataExtenso(data){
                         src={"https://firebasestorage.googleapis.com/v0/b/sindiruralsrp.appspot.com/o/noticias%2F"+noticia.imagem+"?alt=media"}
                         alt={noticia.titulo}
                         width={550}
-                        height={410}
+                        height={width < 600 ? 620:410}
                         layout='responsive'
                         placeholder="blur"
                       />
-                      <div className={classesTypo.typo} style={{padding:"1%",marginTop:-120}}>
-                          <Typography style={{color:"#fafafa",fontWeight:"bold",webkitTextStrokeWidth: "1px",textShadow: "black 0.2em 0.2em 0.3em",webkitTextStrokeColor: "#023927",lineHeight:1,maxHeight: "3rem",minHeight: "3rem",overflow: "hidden !important"}} variant="h4">
+                      <div className={classesTypo.typo} style={{padding:"1%",marginTop:-150}}>
+                          <Typography style={{color:"#fafafa",fontWeight:"bold",webkitTextStrokeWidth: "1px",textShadow: "black 0.2em 0.2em 0.3em",webkitTextStrokeColor: "#023927",lineHeight:1,maxHeight: "3rem",minHeight: "3rem",overflow: "hidden !important"}} variant={width<600 ? "h5":"h4"}>
                                 {noticia.titulo}
                           </Typography>
                         
