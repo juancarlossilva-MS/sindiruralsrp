@@ -107,7 +107,7 @@ setWindowWidth(width)
                  return(
                    <div>
                      <Link href={"/cursos/"+curso.slug_name } >
-                        <>
+                        
                         <div style={{padding:"1%",marginBottom:"-6%",position:"absolute",zIndex:1000}}>
                                 <Typography variant="body2" display="block" style={{color:"#fafafa",fontWeight:"bold",webkitTextStrokeWidth: "1px",textShadow: "black 0.2em 0.2em 0.3em",webkitTextStrokeColor: "#023927",overflow: "hidden !important"}} gutterBottom>
                                   
@@ -116,6 +116,9 @@ setWindowWidth(width)
 
                                 </Typography>
                             </div>
+                            </Link>
+                            <Link href={"/cursos/"+curso.slug_name } >
+                        
                           <Image
                             src={"https://firebasestorage.googleapis.com/v0/b/sindiruralsrp.appspot.com/o/noticias%2F"+curso.imagem+"?alt=media"}
                             alt={curso.titulo}
@@ -124,8 +127,10 @@ setWindowWidth(width)
                             layout='responsive'
                             placeholder="blur"
                             />
-                
-                     
+                            </Link>
+
+                        <Link href={"/cursos/"+curso.slug_name } >
+                        
                               <div className={classesTypo.typo} style={{padding:"1%",marginTop:-155}}>
                                   <Typography style={{color:"#fafafa",fontWeight:"bold",webkitTextStrokeWidth: "1px",textShadow: "black 0.2em 0.2em 0.3em",webkitTextStrokeColor: "#023927",lineHeight:1,maxHeight: "3rem",minHeight: "3rem",overflow: "hidden !important"}} variant="h5">
 
@@ -134,7 +139,7 @@ setWindowWidth(width)
                                   
                                 
                                 </div>
-                              </>
+                              
                               </Link>
                         </div>
 
@@ -195,7 +200,7 @@ setWindowWidth(width)
 
                     <div>
                      <Link href={"/noticias/"+noticia.slug_name } >
-                        <>
+                       
                         <div style={{padding:"1%",marginBottom:"-6%",position:"absolute",zIndex:1000}}>
                            <Typography variant="subtitle1" display="block" style={{color:"#fafafa",fontWeight:"bold",webkitTextStrokeWidth: "1px",textShadow: "black 0.2em 0.2em 0.3em",webkitTextStrokeColor: "#023927",overflow: "hidden !important"}} gutterBottom>
                              
@@ -204,6 +209,8 @@ setWindowWidth(width)
 
                             </Typography>
                         </div>
+                        </Link>
+                        <Link href={"/noticias/"+noticia.slug_name } >
                       <Image
                         src={"https://firebasestorage.googleapis.com/v0/b/sindiruralsrp.appspot.com/o/noticias%2F"+noticia.imagem+"?alt=media"}
                         alt={noticia.titulo}
@@ -212,13 +219,15 @@ setWindowWidth(width)
                         layout='responsive'
                         placeholder="blur"
                       />
+                      </Link>
+                       <Link href={"/noticias/"+noticia.slug_name } >
                       <div className={classesTypo.typo} style={{padding:"1%",marginTop:-150}}>
                           <Typography style={{color:"#fafafa",fontWeight:"bold",webkitTextStrokeWidth: "1px",textShadow: "black 0.2em 0.2em 0.3em",webkitTextStrokeColor: "#023927",lineHeight:1,maxHeight: "3rem",minHeight: "3rem",overflow: "hidden !important"}} variant={width<600 ? "h5":"h4"}>
                                 {noticia.titulo}
                           </Typography>
                         
                         </div>
-                      </>
+                      
                       </Link>
                        
 

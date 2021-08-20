@@ -77,9 +77,8 @@ return(
                 </ListItem>
                 <ListItem className={classes.listItem}>
                   <Button
-                    href="#pablo"
+                    href="#parceiros"
                     className={classes.navLink}
-                    onClick={(e) => e.preventDefault()}
                     color="transparent"
                   >
                     Parceiros
@@ -87,9 +86,8 @@ return(
                 </ListItem>
                 <ListItem className={classes.listItem}>
                   <Button
-                    href="#mercado"
+                    href="/#mercado"
                     className={classes.navLink}
-                    onClick={(e) => e.preventDefault()}
                     color="transparent"
                   >
                     Mercado

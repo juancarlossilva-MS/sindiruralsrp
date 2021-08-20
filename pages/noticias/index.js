@@ -75,14 +75,16 @@ function dataExtenso(data){
 
 
 useEffect(()=>{
-  var query = fire.database().ref('noticias/').orderByChild("tipo").equalTo("noticias").once("value").then((snap) => {
+  var query = fire.database().ref('noticias/').orderByChild("data").once("value").then((snap) => {
 
             snap.forEach((not) => {
 
                   var nc = not.val();
                   
-                  console.log(nc)
-                  setNoticias((prev)=>[...prev,nc])
+                 
+                    setNoticias((prev)=>[nc,...prev])
+                  
+                  
             })
         });
 
@@ -165,9 +167,9 @@ return(
                             <Grid item xs={12} sm={8}>
                                     <Typography style={{textAlign:"justify",lineHeight:"initial"}} variant="h6">{news.titulo}</Typography>
 
-                                    <Typography style={{textAlign:"justify",textTransform:"none",marginTop:"2%"}} variant="body2">{news.materia.slice(0,350).replace(/<[^>]+>/g, '') }</Typography>
+                                    <Typography style={{textAlign:"justify",textTransform:"none",marginTop:"2%"}} variant="body2">{news.materia.replace(/<[^>]+>/g, '') .slice(0,350)}</Typography>
 
-                                    <Typography style={{float:"right",marginTop:"5%"}} variant="caption"><AccessTime style={{fontSize:15  }}/> {dataExtenso(news.data)}</Typography>
+                                    <Typography style={{float:"right",marginTop:"5%"}} variant="caption">{news.tipo} • <AccessTime style={{fontSize:15 ,marginBottom:-3 }}/> {dataExtenso(news.data)}</Typography>
                             </Grid>
                           
                         

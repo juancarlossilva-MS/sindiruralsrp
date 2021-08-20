@@ -148,7 +148,7 @@ async function EnviarNovoFili(){
 
 
           
-          <Grid item xs={12} style={{}}>
+          <Grid item xs={12} id="parceiros">
                  <div style={{backgroundColor:"#023927",padding:5,display: "flex",alignItems: "center",justifyContent: "center"}}>
                   <span style={{width: "100%",color:"white",position: "relative",textAlign:"center",fontWeight:"bold",fontSize: "28px"}}>PARCEIROS</span>
                 </div>
@@ -171,7 +171,7 @@ async function EnviarNovoFili(){
 
 
 
-          <Card > 
+          <Card id={'mercado'}> 
             
             
             <Grid item xs={12} style={{}}>
@@ -184,6 +184,7 @@ async function EnviarNovoFili(){
           </Grid> 
           
           </Card>
+
             <Grid item xs={12} style={{}}>
                  <div style={{backgroundColor:"#023927",padding:5,display: "flex",alignItems: "center",justifyContent: "center"}}>
                   <span style={{width: "100%",color:"white",position: "relative",textAlign:"center",fontWeight:"bold",fontSize: "28px"}}>CLASSIFICADOS</span>
