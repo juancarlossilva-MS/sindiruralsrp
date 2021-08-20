@@ -1,5 +1,5 @@
 
-import React, { Component, useEffect,useState } from "react";
+import React, { Component, useEffect,useState,useCallback } from "react";
 import Slider from "react-slick";
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -131,12 +131,33 @@ storage.ref('parceiros/anuncie.png').getDownloadURL().then(function(url) {
 });*/
 
 },[])
+
+const [dragging, setDragging] = useState(false)
+
+    const handleBeforeChange = useCallback(() => {
+        console.log('handleBeforeChange')
+        setDragging(true)
+    }, [setDragging])
+
+    const handleAfterChange = useCallback(() => {
+        console.log('handleAfterChange')
+        setDragging(false)
+    }, [setDragging])
+
+    const handleOnItemClick = useCallback(
+        e => {
+            console.log('handleOnItemClick')
+            if (dragging) e.stopPropagation()
+        },
+        [dragging]
+    ) 
 const [loading,setLoading] = useState(true);
 const [img,setImg] = useState('');
 
     return (
       <>
-        <Slider {...settings}>
+        <Slider beforeChange={handleBeforeChange}
+          afterChange={handleAfterChange} {...settings}>
         {loading ? (
              <Card className={classes.root}>
               <Skeleton animation="wave" variant="rect" style={{width:350,height:205}} />
@@ -144,7 +165,7 @@ const [img,setImg] = useState('');
             ) : 
          ( classificados.map((classi)=>{ 
               return(
-               <div style={{}} >
+               <div  onClickCapture={handleOnItemClick} >
                  <Link href={classi.url}>
             
                         <img 

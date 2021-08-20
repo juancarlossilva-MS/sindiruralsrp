@@ -79,7 +79,7 @@ return(
                 </ListItem>
                 <ListItem className={classes.listItem}>
                   <Button
-                    href="#pablo"
+                    href="#mercado"
                     className={classes.navLink}
                     onClick={(e) => e.preventDefault()}
                     color="transparent"
@@ -118,15 +118,15 @@ return(
                    
                   </ListItem>
                   <ListItem className={classes.listItem}>
-                      <a style={{color:"#fafafa"}} href="tel:6735411400">
-                    <Phone/> (67) 3591 - 1400</a>
+                      <a style={{color:"#fafafa"}} href="tel:6735411201">
+                    <Phone/> (67) 3591 - 1201</a>
                   </ListItem>
                   <ListItem className={classes.listItem}>
                     <a style={{color:"#fafafa"}} href="https://www.google.com/maps/place/Sindicato+Rural+de+Santa+Rita+do+Pardo/@-21.3047717,-52.8259072,18.17z/data=!4m13!1m7!3m6!1s0x948fddaf3de82285:0x13f550f1df57247b!2sR.+Dep.+J%C3%BAlio+C%C3%A9sar+Paulino+Maia,+1845,+Santa+Rita+do+Pardo+-+MS,+79690-000!3b1!8m2!3d-21.3046605!4d-52.8246739!3m4!1s0x948fdd0815d861dd:0x30ed25dc862e103c!8m2!3d-21.3047421!4d-52.8247021">
                     <LocationOn/>Rua Julio César Paulino Maia, 1845, Centro, Santa Rita do Pardo - MS
                     </a>
                   </ListItem>
-                
+              
                 </List>
 
             }
