@@ -12,21 +12,15 @@ import MyBackDrop from "../components/MyBackDrop"
 import {useRouter} from "next/router"
 
 const columns = [
-  { id: 'nome', label: 'Nome', minWidth: 170 },
-  { id: 'url', label: 'Url', minWidth: 100 },
-  {
-    id: 'dataPost',
-    label: 'emprego desde:',
-    minWidth: 170,
-    align: 'right',
-    format: (value) => value.toLocaleString('en-US'),
-  },
+  { id: 'descricao', label: 'Descrição da Vaga', minWidth: 170 },
+  { id: 'obs', label: 'Observação:', minWidth: 100 },
+  { id: 'qtd', label: 'Quantidade de Vagas:', minWidth: 100 },
   
  
 ];
 
-function createData(nome, url, dataPost,id,imagem) {
-  return { nome, url, dataPost,id,imagem };
+function createData(descricao, obs, qtd,id) {
+  return { descricao, obs, qtd,id };
 }
 
 
@@ -63,7 +57,7 @@ function DelModal(){
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
       >
-       <DialogTitle id="alert-dialog-title">Insira sua senha para deletar esta vaga de emprego: {selNews.nome}</DialogTitle>
+       <DialogTitle id="alert-dialog-title">Insira sua senha para deletar esta vaga de emprego: {selNews.descricao}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
 
@@ -107,13 +101,10 @@ function confirmaDel(){
     var user = userCredential.user;
     fire.database().ref("/empregos/"+selNews.id).remove().then(()=>{
         
-      fire.storage().ref().child('empregos/'+selNews.imagem).delete().then(function() {
-          console.log("delete with success");
+  
           setRefreshKey(oldKey => oldKey +1)
           setOpen(false)
-        }).catch(function(error) {
-          // Uh-oh, an error occurred!
-        });
+     
     })
  
   })
@@ -141,7 +132,7 @@ React.useEffect(() =>{
         lc.on("value",(snap) => {
             snap.forEach((c) => {
                   var nc = c.val();
-                  setRows(prev=>[...prev,createData(nc.descricao,nc.obs + nc.qtd,nc.data,c.key,nc.imagem)]);
+                  setRows(prev=>[...prev,createData(nc.descricao,nc.obs,nc.qtd,c.key)]);
             });
         });
 

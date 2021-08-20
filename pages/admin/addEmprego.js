@@ -1,7 +1,7 @@
 import React,{useRef,useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {Paper,Table,Fab,TableBody,TableCell,TableContainer,MenuItem,FormControlLabel,Radio,Grid,
-TextField,FormControl, FormLabel, RadioGroup, TableHead,TablePagination,TableRow, Divider} from "@material-ui/core"
+TextField,FormControl, FormLabel, RadioGroup, TableHead,TablePagination,TableRow, Divider, Typography} from "@material-ui/core"
 import {Edit,Delete,Add, AddPhotoAlternate,Send} from "@material-ui/icons"
 import Admin from "layout/admin";
 import Link from "next/link";
@@ -40,12 +40,9 @@ const useStyles = makeStyles({
   
 
 
-function AddParceiro(props) {
+function AddEmprego(props) {
   const classes = useStyles();
-  const [value, setValue] = useState('');
-  const [age, setAge] = React.useState('noticias');
-  const [img, setImg] = React.useState();
-  const [imgSel, setImgSel] = React.useState();
+  const [qtd, setQtd] = React.useState(0);
   const [autor, setAutor] = React.useState("");
   const [open, setOpen] = React.useState(false);
 
@@ -78,32 +75,19 @@ function AddParceiro(props) {
 function SubmitForm(){
     
     var title = titulo.current.value;
-    if(img == null){alert("Insira uma Image"); return;}
-    if(title == ""){alert("Insira um Nome"); return;}
+    if(title == ""){alert("Insira uma Descrição"); return;}
     setOpen(true)
-    const crypto = require("crypto");
 
-    const imgname = crypto.randomBytes(16).toString("hex")
-    var storageRef = fire.storage().ref();
-    var ref = storageRef.child('parceiros/'+imgname);       
-    
-     console.log(title);
-     console.log(value);
-     var dataPost = data.current.state.inputValue;
-     var type = null;
-     ref.put(img).then(function(snapshot) {
-        var news = fire.database().ref("parceiros");
+        var news = fire.database().ref("empregos");
         news.push().set({
-            nome:title,
-            data:dataPost,
-            imagem:imgname,
-            url:autor
+            descricao:title,
+            qtd:qtd,
+            obs:autor
 
         }).then(()=>{
           setOpen(false);
-          window.location.href = "/admin/parceiros";
+          window.location.href = "/admin/empregos";
         });
-    });
 
     
      
@@ -122,46 +106,24 @@ function SubmitForm(){
           <Paper className={classes.root}>
             <form style={{padding:25}} className={classes.root} noValidate autoComplete="off">
                     <Grid container style={{padding:25}}>
+                      <Typography variant="h5">Adicionar Vaga de Emprego</Typography>
+                      <br/>
                       <Grid item xs={12}>
-                          <TextField style={{width:"100%"}} inputRef={titulo} required variant="standard" label="Nome do Parceiro" />
+                          <TextField style={{width:"100%"}} inputRef={titulo} required variant="standard" label="Descrição da Vaga" />
                           <Divider/>
                       </Grid>
                       <Grid item xs={12} style={{paddingTop:25}}>
-                          <TextField style={{width:"100%"}} value={autor} onChange={(e)=>setAutor(e.target.value)} required variant="standard" label="URL" />
+                          <TextField style={{width:"100%"}} value={autor} onChange={(e)=>setAutor(e.target.value)} required variant="standard" label="Observação" />
+                          <Divider/>
+                      </Grid>
+                      <Grid item xs={12} style={{paddingTop:25}}>
+                          <TextField style={{width:"100%"}} value={qtd} onChange={(e)=>setQtd(e.target.value)} required variant="standard" label="Quantidade de Vagas" />
                           <Divider/>
                       </Grid>
                     
                       <Grid container style={{paddingTop:55}}>
-                        
-                        <Grid item xs={12} sm={3}>
-                        <h4> Insira a Imagem da logo do Parceiro:</h4>
-                        <input
-                        accept="image/*"
-                        className={classes.input}
-                        id="contained-button-file"
-                        multiple
-                        type="file"
-                        onChange={handleUploadClick}
-                        />
-                        <label htmlFor="contained-button-file">
-                        <Fab component="span" className={classes.button}>
-                            <AddPhotoAlternate  />
-                            
-                        </Fab>
-                        
-                        </label>
-                        <img src={imgSel} style={{maxWidth:"50%"}} />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-
-                        <FormControl style={{marginLeft:40}}>
-                            <Datetime
-                            ref={data}
-                            initialValue={now()}
-                            inputProps={{ placeholder: "Insira a data aqui" }}
-                            />
-                        </FormControl>
-                        </Grid>
+                      
+                       
                         <Grid item xs={12} sm={3}>
 
                         <Button onClick={SubmitForm} style={{float:"right", backgroundColor:"#023723"}} size="lg">
@@ -183,9 +145,9 @@ function SubmitForm(){
   );
 }
 
-AddParceiro.layout = Admin;
+AddEmprego.layout = Admin;
 
-export default AddParceiro;
+export default AddEmprego;
 
 
 export const getServerSideProps = withIronSession(
