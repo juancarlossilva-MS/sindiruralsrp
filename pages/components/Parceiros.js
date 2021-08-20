@@ -1,5 +1,5 @@
 
-import React, { Component, useEffect,useState,useCallback } from "react";
+import React, { Component, useEffect,useState,useCallback,useRef } from "react";
 import Slider from "react-slick";
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -46,8 +46,8 @@ export default function MediaCard() {
       slidesToShow: 4,
       slidesToScroll: 1,
       autoplay: true,
-      speed: 4000,
-      autoplaySpeed: 4000,
+      speed: 2800,
+      autoplaySpeed: 2800,
       cssEase: "linear",
       pauseOnHover: true,
       responsive: [
@@ -59,8 +59,8 @@ export default function MediaCard() {
             infinite: true,
             dots: false,
             autoplay: true,
-            speed: 4000,
-            autoplaySpeed: 4000,
+            speed: 2800,
+            autoplaySpeed: 2800,
             cssEase: "linear",
             pauseOnHover: true,
             swipeToSlide: true
@@ -75,8 +75,8 @@ export default function MediaCard() {
             infinite: true,
             dots: false,
             autoplay: true,
-            speed: 4000,
-            autoplaySpeed: 4000,
+            speed: 2800,
+            autoplaySpeed: 2800,
             cssEase: "linear"
           }
         },
@@ -88,8 +88,8 @@ export default function MediaCard() {
             dots: false,
             slidesToScroll: 1,
             autoplay: true,
-            speed: 4000,
-            autoplaySpeed: 4000,
+            speed: 2800,
+            autoplaySpeed: 2800,
             cssEase: "linear"
           }
         }
@@ -135,18 +135,16 @@ storage.ref('parceiros/anuncie.png').getDownloadURL().then(function(url) {
 const [dragging, setDragging] = useState(false)
 
     const handleBeforeChange = useCallback(() => {
-        console.log('handleBeforeChange')
+        
         setDragging(true)
     }, [setDragging])
 
     const handleAfterChange = useCallback(() => {
-        console.log('handleAfterChange')
         setDragging(false)
     }, [setDragging])
 
     const handleOnItemClick = useCallback(
         e => {
-            console.log('handleOnItemClick')
             if (dragging) e.stopPropagation()
         },
         [dragging]
@@ -154,9 +152,11 @@ const [dragging, setDragging] = useState(false)
 const [loading,setLoading] = useState(true);
 const [img,setImg] = useState('');
 
+let slider1 = useRef();
+
     return (
       <>
-        <Slider beforeChange={handleBeforeChange}
+        <Slider ref={slider1} beforeChange={handleBeforeChange}
           afterChange={handleAfterChange} {...settings}>
         {loading ? (
              <Card className={classes.root}>

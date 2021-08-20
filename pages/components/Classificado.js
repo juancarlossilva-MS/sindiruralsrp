@@ -39,7 +39,7 @@ export default function MediaCard() {
       dots: false,
       infinite: true,
       speed: 500,
-      slidesToShow: 3,
+     
       slidesToScroll: 1,
       autoplay:true,
       autoplaySpeed:2000,
@@ -51,7 +51,7 @@ export default function MediaCard() {
         {
           breakpoint: 1024,
           settings: {
-            slidesToShow: 3,
+           
             slidesToScroll: 1,
             infinite: true,
             dots: false
@@ -75,17 +75,20 @@ export default function MediaCard() {
       ]
     };
 const [classificados,setClassificados] = useState([]);
+const [numClass,setNumClass] = useState([]);
 useEffect(()=>{
   
-  var classList = fire.database().ref('classificados').limitToLast(8);
+  var classList = fire.database().ref('classificados').orderByChild('data').limitToLast(8);
       
 
         classList.on("value",(snap) => {
+           setNumClass(snap.numChildren())
             snap.forEach((cl) => {
                   var nc = cl.val();
                   nc.imagem = JSON.parse(nc.imagem);
+                  
                   nc.key = cl.key;
-                   setClassificados(prev =>[...prev, nc]);
+                   setClassificados(prev =>[nc,...prev]);
             });
         });
 },[]);
@@ -145,11 +148,11 @@ if(diff < 60){
 
     return (
       <>
-        <Slider {...settings}>
+        <Slider {...settings} slidesToShow={numClass < 3 ? numClass : 3}>
 
           {classificados.map((classi)=>{ 
             
-              return(console.log(classificados),
+              return(
                <div >
                <Card className={classes.root}>
                <Link href={{ pathname: '/produto', query: { id: classi.key } }} className={{    marginLeft: "43%"}}>
@@ -157,7 +160,7 @@ if(diff < 60){
            <CardActionArea>
              <CardMedia
                className={classes.media}
-               image={"https://firebasestorage.googleapis.com/v0/b/sindiruralsrp.appspot.com/o/classificados%2F"+classi.titulo+"%2F"+classi.imagem[0]+"?alt=media"}
+               image={"https://firebasestorage.googleapis.com/v0/b/sindiruralsrp.appspot.com/o/classificados%2F"+classi.pastaImgClass+"%2F"+classi.imagem[0]+"?alt=media"}
                        
                title="Contemplative Reptile"
              />
