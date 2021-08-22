@@ -7,6 +7,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import Mercado from './components/Mercado';
 import Empregos from './components/Empregos';
+import Cursos from './components/Cursos';
 import Classificado from './components/Classificado';
 import Parceiros from './components/Parceiros';
 import CarouselNews from './components/CarouselNews';
@@ -112,6 +113,8 @@ async function EnviarNovoFili(){
 
   }
 
+
+
   return (
     <div >
       <link
@@ -172,10 +175,10 @@ async function EnviarNovoFili(){
 
 
 
-          <Card id={'mercado'}> 
+        
             
             
-            <Grid item xs={12} style={{}}>
+            <Grid item xs={12} style={{}} id={'mercado'}>
                  <div style={{backgroundColor:"#023927",padding:5,display: "flex",alignItems: "center",justifyContent: "center"}}>
                   <span style={{width: "100%",color:"white",position: "relative",textAlign:"center",fontWeight:"bold",fontSize: "28px"}}>MERCADO AGRÍCOLA</span>
                 </div>
@@ -184,9 +187,9 @@ async function EnviarNovoFili(){
                <Mercado/>
           </Grid> 
           
-          </Card>
+          
 
-            <Grid item xs={12} style={{}}>
+            <Grid item xs={12} style={{marginTop:-50}}>
                  <div style={{backgroundColor:"#023927",padding:5,display: "flex",alignItems: "center",justifyContent: "center"}}>
                   <span style={{width: "100%",color:"white",position: "relative",textAlign:"center",fontWeight:"bold",fontSize: "28px"}}>CLASSIFICADOS</span>
                 </div>
@@ -201,6 +204,14 @@ async function EnviarNovoFili(){
             </Grid>
            <Grid container style={{display:"block",padding:25}} spacing={0} >
                <Empregos/>
+          </Grid>
+            <Grid item xs={12} style={{}}>
+                 <div style={{backgroundColor:"#023927",padding:5,display: "flex",alignItems: "center",justifyContent: "center"}}>
+                  <span style={{width: "100%",color:"white",position: "relative",textAlign:"center",fontWeight:"bold",fontSize: "28px"}}>CURSOS</span>
+                </div>
+            </Grid>
+           <Grid container style={{display:"block",padding:25}} spacing={0} >
+               <Cursos/>
           </Grid>
          
 

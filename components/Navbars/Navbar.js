@@ -26,11 +26,26 @@ export default function Header(props) {
   function makeBrand() {
     var name = "Dashboard SindiRuralSRP";
     props.routes.map((prop) => {
-      if (router.route.indexOf(prop.layout + prop.path) !== -1) {
+      
+      if (router.route.indexOf(prop.layout + prop.path) !== -1 ) {
         name = props.rtlActive ? prop.rtlName : prop.name;
       }
       return null;
     });
+    if(router.route.indexOf("/admin/notificacoes") !== -1){name = "Notificações"}
+    if(router.route == "/admin/addNoticia" ) name = "Adicionar Noticia" 
+    if(router.route == "/admin/addUsuario" ) name = "Adicionar Usuário" 
+    if(router.route == "/admin/addClassificado" ) name = "Adicionar Classificado" 
+    if(router.route == "/admin/addParceiro" ) name = "Adicionar Parceiro" 
+    if(router.route == "/admin/addCurso") name = "Adicionar Curso" 
+    if(router.route == "/admin/addEmprego")  name = "Adicionar Vaga de Emprego" 
+    if(router.route == "/admin/editNoticia")  name = "Editar" 
+    if(router.route == "/admin/editUsuario")  name = "Editar Usuário" 
+    if(router.route == "/admin/editClassificado") name = "Editar Classificado" 
+    if(router.route == "/admin/editParceiro")  name = "Editar Empresa Parceira" 
+    if(router.route == "/admin/editCurso") name = "Editar Curso" 
+    if(router.route == "/admin/editEmprego")  name = "Editar Vaga de Emprego" 
+   
     return name;
   }
   const { color } = props;

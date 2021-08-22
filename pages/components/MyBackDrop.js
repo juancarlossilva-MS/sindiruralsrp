@@ -15,7 +15,7 @@ export default function SimpleBackdrop() {
   const classes = useStyles();
 
   return (
-    <div>
+    <div style={{position:"absolute",zIndex:1000}}>
       <Backdrop className={classes.backdrop} open={true}>
         <CircularProgress color="inherit" />
       </Backdrop>

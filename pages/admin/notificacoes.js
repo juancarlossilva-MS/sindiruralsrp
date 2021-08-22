@@ -176,6 +176,7 @@ const useStyles2 = makeStyles((theme) => ({
   const [matSel, setMatSel] = React.useState("");
 
   function ModalNot(){
+    console.log(matSel);
  return (
     <div>
       <Modal
@@ -195,6 +196,16 @@ const useStyles2 = makeStyles((theme) => ({
           <Typography variant="h5">
             Telefone: <a href={"tel:"+matSel.Telefone}>{matSel.Telefone}</a>
           </Typography>
+          {matSel["Curso para o qual se inscreveu:"] &&
+              <Typography variant="h5">
+                Curso para o qual se inscreveu: {matSel["Curso para o qual se inscreveu:"]}
+              </Typography>
+          }
+          {matSel["Vaga para qual se inscreveu:"] &&
+              <Typography variant="h5">
+                Vaga para qual se inscreveu: {matSel["Vaga para qual se inscreveu:"]}
+              </Typography>
+          }
           
         </div>
       </Modal>

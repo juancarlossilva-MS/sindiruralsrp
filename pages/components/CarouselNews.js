@@ -109,9 +109,9 @@ setWindowWidth(width)
                      <Link href={"/cursos/"+curso.slug_name } >
                         
                         <div style={{padding:"1%",marginBottom:"-6%",position:"absolute",zIndex:1000}}>
-                                <Typography variant="body2" display="block" style={{color:"#fafafa",fontWeight:"bold",webkitTextStrokeWidth: "1px",textShadow: "black 0.2em 0.2em 0.3em",webkitTextStrokeColor: "#023927",overflow: "hidden !important"}} gutterBottom>
+                                <Typography variant="body1" display="block" style={{color:"#fafafa",fontWeight:"bold",webkitTextStrokeWidth: "0.5px",textShadow: "black 0.2em 0.2em 0.3em",webkitTextStrokeColor: "#023927",overflow: "hidden !important"}} gutterBottom>
                                   
-                                  <AccessTime style={{marginBottom:"-1.65%"}}/> {dataExtenso(curso.data)}
+                                  <AccessTime style={{marginBottom:"-1.76%",textShadow: "black 0.2em 0.2em 0.3em",fontSize:20}}/> {dataExtenso(curso.data)}
                                 
 
                                 </Typography>
@@ -202,7 +202,7 @@ setWindowWidth(width)
                      <Link href={"/noticias/"+noticia.slug_name } >
                        
                         <div style={{padding:"1%",marginBottom:"-6%",position:"absolute",zIndex:1000}}>
-                           <Typography variant="subtitle1" display="block" style={{color:"#fafafa",fontWeight:"bold",webkitTextStrokeWidth: "1px",textShadow: "black 0.2em 0.2em 0.3em",webkitTextStrokeColor: "#023927",overflow: "hidden !important"}} gutterBottom>
+                           <Typography variant="subtitle1" display="block" style={{color:"#fafafa",fontWeight:"bold",webkitTextStrokeWidth: "0.5px",textShadow: "black 0.2em 0.2em 0.3em",webkitTextStrokeColor: "#023927",overflow: "hidden !important"}} gutterBottom>
                              
                               <AccessTime style={{marginBottom:"-1.65%"}}/> {dataExtenso(noticia.data)}   •   {noticia.tipo}
                             
