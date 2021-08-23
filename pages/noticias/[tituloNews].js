@@ -82,7 +82,7 @@ useEffect(()=>{
                   
                   console.log(nc)
                   setNoticia(nc)
-                  document.title = nc.titulo +" • SindiRural SRP";
+                  document.title = nc.titulo +" • SRSRP.COM.BR";
 
             })
         });

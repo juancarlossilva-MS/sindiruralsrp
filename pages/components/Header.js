@@ -28,80 +28,100 @@ return(
             leftLinks={
               <List className={classes.list}>
                 <ListItem className={classes.listItem}>
-                  <Button
-                    href="/"
-                    className={classes.navLink}
-                    color="transparent"
-                  >
-                    Início
-                  </Button>
-                </ListItem>
-                <ListItem className={classes.listItem}>
-                  <Button
-                    href="#pablo"
-                    className={classes.navLink}
-                    onClick={(e) => e.preventDefault()}
-                    color="transparent"
-                  >
-                    O Sindicato
-                  </Button>
-                </ListItem>
-                <ListItem className={classes.listItem}>
-                  <Button
-                    href="#cursos"
-                    className={classes.navLink}
-                    
-                    color="transparent"
-                  >
-                    Cursos
-                  </Button>
-                </ListItem>
-                <ListItem className={classes.listItem}>
-                  <Button
-                    
-                    className={classes.navLink}
-                    color="transparent"
-                  >
-                   <Link href="/noticias"> Noticias</Link>
-                  </Button>
-                </ListItem>
-                <ListItem className={classes.listItem}>
-                  <Button
-                    href="#empregos"
-                    className={classes.navLink}
-                    color="transparent"
-                  >
-                    Empregos
-                  </Button>
-                </ListItem>
-                <ListItem className={classes.listItem}>
-                  <Button
-                    href="#parceiros"
-                    className={classes.navLink}
-                    color="transparent"
-                  >
-                    Parceiros
-                  </Button>
-                </ListItem>
-                <ListItem className={classes.listItem}>
-                  <Button
-                    href="/#mercado"
-                    className={classes.navLink}
-                    color="transparent"
-                  >
-                    Mercado
-                  </Button>
-                </ListItem>
-                <ListItem className={classes.listItem}>
-                  <Button
-                   
-                    className={classes.navLink}
-                    color="transparent"
-                  >
-                  <Link href="/classificados"> Classificados</Link>
+                <Link href="/">
+                <Button
+             
+                  className={classes.navLink}
+                  color="transparent"
+                  
+                >
+                  Início
+                </Button>
+                </Link>
+              </ListItem>
+              <ListItem className={classes.listItem}>
+                <Button
+                  href="/#pablo"
+                  className={classes.navLink}
+                  onClick={(e) => e.preventDefault()}
+                  color="transparent"
+                  
+                >
+                  O Sindicato
+                </Button>
+              </ListItem>
+              <ListItem className={classes.listItem}>
+                <Link href="/#cursos">
+                <Button
+                  
+                  className={classes.navLink}
+                  
+                  color="transparent"
+                  
+                >
+                  Cursos
+                </Button>
+                </Link>
+              </ListItem>
+              <ListItem className={classes.listItem}>
+                <Link href="/noticias"> 
+                <Button
+                  
+                  className={classes.navLink}
+                  color="transparent"
+                  
+                  
+                >
+                   Noticias
+                </Button></Link>
+              </ListItem>
+              <ListItem className={classes.listItem}>
+                <Link href="/#empregos">
+                <Button
+                  
+                  className={classes.navLink}
+                  color="transparent"
+                  
+                >
+                  Empregos
+                </Button>
+                </Link>
+              </ListItem>
+              <ListItem className={classes.listItem}>
+              <Link  href="/#parceiros">
+                <Button
+                 
+                  className={classes.navLink}
+                  color="transparent"
+                  
+                >
+                  Parceiros
+                </Button>
+                </Link >
+              </ListItem>
+              <ListItem className={classes.listItem}>
+              <Link  href="/#mercado">
+                <Button
+                 
+                  className={classes.navLink}
+                  color="transparent"
+                  
+                >
+                  Mercado
+                </Button>
+                </Link >
+              </ListItem>
+              <ListItem className={classes.listItem}>
+                <Link href="/classificados"><Button
+                 
+                  className={classes.navLink}
+                  color="transparent"
+                  
+                >
+                 Classificados
 
-                  </Button>
-                </ListItem>
+                </Button></Link>
+              </ListItem>
               
               </List>
             }            

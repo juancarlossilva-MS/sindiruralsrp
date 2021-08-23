@@ -2,7 +2,7 @@ import Head from 'next/head'
 import React,{useState} from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid } from "@material-ui/core";
+import { Grid,Typography } from "@material-ui/core";
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Mercado from './components/Mercado';
@@ -193,9 +193,11 @@ async function EnviarNovoFili(){
                  <div style={{backgroundColor:"#023927",padding:5,display: "flex",alignItems: "center",justifyContent: "center"}}>
                   <span style={{width: "100%",color:"white",position: "relative",textAlign:"center",fontWeight:"bold",fontSize: "28px"}}>CLASSIFICADOS</span>
                 </div>
+                
             </Grid>
            <Grid container style={{display:"block",padding:25}} spacing={0} >
                <Classificado/>
+                <Typography style={{marginTop:10,display: "flex",alignItems: "center",justifyContent: "center"}} variant="h5"><Link  href="/classificados">Ver todos os anúncios  </Link></Typography>
           </Grid>
             <Grid item xs={12} style={{}} id="empregos">
                  <div style={{backgroundColor:"#023927",padding:5,display: "flex",alignItems: "center",justifyContent: "center"}}>
@@ -203,17 +205,19 @@ async function EnviarNovoFili(){
                 </div>
             </Grid>
            <Grid container style={{display:"block",padding:25}} spacing={0} >
+                <Typography style={{marginTop:10,display: "flex",alignItems: "center",justifyContent: "center"}} variant="h5">Clique em uma das vagas e preencha o formulário para se inscrever!</Typography>
                <Empregos/>
           </Grid>
 
 
 
-            <Grid item xs={12} style={{}} id="cursos">
+            <Grid item xs={12} style={{marginTop:20}} id="cursos">
                  <div style={{backgroundColor:"#023927",padding:5,display: "flex",alignItems: "center",justifyContent: "center"}}>
                   <span style={{width: "100%",color:"white",position: "relative",textAlign:"center",fontWeight:"bold",fontSize: "28px"}}>CURSOS</span>
                 </div>
             </Grid>
            <Grid container style={{display:"block",padding:25}} spacing={0} >
+              <Typography style={{marginTop:10,display: "flex",alignItems: "center",justifyContent: "center"}} variant="h5">Clique em um dos cursos e preencha o formulário para se inscrever!</Typography>
                <Cursos/>
           </Grid>
          

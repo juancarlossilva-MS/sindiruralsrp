@@ -1,8 +1,8 @@
 import React, { Component,useRef, useEffect,useState } from "react";
 import Slider from "react-slick";
 import { makeStyles } from '@material-ui/core/styles';
-import { AttachMoney,Phone, WhatsApp,AccessTime } from '@material-ui/icons';
-import {Button,Divider, Grid, TextField} from '@material-ui/core';
+import { AttachMoney,Phone, WhatsApp,AccessTime,Search } from '@material-ui/icons';
+import {Button,Divider, Grid, TextField,InputBase} from '@material-ui/core';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
@@ -26,11 +26,13 @@ const router = useRouter();
 const busca = router.query.busca;
 
 const [noticias,setNoticias] = useState([]);
-
+let refBusca = useRef('')
 useEffect(()=>{
     if(!router.isReady) return;
 
     console.log(busca)
+    document.title = "Resultado da busca "+busca+" • SRSRP.COM.BR";
+
     fire.database().ref('/noticias/').orderByChild("data").once("value").then((snap) => {
 
               snap.forEach((not) => {
@@ -54,6 +56,7 @@ function dataExtenso(data){
   
   }
 
+  const [load,setLoad] = useState(2);
 
 
   return(
@@ -63,13 +66,34 @@ function dataExtenso(data){
         <Grid item xs></Grid>
         <Grid item xs={8}>
                
-                    <Typography variant="h3">Resultado da busca "{busca}"</Typography>
-         
+                 
+                    <Grid container>
+                    <Grid item xs={12} sm={6}>
+                         <Typography variant="h3">Resultado da busca "{busca}"</Typography>
+                     
+                    </Grid>
+                    <Grid item xs={12} sm={6} >
+                        <div style={{marginTop:15}}>
+                        <Search />
+                        <InputBase placeholder="Procurar uma noticia"
+                        inputRef={refBusca}
+                        onKeyPress={(ev) => {
+                         
+                            if (ev.key === 'Enter') {
+                               
+                              router.push({pathname:"/noticias/busca",query:{busca:refBusca.current.value}})
+                              ev.preventDefault();
+                            }
+                          }}
+                        />
+                        </div>
+                    </Grid>
+                </Grid>
                 
             
             <Divider/>
 
-            {noticias.map(news=>{
+            {noticias.slice(0,load).map(news=>{
                 return(
                    <Link href={"/noticias/"+news.slug_name}><Button>
                     <Card style={{padding:15}}>
@@ -101,13 +125,14 @@ function dataExtenso(data){
             })
 
             }
-
+          <Button fullWidth style={{backgroundColor:"#023927",color:"#fafafa"}} onClick={()=>setLoad(load+5)}>Carregar Mais Resultados</Button>
         </Grid> 
         <Grid item xs></Grid>
 
     </Grid>
-   
-      <Footer/>
+    <div style={{marginTop:80,marginBottom:-20}}>
+              <Footer />
+             </div>     
     </>
 );
 }

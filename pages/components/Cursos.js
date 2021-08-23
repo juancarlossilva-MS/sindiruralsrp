@@ -10,6 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import MyBackDrop from './MyBackDrop';
 
 
+
 const useStyles = makeStyles((theme) => ({
        
         wrapper: {
@@ -177,8 +178,7 @@ return(
     <Grid container>
     {cursos.map((cur)=>{
                 return(
-
-                        <Grid item xs={12} md={4} style={{marginLeft:"0px",marginBottom:-50}}>
+                  <Grid item xs={12} md={4} style={{marginLeft:"0px",marginBottom:-50}}>
                                 <Card style={{width:"94%",height:"80%",padding:20}} onClick={()=>{setSelCur(cur),setOpenModal(true)}}>
                                         <Typography variant="h5">
                                                 {cur.descricao}

@@ -72,9 +72,10 @@ function dataExtenso(data){
     return(date1.getDate()+" de "+meses[date1.getMonth()]+" de "+date1.getFullYear()+" às "+date1.getHours()+"h"+date1.getMinutes());
   
   }
-
-
+  
+  
 useEffect(()=>{
+  document.title = "Noticias • SRSRP.COM.BR";
   var query = fire.database().ref('noticias/').orderByChild("data").once("value").then((snap) => {
 
             snap.forEach((not) => {

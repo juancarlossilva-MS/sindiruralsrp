@@ -15,12 +15,41 @@ import Image from 'next/image';
 import LocationOn from '@material-ui/icons/LocationOn';
 import {useRouter} from "next/router"
 import Link from "next/link"
+import {useState,useEffect} from "react"
+
+
 export default function WeHeader(){
   const useStyles = makeStyles(styles);
 
   const classes = useStyles();
 
 const router = useRouter();
+
+
+const [width, setWindowWidth] = useState(0);
+
+   useEffect(() => { 
+
+     updateDimensions();
+
+     window.addEventListener("resize", updateDimensions);
+     return () => 
+       window.removeEventListener("resize",updateDimensions);
+    }, [])  
+
+
+const updateDimensions = () => {
+  const width = window.innerWidth
+  setWindowWidth(width)
+}
+
+
+function whoColor(){
+  if(width > 1100) return "#fafafa";
+  if(width < 600) return "#023927";
+}
+
+
 return(
 <Header
             brand={<Button2><Image src="/logoverde.png" width={320} height={72} /></Button2>}
@@ -28,79 +57,99 @@ return(
             leftLinks={
               <List className={classes.list}>
               <ListItem className={classes.listItem}>
+                <Link href="/">
                 <Button
-                  href="/"
+             
                   className={classes.navLink}
                   color="transparent"
+                  style={{color:whoColor()}}
                 >
                   Início
                 </Button>
+                </Link>
               </ListItem>
               <ListItem className={classes.listItem}>
                 <Button
-                  href="#pablo"
+                  href="/#pablo"
                   className={classes.navLink}
                   onClick={(e) => e.preventDefault()}
                   color="transparent"
+                  style={{color:whoColor()}}
                 >
                   O Sindicato
                 </Button>
               </ListItem>
               <ListItem className={classes.listItem}>
+                <Link href="/#cursos">
                 <Button
-                  href="#cursos"
+                  
                   className={classes.navLink}
                   
                   color="transparent"
+                  style={{color:whoColor()}}
                 >
                   Cursos
                 </Button>
+                </Link>
               </ListItem>
               <ListItem className={classes.listItem}>
+                <Link href="/noticias"> 
                 <Button
                   
                   className={classes.navLink}
                   color="transparent"
+                  style={{color:whoColor()}}
+                  
                 >
-                 <Link href="/noticias"> Noticias</Link>
-                </Button>
+                   Noticias
+                </Button></Link>
               </ListItem>
               <ListItem className={classes.listItem}>
+                <Link href="/#empregos">
                 <Button
-                  href="#empregos"
+                  
                   className={classes.navLink}
                   color="transparent"
+                  style={{color:whoColor()}}
                 >
                   Empregos
                 </Button>
+                </Link>
               </ListItem>
               <ListItem className={classes.listItem}>
-                <Button
-                  href="#parceiros"
-                  className={classes.navLink}
-                  color="transparent"
-                >
-                  Parceiros
-                </Button>
-              </ListItem>
-              <ListItem className={classes.listItem}>
-                <Button
-                  href="/#mercado"
-                  className={classes.navLink}
-                  color="transparent"
-                >
-                  Mercado
-                </Button>
-              </ListItem>
-              <ListItem className={classes.listItem}>
+              <Link  href="/#parceiros">
                 <Button
                  
                   className={classes.navLink}
                   color="transparent"
+                  style={{color:whoColor()}}
                 >
-                <Link href="/classificados"> Classificados</Link>
-
+                  Parceiros
                 </Button>
+                </Link >
+              </ListItem>
+              <ListItem className={classes.listItem}>
+              <Link  href="/#mercado">
+                <Button
+                 
+                  className={classes.navLink}
+                  color="transparent"
+                  style={{color:whoColor()}}
+                >
+                  Mercado
+                </Button>
+                </Link >
+              </ListItem>
+              <ListItem className={classes.listItem}>
+                <Link href="/classificados"><Button
+                 
+                  className={classes.navLink}
+                  color="transparent"
+                  style={{color:whoColor()}}
+                >
+                 Classificados
+
+                </Button></Link>
               </ListItem>
             
             </List>

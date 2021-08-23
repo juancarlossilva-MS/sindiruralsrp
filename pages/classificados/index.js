@@ -2,7 +2,7 @@ import Head from 'next/head'
 import React, { useEffect,useRef,useState } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid,Card,CardMedia,Breadcrumbs,Typography,Button, Divider, InputBase} from "@material-ui/core";
+import { Grid,Card,CardMedia,CardActionArea , CardContent ,Breadcrumbs,CardActions ,Typography,Button, Divider, InputBase} from "@material-ui/core";
 import { AccessTime, Search} from "@material-ui/icons";
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -12,28 +12,30 @@ import  Image  from 'next/image'
 import  Link  from 'next/link'
 import Badge from "components/Badge/Badge.js";
 
-
-
-
-
+const useStyles = makeStyles({
+  root: {
+    maxWidth: 345,
+  },
+  media: {
+    height: 190,
+  },
+  hiddenOverTitle:{
+    maxHeight: "2rem",
+    minHeight: "2rem",
+    overflow: "hidden !important"
+  },
+  hiddenOver:{
+    maxHeight: "4rem",
+    minHeight: "4rem",
+    overflow: "hidden !important"
+  },
+});
 export default function ViewClassificados(){
 const router = useRouter()
 const { tituloNews } = router.query;
 const [classificados,setClassificados] = useState([]);
 const [image,setImage] = useState('');
-
-const back = {
-    width: "100%",
-    height: "340px",
-    position: "relative",
-    zIndex: "1",
-    backgroundPosition: "center center",
-    backgroundSize: "cover",
-    backgroundRepeat: "no-repeat",
-    backgroundImage:image,
-    filter: "brightness(0.5)"
-
-}
+const classes = useStyles();
 
 
 function formataData(data){
@@ -81,6 +83,7 @@ useEffect(()=>{
 
                   var nc = not.val();
                   nc.imagem = JSON.parse(nc.imagem);
+                  nc.key = not.key;
                   setClassificados((prev)=>[nc,...prev])
                   
                   
@@ -132,7 +135,7 @@ return(
                     <Grid item xs={12} sm={6} >
                         <div style={{marginTop:15}}>
                         <Search />
-                        <InputBase placeholder="Procurar uma classificado"
+                        <InputBase placeholder="Procurar um Anúncio"
                         inputRef={refBusca}
                         onKeyPress={(ev) => {
                          
@@ -149,38 +152,58 @@ return(
                 
                 
                 <Divider/>
+                <Grid container style={{padding:50}} >
+                            
 
                 {classificados.slice(0,load).map(classi=>{
                     return(
-                       <Link href={"/classificados/"+classi.slug_name}><Button>
-                        <Card style={{padding:15}}>
-                             <Grid container  >
-                            <Grid item xs={12} sm={4}>
+                      
+                          <Grid item xs={12} sm={6}>
+                          <Card className={classes.root}>
+                          <Link href={{ pathname: '/produto', query: { id: classi.key } }} className={{    marginLeft: "43%"}}>
 
-                                  <CardMedia 
-                                    image={"https://firebasestorage.googleapis.com/v0/b/sindiruralsrp.appspot.com/o/classificados%2F"+classi.pastaImgClass+"%2F"+classi.imagem[0]+"?alt=media"}
-                                    style={{width:"16rem",height:"12rem"}}
-
-                            />
-                            </Grid>
-                            <Grid item xs={12} sm={8}>
-                                    <Typography style={{textAlign:"justify",lineHeight:"initial"}} variant="h6">{classi.titulo}</Typography>
-
-                                    <Typography style={{textAlign:"justify",textTransform:"none",marginTop:"2%"}} variant="body2">{classi.materia.replace(/<[^>]+>/g, '') .slice(0,350)}</Typography>
-
-                                    <Typography style={{float:"right",marginTop:"5%"}} variant="caption">{classi.tipo} • <AccessTime style={{fontSize:15 ,marginBottom:-3 }}/> {dataExtenso(classi.data)}</Typography>
-                            </Grid>
-                          
-                        
-                        <Divider/>
-                        </Grid>
-                        </Card>
-                        </Button>
+                      <CardActionArea>
+                        <CardMedia
+                          className={classes.media}
+                          image={"https://firebasestorage.googleapis.com/v0/b/sindiruralsrp.appspot.com/o/classificados%2F"+classi.pastaImgClass+"%2F"+classi.imagem[0]+"?alt=media"}
+                                  
+                          title="Contemplative Reptile"
+                        />
+                        <CardContent>
+                        <Typography variant="caption" display="block" >
+                              <AccessTime style={{ fontSize: 13 }}/> { formataData(classi.data)}
+                          </Typography>
+                          <Typography className={classes.hiddenOverTitle} gutterBottom variant="h5" component="h2">
+                              {classi.titulo}
+                          </Typography>
+                          <Typography className={classes.hiddenOver} variant="body2" color="textSecondary" component="p">
+                            {classi.materia.slice(0,200).replace(/<[^>]+>/g, '')}
+                          </Typography>
+                        </CardContent>
+                      </CardActionArea>
                         </Link>
-                    )
-                })
-
-                }
+                      <CardActions>
+                        <Typography style={{color:"#023927"}} variant="h5" component="h2" >
+                          R$ {classi.valor}
+                        </Typography>
+                        <Link href={{ pathname: '/produto', query: { id: classi.key } }} className={{    marginLeft: "43%"}}>
+                            <Button style={{color:"#023927"}} simple>
+                              ver mais
+                            </Button>
+                          </Link>
+                        
+                      </CardActions>
+                    </Card>
+                  
+                          </Grid>
+                          
+                          )
+                        })
+                        
+                      }
+                  </Grid>
+                
+                
                 <Button fullWidth style={{backgroundColor:"#023927",color:"#fafafa"}} onClick={()=>setLoad(load+5)}>Carregar Mais Classificados</Button>
             </Grid> 
             <Grid item xs></Grid>
