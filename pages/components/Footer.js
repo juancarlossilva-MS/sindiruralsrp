@@ -14,6 +14,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Image from 'next/image';
 import LocationOn from '@material-ui/icons/LocationOn';
 import {useRouter} from "next/router"
+import Link from "next/link"
 export default function WeHeader(){
   const useStyles = makeStyles(styles);
 
@@ -26,90 +27,84 @@ return(
             color="backgreen"
             leftLinks={
               <List className={classes.list}>
-               
-                <ListItem className={classes.listItem}>
-                  <Button
-                    href="#pablo"
-                    className={classes.navLink}
-                    onClick={(e) => e.preventDefault()}
-                    color="transparent"
-                  >
-                    O Sindicato
-                  </Button>
-                </ListItem>
-                <ListItem className={classes.listItem}>
-                  <Button
-                    href="#pablo"
-                    className={classes.navLink}
-                    onClick={(e) => e.preventDefault()}
-                    color="transparent"
-                  >
-                    Cursos
-                  </Button>
-                </ListItem>
-                <ListItem className={classes.listItem}>
-                  <Button
-                    href="#pablo"
-                    className={classes.navLink}
-                    onClick={(e) => e.preventDefault()}
-                    color="transparent"
-                  >
-                    Noticias
-                  </Button>
-                </ListItem>
-                <ListItem className={classes.listItem}>
-                  <Button
-                    href="#pablo"
-                    className={classes.navLink}
-                    onClick={(e) => e.preventDefault()}
-                    color="transparent"
-                  >
-                    Ações Sociais
-                  </Button>
-                </ListItem>
-                <ListItem className={classes.listItem}>
-                  <Button
-                    href="#pablo"
-                    className={classes.navLink}
-                    onClick={(e) => e.preventDefault()}
-                    color="transparent"
-                  >
-                    Parceiros
-                  </Button>
-                </ListItem>
-                <ListItem className={classes.listItem}>
-                  <Button
-                    href="#mercado"
-                    className={classes.navLink}
-                    onClick={(e) => e.preventDefault()}
-                    color="transparent"
-                  >
-                    Mercado
-                  </Button>
-                </ListItem>
-                <ListItem className={classes.listItem}>
-                  <Button
-                    href="#pablo"
-                    className={classes.navLink}
-                    onClick={(e) => e.preventDefault()}
-                    color="transparent"
-                  >
-                    Classificados
-                  </Button>
-                </ListItem>
-                <ListItem className={classes.listItem}>
-                  <Button
-                    href="#pablo"
-                    className={classes.navLink}
-                    onClick={(e) => {e.preventDefault();router.push("/login")}}
-                    color="transparent"
-                  >
-                    <Lock/>Área Restrita
-                  </Button>
-                </ListItem>
-              
-              </List>
-            }            
+              <ListItem className={classes.listItem}>
+                <Button
+                  href="/"
+                  className={classes.navLink}
+                  color="transparent"
+                >
+                  Início
+                </Button>
+              </ListItem>
+              <ListItem className={classes.listItem}>
+                <Button
+                  href="#pablo"
+                  className={classes.navLink}
+                  onClick={(e) => e.preventDefault()}
+                  color="transparent"
+                >
+                  O Sindicato
+                </Button>
+              </ListItem>
+              <ListItem className={classes.listItem}>
+                <Button
+                  href="#cursos"
+                  className={classes.navLink}
+                  
+                  color="transparent"
+                >
+                  Cursos
+                </Button>
+              </ListItem>
+              <ListItem className={classes.listItem}>
+                <Button
+                  
+                  className={classes.navLink}
+                  color="transparent"
+                >
+                 <Link href="/noticias"> Noticias</Link>
+                </Button>
+              </ListItem>
+              <ListItem className={classes.listItem}>
+                <Button
+                  href="#empregos"
+                  className={classes.navLink}
+                  color="transparent"
+                >
+                  Empregos
+                </Button>
+              </ListItem>
+              <ListItem className={classes.listItem}>
+                <Button
+                  href="#parceiros"
+                  className={classes.navLink}
+                  color="transparent"
+                >
+                  Parceiros
+                </Button>
+              </ListItem>
+              <ListItem className={classes.listItem}>
+                <Button
+                  href="/#mercado"
+                  className={classes.navLink}
+                  color="transparent"
+                >
+                  Mercado
+                </Button>
+              </ListItem>
+              <ListItem className={classes.listItem}>
+                <Button
+                 
+                  className={classes.navLink}
+                  color="transparent"
+                >
+                <Link href="/classificados"> Classificados</Link>
+
+                </Button>
+              </ListItem>
+            
+            </List>
+             }            
             rightLinks={
                  <List className={classes.list} >
                   

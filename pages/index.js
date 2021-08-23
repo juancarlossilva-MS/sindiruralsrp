@@ -197,7 +197,7 @@ async function EnviarNovoFili(){
            <Grid container style={{display:"block",padding:25}} spacing={0} >
                <Classificado/>
           </Grid>
-            <Grid item xs={12} style={{}}>
+            <Grid item xs={12} style={{}} id="empregos">
                  <div style={{backgroundColor:"#023927",padding:5,display: "flex",alignItems: "center",justifyContent: "center"}}>
                   <span style={{width: "100%",color:"white",position: "relative",textAlign:"center",fontWeight:"bold",fontSize: "28px"}}>BALCÃO DE EMPREGOS</span>
                 </div>
@@ -205,7 +205,10 @@ async function EnviarNovoFili(){
            <Grid container style={{display:"block",padding:25}} spacing={0} >
                <Empregos/>
           </Grid>
-            <Grid item xs={12} style={{}}>
+
+
+
+            <Grid item xs={12} style={{}} id="cursos">
                  <div style={{backgroundColor:"#023927",padding:5,display: "flex",alignItems: "center",justifyContent: "center"}}>
                   <span style={{width: "100%",color:"white",position: "relative",textAlign:"center",fontWeight:"bold",fontSize: "28px"}}>CURSOS</span>
                 </div>

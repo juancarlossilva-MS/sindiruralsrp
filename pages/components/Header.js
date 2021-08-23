@@ -48,9 +48,9 @@ return(
                 </ListItem>
                 <ListItem className={classes.listItem}>
                   <Button
-                    href="#pablo"
+                    href="#cursos"
                     className={classes.navLink}
-                    onClick={(e) => e.preventDefault()}
+                    
                     color="transparent"
                   >
                     Cursos
@@ -67,12 +67,11 @@ return(
                 </ListItem>
                 <ListItem className={classes.listItem}>
                   <Button
-                    href="#pablo"
+                    href="#empregos"
                     className={classes.navLink}
-                    onClick={(e) => e.preventDefault()}
                     color="transparent"
                   >
-                    Ações Sociais
+                    Empregos
                   </Button>
                 </ListItem>
                 <ListItem className={classes.listItem}>
@@ -95,12 +94,12 @@ return(
                 </ListItem>
                 <ListItem className={classes.listItem}>
                   <Button
-                    href="#pablo"
+                   
                     className={classes.navLink}
-                    onClick={(e) => e.preventDefault()}
                     color="transparent"
                   >
-                    Classificados
+                  <Link href="/classificados"> Classificados</Link>
+
                   </Button>
                 </ListItem>
               
