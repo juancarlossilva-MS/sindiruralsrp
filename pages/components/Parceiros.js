@@ -96,14 +96,30 @@ export default function MediaCard() {
       ]
     };
 const [classificados,setClassificados] = useState([]);
+const [realPar,setRealPar] = useState([]);
 
+function randomNumb(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 useEffect(()=>{
 
   fire.database().ref("parceiros").on("value",async(snap)=>{
-  
+    let arrayPar = [];
      await snap.forEach((par)=>{
-          setClassificados(prev=>[par.val(),...prev])
+       arrayPar.push(par.val())
+         // setClassificados(prev=>[par.val(),...prev])
       })
+
+      while(arrayPar.length>0){
+
+        let num = randomNumb(0,arrayPar.length);
+        console.log(num)
+        console.log(arrayPar[num])
+        if(arrayPar[num] !== undefined){
+          setClassificados(prev=>[arrayPar[num],...prev])
+        }
+        arrayPar.splice(num,1);
+      }
       setLoading(false)
 
   })
