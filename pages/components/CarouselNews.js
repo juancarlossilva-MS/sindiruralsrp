@@ -69,7 +69,7 @@ setWindowWidth(width)
   if(tipoCar == "cursos"){
     const [cursos,setCursos] = useState([]);
     React.useEffect(() => {
-      var lc = fire.database().ref('noticias').orderByChild("ehCurso").equalTo(true).limitToLast(2);
+      var lc = fire.database().ref('noticias').orderByChild("ehCurso").equalTo(true).limitToLast(8);
       
 
         lc.on("value",async(snap) => {
@@ -165,7 +165,7 @@ setWindowWidth(width)
   }else{
     const [noticias,setNoticias] = useState([]);
     React.useEffect(() => {
-      var news = fire.database().ref('noticias').orderByChild("ehCurso").equalTo(null).limitToLast(5);
+      var news = fire.database().ref('noticias').orderByChild("ehCurso").equalTo(null).limitToLast(8);
       
 
         news.on("value",async(snap) => {
