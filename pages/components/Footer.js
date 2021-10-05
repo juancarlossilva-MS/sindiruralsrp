@@ -151,6 +151,17 @@ return(
 
                 </Button></Link>
               </ListItem>
+              <ListItem className={classes.listItem}>
+                <Link href="/admin"><Button
+                 
+                  className={classes.navLink}
+                  color="transparent"
+                  style={{color:whoColor()}}
+                >
+                 Controle
+
+                </Button></Link>
+              </ListItem>
             
             </List>
              }            
