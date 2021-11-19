@@ -14,8 +14,7 @@ import firebase from 'firebase';
 
   try {
     const app = firebase.initializeApp(firebaseConfig);
-	const analytics = firebase.getAnalytics(app);
-
+	const analytics = firebase.analytics();
   } catch(err){
     if (!/already exists/.test(err.message)) {
       console.error('Firebase initialization error', err.stack)}
