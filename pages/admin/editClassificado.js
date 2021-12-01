@@ -95,6 +95,7 @@ function EditClassificado() {
   const [imgSel, setImgSel] = React.useState([]);
   const [open, setOpen] = React.useState(false);
   const [titulo,setTitulo] = useState('');
+  const [linkYT,setLinkYT] = useState('');
   const [filiado, setFiliado] = React.useState();
   const [options,setOptions] = useState([]);
   const [ehZap, setEhZap] = React.useState(false);
@@ -144,6 +145,7 @@ useEffect(()=>{
           setTitulo(nc.titulo)
           setValue(nc.materia)
           setPreco(nc.valor)
+          setLinkYT(nc.linkYT)
           setOld(nc.imagem)
           setEhZap(nc.ehZap)
           setTelefone(nc.telefone)
@@ -369,7 +371,8 @@ function SubmitForm(){
                 nomeFiliado:filiado.displayName,
                 pastaImgClass: nomePastaImgs,
                 telefone:telefone,
-                ehZap:ehZap
+                ehZap:ehZap,
+                linkYT:linkYT
     
             }).then(function(){
                 handleToggle();
@@ -495,14 +498,9 @@ function SubmitForm(){
                         </Grid>
                         <Grid item xs={12} sm={6}>
 
-                        <FormControl style={{marginLeft:40,display:"none"}}>
-                            <Datetime
-                            ref={data}
-                          
-                            initialValue={now()}
-                            inputProps={{ placeholder: "Insira a data aqui" }}
-                            />
-                        </FormControl>
+                            <h4>Tem Video do YouTube? Insira o Link aqui! </h4>
+                            <TextField style={{width:"50%"}}  value={linkYT} onChange={(e)=>setLinkYT(e.target.value)}  required variant="standard" label="Link de Video do YouTube" />
+
                         </Grid>
                         <Grid item xs={12} sm={3}>
 

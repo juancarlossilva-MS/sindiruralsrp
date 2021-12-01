@@ -103,6 +103,7 @@ function AddClassificado() {
     setOpen(!open);
   };
   let titulo = useRef();
+  let linkYT = useRef();
   let data = useRef();
   
 
@@ -208,7 +209,8 @@ function SubmitForm(){
                 nomeFiliado:filiado.displayName,
                 pastaImgClass: tilclass,
                 telefone:telefone,
-                ehZap:ehZap
+                ehZap:ehZap,
+                linkYT:linkYT
     
             }).then(function(){
                 handleToggle();
@@ -329,15 +331,9 @@ const [filiado, setFiliado] = React.useState();
                         </label>
                         </Grid>
                         <Grid item xs={12} sm={6}>
+                            <h4>Tem Video do YouTube? Insira o Link aqui! </h4>
+                            <TextField style={{width:"50%"}} inputRef={linkYT} required variant="standard" label="Link de Video do YouTube" />
 
-                        <FormControl style={{marginLeft:40,display:"none"}}>
-                            <Datetime
-                            ref={data}
-                          
-                            initialValue={now()}
-                            inputProps={{ placeholder: "Insira a data aqui" }}
-                            />
-                        </FormControl>
                         </Grid>
                         <Grid item xs={12} sm={3}>
 
