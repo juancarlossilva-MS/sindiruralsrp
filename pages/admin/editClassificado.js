@@ -497,7 +497,14 @@ function SubmitForm(){
                         </label>
                         </Grid>
                         <Grid item xs={12} sm={6}>
-
+                            <FormControl style={{marginLeft:40,display:"none"}}>
+                                <Datetime
+                                ref={data}
+                              
+                                initialValue={now()}
+                                inputProps={{ placeholder: "Insira a data aqui" }}
+                                />
+                            </FormControl>
                             <h4>Tem Video do YouTube? Insira o Link aqui! </h4>
                             <TextField style={{width:"50%"}}  value={linkYT} onChange={(e)=>setLinkYT(e.target.value)}  required variant="standard" label="Link de Video do YouTube" />
 
