@@ -210,7 +210,7 @@ function SubmitForm(){
                 pastaImgClass: tilclass,
                 telefone:telefone,
                 ehZap:ehZap,
-                linkYT:linkYT
+                linkYT:linkYT.current.value
     
             }).then(function(){
                 handleToggle();

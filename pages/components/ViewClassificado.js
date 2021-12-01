@@ -9,6 +9,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Clock from '@material-ui/icons/AccessTime';
+import YouTubeIcon from '@material-ui/icons/YouTube';
 import Typography from '@material-ui/core/Typography';
 import fire from '../../config/fire-config';
 import Link from 'next/link';
@@ -340,7 +341,10 @@ let phoneCont = useRef("");
      {width > 900 &&
       <Grid item xs={12} sm={2}> 
           <div style={{maxWidth:100,height:20,maxHeight:20}}>
-
+            {classificado.linkYT &&
+            
+              <YouTubeIcon />
+            }
               <Slider
                 asNavFor={nav1}
                 ref={(slider2) => setNav2(slider2)}
