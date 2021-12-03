@@ -130,8 +130,10 @@ function SubmitForm(){
 
 
     if(age !== "noticias") type = true;
-
-    var news = fire.database().ref("noticias/"+id);
+    console.log(fire)
+    console.log(fire.firestore())
+    var news =  fire.firestore().collection("noticias").doc(id);
+   /* var news = fire.database().ref("noticias/"+id);*/
     if(img == null){
           
           news.update({
@@ -176,8 +178,7 @@ function SubmitForm(){
         }).catch(function(error) {
           // Uh-oh, an error occurred!
         });
-    }
- 
+    } 
   
       router.push("/admin/noticias");
      
