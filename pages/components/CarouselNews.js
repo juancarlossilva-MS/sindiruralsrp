@@ -169,7 +169,7 @@ setWindowWidth(width)
       
       //console.log(news)
 
-        news.on("key",async(snap) => {
+        news.on("value",async(snap) => {
           console.log(snap.exportVal())
           
           await snap.forEach((n) => {

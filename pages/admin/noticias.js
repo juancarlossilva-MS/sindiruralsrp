@@ -189,12 +189,13 @@ React.useEffect(() =>{
                         );
                     })}
                     <TableCell>
-                        <Button>
-                        <Link  href={{
+                      <a target="_blank">
+                        <Button target="_blank">
+                        <Link  target="_blank" href={{
                                   pathname: '/admin/editNoticia',
                                   query: { id: row.id },
                                 }}
-                        ><Edit/></Link></Button>
+                        ><Edit/></Link></Button></a>
 
                         <Button onClick={()=>{setAlertar(false);setOpenModal(true);setSelNews(row)}}>
                            <Delete/>

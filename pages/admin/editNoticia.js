@@ -43,6 +43,7 @@ const useStyles = makeStyles({
 function AddNoticia() {
   const classes = useStyles();
   const [value, setValue] = useState('');
+  const [dataAtual, setDataAtual] = useState();
   const [titulo, setTitulo] = useState('');
   const [age, setAge] = React.useState('noticias');
   const [img, setImg] = React.useState();
@@ -84,10 +85,9 @@ const getBase64FromUrl = async (url) => {
           let nc = snapshot.val();
           setTitulo(nc.titulo)
           setAge(nc.tipo)
-          setValue(nc.materia)
           setAutor(nc.autor)
           setOld(nc.imagem)
-         
+          setDataAtual(nc.data);
           var storage = fire.storage();
 
           storage.ref('noticias/').child(nc.imagem).getDownloadURL().then(function(url) {
@@ -96,6 +96,13 @@ const getBase64FromUrl = async (url) => {
             // Handle any errors
           });
     });
+
+    fire.database().ref("noticias_materia/"+id).on("value",(snapshot)=>{
+      let nc = snapshot.val();
+      setValue(nc.materia)
+
+    });
+    
   },[]);
   
   
@@ -131,12 +138,17 @@ function SubmitForm(){
 
     if(age !== "noticias") type = true;
 
-    var news = fire.database().ref("noticias/"+id);
+   // var news =  fire.firestore().collection("noticias").doc(id);
+    
+   
+   fire.database().ref("noticias_materia/"+id).update({materia:value});
+
+   var news = fire.database().ref("noticias/"+id);
+    
     if(img == null){
           
           news.update({
               titulo:titulo,
-              materia:value,
               data:dataPost,
               tipo:age,
               ehCurso:type,
@@ -157,7 +169,6 @@ function SubmitForm(){
             
             news.update({
                 titulo:titulo,
-                materia:value,
                 data:dataPost,
                 imagem:imgname,
                 tipo:age,
@@ -176,8 +187,7 @@ function SubmitForm(){
         }).catch(function(error) {
           // Uh-oh, an error occurred!
         });
-    }
- 
+    } 
   
       router.push("/admin/noticias");
      
@@ -267,6 +277,7 @@ function SubmitForm(){
 
                         <FormControl style={{marginLeft:40}}>
                             <Datetime
+                            
                             ref={data}
                             initialValue={now()}
                             inputProps={{ placeholder: "Insira a data aqui" }}

@@ -1,4 +1,5 @@
 import React, { Component,useRef, useEffect,useState } from "react";
+import ReactPlayer from 'react-player'
 import Slider from "react-slick";
 import { makeStyles } from '@material-ui/core/styles';
 import { AttachMoney,Phone, WhatsApp } from '@material-ui/icons';
@@ -319,6 +320,16 @@ let phoneCont = useRef("");
       <div style={{maxWidth:580,height:320}}>
 
       <Slider asNavFor={nav2} ref={(slider1) => setNav1(slider1)} >
+      {classificado.linkYT &&
+                 <div  style={{width:"100%"}} key={classificado.linkYT}>
+                        <Card>
+                      
+                        <ReactPlayer controls={true} width={"100%"} loop={true} playing url={classificado.linkYT} />
+
+                      </Card>
+                  </div>
+                  }
+                  
       {temImg && classificado.imagem.map((img)=>{ 
         return(<div   key={img}>
                  
@@ -341,10 +352,7 @@ let phoneCont = useRef("");
      {width > 900 &&
       <Grid item xs={12} sm={2}> 
           <div style={{maxWidth:100,height:20,maxHeight:20}}>
-            {classificado.linkYT &&
             
-              <YouTubeIcon />
-            }
               <Slider
                 asNavFor={nav1}
                 ref={(slider2) => setNav2(slider2)}
@@ -359,6 +367,15 @@ let phoneCont = useRef("");
                 className={{
                   display: "flex", background: '#fff', width:"100%", minWidth: '100%',minHeight:"100px", maxHeight: '100px',
                 }}>
+                  {classificado.linkYT &&
+                  <div  style={{width:"100%"}} key={classificado.linkYT}>
+                  <Card>
+                    <YouTubeIcon style={{maxHeight: '60px',minHeight: '60px',width:"100%",position:"relative",objectFit: "contain",
+                      }} />
+                      </Card>
+                  </div>
+                  }
+                  
                 {temImg && classificado.imagem.map((img)=>{ 
                 return(
                 <div  style={{width:"100%"}} key={img}>

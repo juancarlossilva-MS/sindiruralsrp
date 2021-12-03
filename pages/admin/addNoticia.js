@@ -97,7 +97,6 @@ function SubmitForm(){
         var news = fire.database().ref("noticias");
         news.push().set({
             titulo:title,
-            materia:value,
             data:dataPost,
             imagem:imgname,
             tipo:age,
@@ -105,9 +104,23 @@ function SubmitForm(){
             slug_name: title.replaceAll(/\s/g, '-').replaceAll(/\//g, "-"),
             autor:autor
 
-        }).then(()=>{
-          setOpen(false);
-          window.location.href = "/admin/noticias";
+        }).then(() => {
+            news.limitToLast(1).once('value').then(function(snapshot) {
+            
+                snapshot.forEach((x)=>{
+                      const key = x.key;
+                      fire.database().ref("noticias_materia/"+key).set({materia:value}).then(()=>{
+                  
+                        setOpen(false);
+                        window.location.href = "/admin/noticias";
+                        
+                      });
+              
+
+                })
+            });
+             
+
         });
     });
 
@@ -123,7 +136,6 @@ function SubmitForm(){
         <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
         <script src="https://unpkg.com/react-quill@1.3.3/dist/react-quill.js"></script>
         <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
-        <script type="text/babel" src="/my-scripts.js"></script>
         <main  className={classes.content}>
           <Paper className={classes.root}>
             <form style={{padding:25}} className={classes.root} noValidate autoComplete="off">

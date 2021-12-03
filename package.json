@@ -31,6 +31,7 @@
     "react-helmet": "^6.1.0",
     "react-icons": "^4.2.0",
     "react-input-mask": "^2.0.4",
+    "react-player": "^2.9.0",
     "react-quill": "^2.0.0-beta.2",
     "react-script-tag": "^1.1.2",
     "slick-carousel": "^1.8.1",
