@@ -18,6 +18,7 @@ export default function ViewNoticia(){
 const router = useRouter()
 const { tituloNews } = router.query;
 const [noticia,setNoticia] = useState('');
+const [materia,setMateria] = useState('');
 const [image,setImage] = useState('');
 
 const back = {
@@ -80,8 +81,17 @@ useEffect(()=>{
 
                   var nc = not.val();
                   
-                  console.log(nc)
+                  console.log(not)
+                  console.log(not.key)
+                  
                   setNoticia(nc)
+                  
+                  fire.database().ref("noticias_materia/"+not.key).on("value",(snapshot)=>{
+                    let nm = snapshot.val();
+                    setMateria(nm.materia)
+              
+                  });
+
             })
         });
 
@@ -90,9 +100,9 @@ useEffect(()=>{
 useEffect(()=>{
   if (typeof(window) !== 'undefined') {
     // code here
-    setUrl(window.location.href)
     if (window.FB) {
-        window.FB.XFBML.parse();
+      window.FB.XFBML.parse();
+      setUrl(window.location.href)
     }
   }
   
@@ -173,7 +183,7 @@ return(
                    </div>
                    <Typography variant="body1" gutterBottom>
 
-                    <div dangerouslySetInnerHTML={{__html: noticia.materia}} />
+                    <div dangerouslySetInnerHTML={{__html: materia}} />
                     </Typography>
                    <Divider/>
                   {url &&

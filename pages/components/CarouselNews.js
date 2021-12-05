@@ -165,31 +165,17 @@ setWindowWidth(width)
   }else{
     const [noticias,setNoticias] = useState([]);
     React.useEffect(() => {
-      var news = fire.database().ref('noticias').orderByChild("ehCurso").equalTo(null).limitToLast(8);
+      var lc = fire.database().ref('noticias').orderByChild("ehCurso").equalTo(null).limitToLast(8);
       
-      //console.log(news)
-
-        news.on("value",async(snap) => {
-          console.log(snap.exportVal())
-          
-          await snap.forEach((n) => {
-            
-            
-             var np = {
-              autor:n.key,
-              data: n.key,
-              imagem: n.key,
-              slug_name:n.key,
-              tipo: n.key,
-              titulo:n.key,
-            }
-           
-            console.log(np)
-                   setNoticias(prev =>[ np,...prev]);
-            })
+      lc.on("value",async(snap) => {
+          console.log(lc)
+            await snap.forEach((c) => {
+                  var nc = c.val();
+                  setNoticias(prev =>[...prev, nc]);
+            });
             setLoading(false);
-        })
-  }, []);  
+        });
+  }, []);
   
 
 

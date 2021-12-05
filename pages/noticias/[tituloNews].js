@@ -81,8 +81,15 @@ useEffect(()=>{
                   var nc = not.val();
                   
                   console.log(nc)
-                  setNoticia(nc)
                   document.title = nc.titulo +" • SRSRP.COM.BR";
+
+                  fire.database().ref("noticias_materia/"+not.key).on("value",(snapshot)=>{
+                    let nm = snapshot.val();
+                    //setMateria(nm.materia)
+                    setNoticia(Object.assign(nc,{materia:nm.materia}))
+
+                  });
+        
 
             })
         });
@@ -92,9 +99,9 @@ useEffect(()=>{
 useEffect(()=>{
   if (typeof(window) !== 'undefined') {
     // code here
-    setUrl(window.location.href)
     if (window.FB) {
-        window.FB.XFBML.parse();
+      window.FB.XFBML.parse();
+      setUrl(window.location.href)
     }
   }
   
