@@ -110,7 +110,7 @@ const [url,setUrl] = useState("");
 
 function Comments(){
   return(
-    <div class="fb-comments" data-href={url} data-width="100%" data-numposts="5"></div>
+    <div class="fb-comments" data-href={"www.srsrp.com.br/noticias/"+tituloNews} data-width="100%" data-numposts="5"></div>
 
   );
 }

@@ -81,9 +81,16 @@ useEffect(()=>{
 
                   var nc = not.val();
                   
-                  console.log(nc)
-                  setNoticia(nc)
+
                   document.title = nc.titulo +" • SindiRural SRP";
+
+                  fire.database().ref("noticias_materia/"+not.key).on("value",(snapshot)=>{
+                    let nm = snapshot.val();
+                    //setMateria(nm.materia)
+                    setNoticia(Object.assign(nc,{materia:nm.materia}))
+
+                  });
+        
             })
         });
 
@@ -103,7 +110,7 @@ const [url,setUrl] = useState("");
 
 function Comments(){
   return(
-    <div class="fb-comments" data-href={url} data-width="100%" data-numposts="5"></div>
+    <div class="fb-comments" data-href={"www.srsrp.com.br/cursos/"+id}  data-width="100%" data-numposts="5"></div>
 
   );
 }

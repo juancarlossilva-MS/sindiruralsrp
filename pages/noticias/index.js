@@ -19,7 +19,7 @@ import Badge from "components/Badge/Badge.js";
 export default function ViewNoticia(){
 const router = useRouter()
 const { tituloNews } = router.query;
-const [noticias,setNoticias] = useState([]);
+const [noticias,setNoticias] = useState();
 const [image,setImage] = useState('');
 
 const back = {
@@ -78,12 +78,13 @@ useEffect(()=>{
   document.title = "Noticias • SRSRP.COM.BR";
   var query = fire.database().ref('noticias/').orderByChild("data").once("value").then((snap) => {
 
-            snap.forEach((not) => {
+            snap.forEach(async (not) => {
 
-                  var nc = not.val();
+                  var nc =  not.val();
                   
-                 
-                    setNoticias((prev)=>[nc,...prev])
+                  const news = await Object.assign(nc,{key:not.key})
+                  console.log(news)
+                  setNoticias((prev)=>[news,...prev])
                   
                   
             })
@@ -118,6 +119,24 @@ function sizeTxt(){
 }
 
 let refBusca = useRef();
+
+
+const MateriaNews = async (props) =>{
+  console.log(props)
+  var chave = props.key;
+  var materia = "";
+ /* await fire.database().ref("noticias_materia/"+chave).on("value",(snapshot)=>{
+    let nm = snapshot.val();
+    //setMateria(nm.materia)
+    materia = nm.materia;
+
+  }).catch(error => console.log(error));*/
+
+  return(
+    <Typography style={{textAlign:"justify",textTransform:"none",marginTop:"2%"}} variant="body2">{materia.replace(/<[^>]+>/g, '') .slice(0,350)}</Typography>
+  )
+}
+
 
 const [load,setLoad] = useState(2);
 return(
@@ -168,7 +187,7 @@ return(
                             <Grid item xs={12} sm={8}>
                                     <Typography style={{textAlign:"justify",lineHeight:"initial"}} variant="h6">{news.titulo}</Typography>
 
-                                    <Typography style={{textAlign:"justify",textTransform:"none",marginTop:"2%"}} variant="body2">{news.materia.replace(/<[^>]+>/g, '') .slice(0,350)}</Typography>
+                                   <MateriaNews valor={news.key} />
 
                                     <Typography style={{float:"right",marginTop:"5%"}} variant="caption">{news.tipo} • <AccessTime style={{fontSize:15 ,marginBottom:-3 }}/> {dataExtenso(news.data)}</Typography>
                             </Grid>
