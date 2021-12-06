@@ -109,8 +109,6 @@ function dataExtenso(data){
                         <Grid item xs={12} sm={8}>
                                 <Typography style={{textAlign:"justify",lineHeight:"initial"}} variant="h6">{news.titulo}</Typography>
 
-                                <Typography style={{textAlign:"justify",textTransform:"none",marginTop:"2%"}} variant="body2">{news.materia.replace(/<[^>]+>/g, '').slice(0,350) }</Typography>
-
                                 <Typography style={{float:"right",marginTop:"5%"}} variant="caption">
                                   {news.tipo} • <AccessTime style={{fontSize:15,marginBottom:-3  }}/> {dataExtenso(news.data)}</Typography>
                         </Grid>
