@@ -245,8 +245,14 @@ const updateDimensions = () => {
 function qtdImgs(){
   if(classificado == null || !temImg) return<></>;
 
-  if(classificado.imagem.length < 5) return classificado.imagem.length;
-  else return 5
+  if(classificado.imagem.length < 5){
+    if(classificado.linkYT){
+      return classificado.imagem.length + 1;
+    }else{
+
+      return classificado.imagem.length;
+    }
+  }else return 5
 }
 
 async function enviarNotificacao(idFili){
