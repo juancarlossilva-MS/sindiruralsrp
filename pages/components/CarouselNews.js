@@ -72,10 +72,9 @@ setWindowWidth(width)
       var lc = fire.database().ref('noticias').orderByChild("ehCurso").equalTo(true).limitToLast(8);
       
       lc.on("value",async(snap) => {
-          console.log(lc)
             await snap.forEach((c) => {
                   var nc = c.val();
-                   setCursos(prev =>[...prev, nc]);
+                   setCursos(prev =>[nc, ...prev]);
             });
             setLoading(false);
         });
@@ -168,10 +167,9 @@ setWindowWidth(width)
       var lc = fire.database().ref('noticias').orderByChild("ehCurso").equalTo(null).limitToLast(8);
       
       lc.on("value",async(snap) => {
-          console.log(lc)
             await snap.forEach((c) => {
                   var nc = c.val();
-                  setNoticias(prev =>[...prev, nc]);
+                  setNoticias(prev =>[ nc, ...prev]);
             });
             setLoading(false);
         });
