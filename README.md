@@ -1,11 +1,6 @@
 ## Site Oficial do Sindicato Rural de Santa Rita do Pardo - MS
 
-Acesse:
-
-```
-<a href="https://www.srsrp.com.br/"> https://www.srsrp.com.br/ </a>
-```
-
+Acesse para visualizar o resultado: <a href="https://www.srsrp.com.br/"> https://www.srsrp.com.br/ </a> 
 Este site foi desenvolvido para melhor comunicação do Sindicato Rural com a população e com seus associados, por isso ele possui os seguintes módulos:
 
   - Noticias Gerais;
