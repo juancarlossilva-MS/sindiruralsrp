@@ -238,20 +238,6 @@ async function EnviarNovoFili(){
                       </Card>
                 </Grid>
                 <Grid item xs={12} sm={2} ></Grid>
-                
-                <Grid item xs={12} sm={2} ></Grid>
-                <Grid item xs={12} sm={8} >
-                                              <CardMedia
-                                          component='video'
-                                          
-                                          image={"https://btgnews.com.br/vendor/videosindi.mp4"}
-                                          autoPlay
-                                          controls
-                                          loop
-                                
-                                      />
-                </Grid>
-                <Grid item xs={12} sm={2} ></Grid>
 
                 <Grid item xs={12} sm={3}></Grid>
                 <Grid item xs={12} sm={6} >
