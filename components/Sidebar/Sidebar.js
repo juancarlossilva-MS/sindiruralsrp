@@ -82,6 +82,11 @@ export default function Sidebar(props) {
           </Link>
         );
       })}
+       <Link href="https://analytics.google.com/analytics/web/#/p293827530/reports/reportinghub" >
+            <a >
+              Relatórios de acessos
+            </a>
+          </Link>
     </List>
   );
   var brand = (
