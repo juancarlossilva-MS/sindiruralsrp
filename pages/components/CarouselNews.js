@@ -119,7 +119,7 @@ setWindowWidth(width)
                             <Link href={"/cursos/"+curso.slug_name } >
                         
                           <Image
-                            src={"https://firebasestorage.googleapis.com/v0/b/sindiruralsrp.appspot.com/o/noticias%2F"+curso.imagem+"?alt=media"}
+                            src={"https://btgnews.tv.br/srsrp/noticias/"+curso.imagem}
                             alt={curso.titulo}
                             width={520}
                             height={480}
@@ -210,7 +210,7 @@ setWindowWidth(width)
                         </Link>
                         <Link href={"/noticias/"+noticia.slug_name } >
                       <Image
-                        src={"https://firebasestorage.googleapis.com/v0/b/sindiruralsrp.appspot.com/o/noticias%2F"+noticia.imagem+"?alt=media"}
+                        src={"https://btgnews.tv.br/srsrp/noticias/"+noticia.imagem}
                         alt={noticia.titulo}
                         width={550}
                         height={width < 600 ? 620:410}

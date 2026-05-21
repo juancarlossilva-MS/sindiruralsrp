@@ -342,7 +342,7 @@ let phoneCont = useRef("");
         <div style={fundo}></div>
           <img
            
-            src={"https://firebasestorage.googleapis.com/v0/b/sindiruralsrp.appspot.com/o/classificados%2F"+classificado.pastaImgClass+"%2F"+img+"?alt=media"}
+            src={"https://btgnews.tv.br/srsrp/classificados%2F"+classificado.pastaImgClass+"%2F"+img+"?alt=media"}
                     
             title="Contemplative Reptile"
             style={{maxHeight: '320px',minHeight: '320px',width:"100%",position:"relative",
@@ -389,7 +389,7 @@ let phoneCont = useRef("");
                     
                       <img
                       
-                        src={"https://firebasestorage.googleapis.com/v0/b/sindiruralsrp.appspot.com/o/classificados%2F"+classificado.pastaImgClass+"%2F"+img+"?alt=media"}
+                        src={"https://btgnews.tv.br/srsrp/classificados%2F"+classificado.pastaImgClass+"%2F"+img+"?alt=media"}
                                 
                         title="Contemplative Reptile"
                         style={{maxHeight: '60px',minHeight: '60px',width:"100%",position:"relative",

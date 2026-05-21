@@ -176,7 +176,6 @@ function SubmitForm(){
     if(filiado == null){alert("Por favor, selecione um Anunciante"); return;}
     if(title == ""){alert("Insira um Titulo"); return;}
     handleToggle();
-    var storageRef = fire.storage().ref();
     
      var dataPost = data.current.state.inputValue;
 
@@ -189,10 +188,46 @@ function SubmitForm(){
       img.map((i)=>{
 
         const imgname = crypto.randomBytes(16).toString("hex")
+
+        try{
+        
+            const formData = new FormData();
+    
+            formData.append("image", i);
+            formData.append("title", imgname);
+            formData.append("tipo", 'classificados/'+tilclass);
+    
+            const response = await fetch("https://btgnews.tv.br/srsrp/api.php", {
+                method: "POST",
+                body: formData,
+                // credentials: "include", // se usar sessão
+                headers: {
+                    // Authorization: "Bearer TOKEN"
+                }
+            });
+    
+            const data = await response.json();
+    
+            if(!response.ok){
+                throw new Error(data.error || "Erro no upload");
+            }
+    
+                  
+            imgs = [...imgs,imgname];
+    
+      
+    
+    
+        }catch(err){
+    
+            console.error(err);
+            alert(err.message);
+    
+        }finally{
+            setOpen(false);
+        }
           
-          var ref = storageRef.child('classificados/'+tilclass+"/"+imgname);       
-          ref.put(i);
-          imgs = [...imgs,imgname];
+
 
       }),
     )

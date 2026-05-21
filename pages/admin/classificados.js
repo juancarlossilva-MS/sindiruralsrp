@@ -118,26 +118,7 @@ function confirmaDel(){
     fire.auth().signInWithEmailAndPassword(email, password)
     .then((userCredential) => {
       var user = userCredential.user;
-      fire.database().ref("/classificados/"+selClass.id).remove().then(()=>{
-          
-         var listRef = fire.storage().ref().child('classificados/'+selClass.pastaImgClass);
-
-        listRef.listAll().then(function(res) {
-         
-          res.items.forEach(function(itemRef) {
-              itemRef.delete()
-          })
-                console.log("delete with success");
-                setRefreshKey(oldKey => oldKey +1)
-                setOpen(false)
-              
-        }).catch(function(error) {
-          // Uh-oh, an error occurred!
-          console.log(error);
-                setOpen(false)
-        });
-        
-      })
+      fire.database().ref("/classificados/"+selClass.id).remove()
    
     })
     .catch((error) => {

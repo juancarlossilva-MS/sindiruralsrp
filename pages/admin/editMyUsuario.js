@@ -130,13 +130,8 @@ const getBase64FromUrl = async (url) => {
 
 useEffect(()=>{
   if(oldimg == null) return;
-    var storage = fire.storage();
+  getBase64FromUrl('https://btgnews.tv.br/srsrp/usuarios/'+oldimg);
 
-              storage.ref('usuarios/').child(oldimg).getDownloadURL().then(function(url) {
-                getBase64FromUrl(url);
-              }).catch(function(error) {
-                // Handle any errors
-              });
 },[oldimg])
 
 
@@ -155,9 +150,30 @@ function addSemImg(){
 function addComImg(){
   const crypto = require("crypto");
   const imgname = crypto.randomBytes(16).toString("hex")
-  var storageRef = fire.storage().ref();
-  var ref = storageRef.child('usuarios/'+imgname);       
-  ref.put(img).then(function(snapshot) {
+    try{
+                       
+        const formData = new FormData();
+  
+        formData.append("image", img);
+        formData.append("title", imgname);
+        formData.append("tipo", 'usuarios');
+  
+        const response = await fetch("https://btgnews.tv.br/srsrp/api.php", {
+            method: "POST",
+            body: formData,
+            // credentials: "include", // se usar sessão
+            headers: {
+                // Authorization: "Bearer TOKEN"
+            }
+        });
+  
+        const data = await response.json();
+  
+        if(!response.ok){
+            throw new Error(data.error || "Erro no upload");
+        }
+  
+        
      
         fire.database().ref("/user/"+id).set({
           email:email,
@@ -168,18 +184,17 @@ function addComImg(){
            router.push("/admin/usuarios");
 
         })
-
-        var imgref = storageRef.child('usuarios/'+oldimg);
-
-        // Delete the file
-        imgref.delete().then(function() {
-          console.log("delete with success");
-        }).catch(function(error) {
-          // Uh-oh, an error occurred!
-        });
-     
-  });
-
+  
+  
+    }catch(err){
+  
+        console.error(err);
+        alert(err.message);
+  
+    }finally{
+        setOpen(false);
+    }
+       
 }
 
 async function SubmitForm(){

@@ -88,13 +88,9 @@ const getBase64FromUrl = async (url) => {
           setAutor(nc.autor)
           setOld(nc.imagem)
           setDataAtual(nc.data);
-          var storage = fire.storage();
-
-          storage.ref('noticias/').child(nc.imagem).getDownloadURL().then(function(url) {
-            getBase64FromUrl(url);
-          }).catch(function(error) {
-            // Handle any errors
-          });
+          
+          getBase64FromUrl('https://btgnews.tv.br/srsrp/noticias/'+nc.imagem);
+          
     });
 
     fire.database().ref("noticias_materia/"+id).on("value",(snapshot)=>{
@@ -126,7 +122,7 @@ const getBase64FromUrl = async (url) => {
   };
 
 
-function SubmitForm(){
+async function SubmitForm(){
     setOpen(true);
     
     if(titulo == ""){alert("Insira um Titulo"); return;}
@@ -161,12 +157,32 @@ function SubmitForm(){
     
         const crypto = require("crypto");
         const imgname = crypto.randomBytes(16).toString("hex")
-        var storageRef = fire.storage().ref();
+         try{
 
-        var ref = storageRef.child('noticias/'+imgname);       
-      
-        ref.put(img).then(function(snapshot) {
-            
+            const formData = new FormData();
+
+            formData.append("image", img);
+            formData.append("title", imgname);
+            formData.append("tipo", 'noticias');
+
+            const response = await fetch("https://btgnews.tv.br/srsrp/api.php", {
+                method: "POST",
+                body: formData,
+                // credentials: "include", // se usar sessão
+                headers: {
+                    // Authorization: "Bearer TOKEN"
+                }
+            });
+
+            const data = await response.json();
+
+            if(!response.ok){
+                throw new Error(data.error || "Erro no upload");
+            }
+
+            console.log("Imagem enviada:");
+            console.log(data);
+
             news.update({
                 titulo:titulo,
                 data:dataPost,
@@ -176,17 +192,34 @@ function SubmitForm(){
                 slug_name: titulo.replaceAll(/\s/g, '-').replaceAll(/\//g, "-"),
                 autor:autor
 
-            });
-        });
-        console.log(oldimg);
-      var imgref = storageRef.child('noticias/'+oldimg);
+            }).then(() => {
+                news.limitToLast(1).once('value').then(function(snapshot) {
+                
+                    snapshot.forEach((x)=>{
+                          const key = x.key;
+                          fire.database().ref("noticias_materia/"+key).set({materia:value}).then(()=>{
+                      
+                            setOpen(false);
+                            window.location.href = "/admin/noticias";
+                            
+                          });
+                  
 
-        // Delete the file
-        imgref.delete().then(function() {
-          console.log("delete with success");
-        }).catch(function(error) {
-          // Uh-oh, an error occurred!
-        });
+                    })
+                });
+                
+
+            });
+
+
+        }catch(err){
+
+            console.error(err);
+            alert(err.message);
+
+        }finally{
+            setOpen(false);
+        }
     } 
   
       router.push("/admin/noticias");

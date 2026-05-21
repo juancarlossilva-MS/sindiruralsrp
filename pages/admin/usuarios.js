@@ -135,16 +135,7 @@ function confirmaDel(){
         })
     
     if(response.ok){
-        fire.database().ref("/user/"+selUser.id).remove().then(()=>{
-       // setRefreshKey(oldKey => oldKey +1)
-      //  setOpen(false)
-        fire.storage().ref().child('usuarios/'+selUser.photoURL).delete().then(function() {
-            console.log("delete with success");
-            setRefreshKey(oldKey => oldKey +1)
-            setOpen(false)
-          }).catch(function(error) {
-          });
-      })
+        // futura remocao de foto
     }else{
        setOpen(false)
     }

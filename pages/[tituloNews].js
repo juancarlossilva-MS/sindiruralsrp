@@ -117,7 +117,7 @@ function Comments(){
 }
 
 useEffect(()=>{
-   setImage("url(https://firebasestorage.googleapis.com/v0/b/sindiruralsrp.appspot.com/o/noticias%2F"+noticia.imagem+"?alt=media)");
+   setImage("url(https://btgnews.tv.br/srsrp/noticias/"+noticia.imagem+"?alt=media)");
 },[noticia])
 
 const [width, setWindowWidth] = useState(0);
@@ -174,7 +174,7 @@ return(
                 </Breadcrumbs>
                    <div style={{width:"100%",marginLeft:"0%",paddingBottom:50,paddingTop:10}}>
                        <Image 
-                        src={"https://firebasestorage.googleapis.com/v0/b/sindiruralsrp.appspot.com/o/noticias%2F"+noticia.imagem+"?alt=media"}
+                        src={"https://btgnews.tv.br/srsrp/noticias/"+noticia.imagem+"?alt=media"}
                         width={6}
                         height={3.5}
                         placeholder="blur"

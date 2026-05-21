@@ -187,7 +187,7 @@ let slider1 = useRef();
                         <img 
                         style={{maxHeight: '280px',minHeight: '280px',width:"100%",position:"relative",paddingleft:20,paddingRight:20,
                         objectFit: "contain"}}
-                        src={"https://firebasestorage.googleapis.com/v0/b/sindiruralsrp.appspot.com/o/parceiros%2F"+classi.imagem+"?alt=media"}
+                        src={"https://btgnews.tv.br/srsrp/parceiros/"+classi.imagem+"?alt=media"}
                          />
 
                  </Link>

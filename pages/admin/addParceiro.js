@@ -84,27 +84,55 @@ function SubmitForm(){
     const crypto = require("crypto");
 
     const imgname = crypto.randomBytes(16).toString("hex")
-    var storageRef = fire.storage().ref();
-    var ref = storageRef.child('parceiros/'+imgname);       
-    
-     console.log(title);
-     console.log(value);
+
      var dataPost = data.current.state.inputValue;
      var type = null;
-     ref.put(img).then(function(snapshot) {
-        var news = fire.database().ref("parceiros");
-        news.push().set({
-            nome:title,
-            data:dataPost,
-            imagem:imgname,
-            url:autor
 
-        }).then(()=>{
-          setOpen(false);
-          window.location.href = "/admin/parceiros";
-        });
-    });
+      try{
+     
+            const formData = new FormData();
+    
+            formData.append("image", img);
+            formData.append("title", imgname);
+            formData.append("tipo", 'parceiros');
+    
+            const response = await fetch("https://btgnews.tv.br/srsrp/api.php", {
+                method: "POST",
+                body: formData,
+                // credentials: "include", // se usar sessão
+                headers: {
+                    // Authorization: "Bearer TOKEN"
+                }
+            });
+    
+            const data = await response.json();
+    
+            if(!response.ok){
+                throw new Error(data.error || "Erro no upload");
+            }
+    
+            var news = fire.database().ref("parceiros");
+            news.push().set({
+                nome:title,
+                data:dataPost,
+                imagem:imgname,
+                url:autor
 
+            }).then(()=>{
+              setOpen(false);
+              window.location.href = "/admin/parceiros";
+            });
+    
+    
+        }catch(err){
+    
+            console.error(err);
+            alert(err.message);
+    
+        }finally{
+            setOpen(false);
+        }
+      
     
      
 }

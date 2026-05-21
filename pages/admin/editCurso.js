@@ -93,13 +93,7 @@ const getBase64FromUrl = async (url) => {
          
 
           if(nc.imagem !== undefined){
-            var storage = fire.storage();
-  
-            storage.ref('cursos/').child(nc.imagem).getDownloadURL().then(function(url) {
-              getBase64FromUrl(url);
-            }).catch(function(error) {
-              // Handle any errors
-            });
+            getBase64FromUrl('https://btgnews.tv.br/srsrp/cursos/'+nc.imagem);
 
           }
     });
@@ -154,12 +148,30 @@ function SubmitForm(){
     
         const crypto = require("crypto");
         const imgname = crypto.randomBytes(16).toString("hex")
-        var storageRef = fire.storage().ref();
+         
+        try{
+                          
+            const formData = new FormData();
 
-        var ref = storageRef.child('cursos/'+imgname);       
-      
-        ref.put(img).then(function(snapshot) {
-            
+            formData.append("image", img);
+            formData.append("title", imgname);
+            formData.append("tipo", 'cursos');
+
+            const response = await fetch("https://btgnews.tv.br/srsrp/api.php", {
+                method: "POST",
+                body: formData,
+                // credentials: "include", // se usar sessão
+                headers: {
+                    // Authorization: "Bearer TOKEN"
+                }
+            });
+
+            const data = await response.json();
+
+            if(!response.ok){
+                throw new Error(data.error || "Erro no upload");
+            }
+
             news.update({
                 descricao:titulo,
                 dataInicio:dataI,
@@ -172,16 +184,20 @@ function SubmitForm(){
                 imagem:imgname,
 
             });
-        });
-        console.log(oldimg);
-      var imgref = storageRef.child('cursos/'+oldimg);
 
-        // Delete the file
-        imgref.delete().then(function() {
-          console.log("delete with success");
-        }).catch(function(error) {
-          // Uh-oh, an error occurred!
-        });
+
+        }catch(err){
+
+            console.error(err);
+            alert(err.message);
+
+        }finally{
+            setOpen(false);
+        }
+          
+            
+           
+
     }
  
   

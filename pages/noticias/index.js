@@ -174,7 +174,7 @@ return(
                             <Grid item xs={12} sm={4}>
 
                                   <CardMedia 
-                                    image={"https://firebasestorage.googleapis.com/v0/b/sindiruralsrp.appspot.com/o/noticias%2F"+news.imagem+"?alt=media"}
+                                    image={"https://btgnews.tv.br/srsrp/noticias/"+news.imagem}
                                     style={{width:"16rem",height:"12rem"}}
 
                             />

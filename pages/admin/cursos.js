@@ -117,16 +117,7 @@ function confirmaDel(){
   fire.auth().signInWithEmailAndPassword(email, password)
   .then((userCredential) => {
     var user = userCredential.user;
-    fire.database().ref("/cursos/"+selNews.id).remove().then(()=>{
-        
-      fire.storage().ref().child('cursos/'+selNews.imagem).delete().then(function() {
-          console.log("delete with success");
-          setRefreshKey(oldKey => oldKey +1)
-          setOpen(false)
-        }).catch(function(error) {
-          // Uh-oh, an error occurred!
-        });
-    })
+    fire.database().ref("/cursos/"+selNews.id).remove()
  
   })
   .catch((error) => {

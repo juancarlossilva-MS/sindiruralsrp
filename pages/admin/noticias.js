@@ -104,16 +104,8 @@ function confirmaDel(){
   fire.auth().signInWithEmailAndPassword(email, password)
   .then((userCredential) => {
     var user = userCredential.user;
-    fire.database().ref("/noticias/"+selNews.id).remove().then(()=>{
-        
-      fire.storage().ref().child('noticias/'+selNews.imagem).delete().then(function() {
-          console.log("delete with success");
-          setRefreshKey(oldKey => oldKey +1)
-          setOpen(false)
-        }).catch(function(error) {
-          // Uh-oh, an error occurred!
-        });
-    })
+    fire.database().ref("/noticias/"+selNews.id).remove()
+    //futura delecao de imagem
  
   })
   .catch((error) => {

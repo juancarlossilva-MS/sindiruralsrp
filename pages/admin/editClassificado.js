@@ -115,6 +115,7 @@ function EditClassificado() {
 const [id,setId] = useState(router.query.id);
 
 const [oldimg,setOld] = useState([]);
+const [nomesImagens,setNomesImagens] = useState('');
 
 const getBase64FromUrl = async (url) => {
   const data = await fetch(url);
@@ -147,6 +148,7 @@ useEffect(()=>{
           setPreco(nc.valor)
           setLinkYT(nc.linkYT)
           setOld(nc.imagem)
+          setNomesImagens(nc.imagem)
           setEhZap(nc.ehZap)
           setTelefone(nc.telefone)
           setNomePastaImgs(nc.pastaImgClass);
@@ -155,34 +157,25 @@ useEffect(()=>{
               setFiliado({displayName:us.displayName,email:us.email,photoURL:us.photoURL,key:snap.key})
           })
 
-          var storage = fire.storage();
+          var imagens = JSON.parse(nc.imagem);
+          
+          let i = 0;
+          imagens.map(async (foto) => {
+              const retorno = await getBase64FromUrl('https://btgnews.tv.br/srsrp/classificados/'+nc.pastaImgClass+'/'+foto);
+              img64 = img64.concat({[foto]:retorno})
+              imgRefs = imgRefs.concat({[retorno]:foto});
+              console.log(foto)
+              console.log(imgRefs)
+              i++;
+              if(imagens.length == i){
+              
+                setImgSel(img64)
+                setOld(imgRefs)
+              }
+          })
 
-          storage.ref('classificados/').child(nc.pastaImgClass)
-
-          var listRef = fire.storage().ref().child('classificados/'+nc.pastaImgClass);
-          listRef.listAll().then(function(res) {
-            let i = 0;
-            res.items.forEach(function(itemRef){
-                itemRef.getDownloadURL().then(async function(url) {
-                  const retorno = await getBase64FromUrl(url);
-                  img64 = img64.concat({[itemRef.name]:retorno})
-                  imgRefs = imgRefs.concat({[retorno]:itemRef.name});
-                  console.log(itemRef.name)
-                  console.log(imgRefs)
-                  i++;
-                  if(res.items.length == i){
-                  
-                    setImgSel(img64)
-                    setOld(imgRefs)
-                  }
-                }).catch(function(error) {
-                  // Handle any errors
-                });
-                
-            })
-
-          });
-        })
+         
+      })
   },[]); 
 
   
@@ -201,8 +194,7 @@ useEffect(()=>{
 
   const onClose = (event) => {
     var item = (event.currentTarget.name);
-console.log(imgSel)
-    console.log(item)
+
 
    /* console.log(item)
     
@@ -315,9 +307,7 @@ function SubmitForm(){
          
           
 
-    
-    var storageRef = fire.storage().ref();
-    
+      
      var dataPost = data.current.state.inputValue;
 
     var imgs = [];
@@ -326,38 +316,93 @@ function SubmitForm(){
 
     Promise.all(
       img.map(async(i)=>{
-          console.log("entrou aki no imgmap")
+          
           var name = Object.keys(i)[0]
           var file = Object.values(i)[0]
-          var ref = storageRef.child('classificados/'+nomePastaImgs+"/"+name);       
-          await ref.put(file)/*.then(()=>{
-            imgquefica = [...imgquefica,imgname];
-          })*/
+
+
+            try{
+        
+            const formData = new FormData();
+    
+            formData.append("image", file);
+            formData.append("title", name);
+            formData.append("tipo", 'classificados/'+nomePastaImgs);
+    
+            const response = await fetch("https://btgnews.tv.br/srsrp/api.php", {
+                method: "POST",
+                body: formData,
+                // credentials: "include", // se usar sessão
+                headers: {
+                    // Authorization: "Bearer TOKEN"
+                }
+            });
+    
+            const data = await response.json();
+    
+            if(!response.ok){
+                throw new Error(data.error || "Erro no upload");
+            }
+    
+    
+        }catch(err){
+    
+            console.error(err);
+            alert(err.message);
+    
+        }
           
 
       }),
     )
     .then(async(url) => {
 
-      console.log("saiu do promise")
+
+      var imagens = JSON.parse(nomesImagens);
+          
+      let i = 0;
+      imagens.map(async (foto) => {
+
      
-      var listRef = fire.storage().ref().child('classificados/'+nomePastaImgs);
-
-
-      await listRef.listAll().then(async function(res) {
-        let i = 0;
-        await res.items.forEach(async function(itemRef){
-            if(imgquefica.includes(itemRef.name)){
+            if(imgquefica.includes(foto)){
                 console.log("essa imagem vai ficar!")
             }else{
-                await itemRef.delete();
+                 try{
+        
+                    const formData = new FormData();
+
+                    formData.append("file", 'classificados/'+nomePastaImgs+'/'+foto);
+            
+                    const response = await fetch("https://btgnews.tv.br/srsrp/delete.php", {
+                        method: "POST",
+                        body: formData,
+                        // credentials: "include", // se usar sessão
+                        headers: {
+                            // Authorization: "Bearer TOKEN"
+                        }
+                    });
+            
+                    const data = await response.json();
+            
+                    if(!response.ok){
+                        throw new Error(data.error || "Erro no upload");
+                    }
+            
+            
+                }catch(err){
+            
+                    console.error(err);
+                    alert(err.message);
+            
+                }finally{
+                    setOpen(false);
+                }
                 console.log("essa imagem vai deletar!")
             }
-        })
 
     });
 
-     console.log(imgquefica)
+  
 
       var news = fire.database().ref("classificados/"+id);
             news.update({

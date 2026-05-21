@@ -157,7 +157,7 @@ let refBusca = useRef('');
                                   <CardActionArea>
                                     <CardMedia
                                       className={classes.media}
-                                      image={"https://firebasestorage.googleapis.com/v0/b/sindiruralsrp.appspot.com/o/classificados%2F"+classi.pastaImgClass+"%2F"+classi.imagem[0]+"?alt=media"}
+                                      image={"https://btgnews.tv.br/srsrp/classificados/"+classi.pastaImgClass+"/"+classi.imagem[0]+"?alt=media"}
                                               
                                       title="Contemplative Reptile"
                                     />
