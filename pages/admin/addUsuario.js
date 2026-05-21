@@ -83,7 +83,7 @@ function SubmitForm(){
       setOpen(true);
 
     fire.auth().createUserWithEmailAndPassword(em, pw)
-    .then((userCredential) => {
+    .then(async (userCredential) => {
        var user = userCredential.user;
             if(img == null){
               user.updateProfile({

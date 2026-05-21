@@ -185,7 +185,7 @@ function SubmitForm(){
     
 
     Promise.all(
-      img.map((i)=>{
+      img.map(async(i)=>{
 
         const imgname = crypto.randomBytes(16).toString("hex")
 

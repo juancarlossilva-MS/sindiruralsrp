@@ -110,7 +110,7 @@ const getBase64FromUrl = async (url) => {
   };
 
 
-function SubmitForm(){
+async function SubmitForm(){
     setOpen(true);
     
     if(titulo == ""){alert("Insira um Nome"); return;}

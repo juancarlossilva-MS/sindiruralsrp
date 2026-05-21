@@ -75,7 +75,7 @@ function AddParceiro(props) {
   };
 
 
-function SubmitForm(){
+async function SubmitForm(){
     
     var title = titulo.current.value;
     if(img == null){alert("Insira uma Image"); return;}

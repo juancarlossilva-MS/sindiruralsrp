@@ -79,7 +79,7 @@ function AddCurso(props) {
   };
 
 
-function SubmitForm(){
+async function SubmitForm(){
     
     var title = titulo.current.value;
     var dataI = dataInicio.current.state.inputValue;

@@ -146,7 +146,7 @@ function addSemImg(){
   })
 }
 
-function addComImg(){
+async function addComImg(){
   const crypto = require("crypto");
   const imgname = crypto.randomBytes(16).toString("hex")
  
