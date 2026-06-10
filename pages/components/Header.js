@@ -40,15 +40,14 @@ return(
                 </Link>
               </ListItem>
               <ListItem className={classes.listItem}>
+                <Link href="/#galeria">
                 <Button
-                  href="/#pablo"
                   className={classes.navLink}
-                  onClick={(e) => e.preventDefault()}
                   color="transparent"
-                  
                 >
-                  O Sindicato
+                  Galeria de Fotos
                 </Button>
+              </Link>
               </ListItem>
               <ListItem className={classes.listItem}>
                 <Link href="/#cursos">

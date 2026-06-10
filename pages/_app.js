@@ -1,5 +1,6 @@
 import "styles/scss/nextjs-material-kit.scss?v=1.2.0";
 import React from 'react';
+import "./galeria.css"
 
 function MyApp({ Component, pageProps }) {
   React.useEffect(() => {

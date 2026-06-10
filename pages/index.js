@@ -9,6 +9,7 @@ import Mercado from './components/Mercado';
 import Empregos from './components/Empregos';
 import Cursos from './components/Cursos';
 import Classificado from './components/Classificado';
+import Galeria from './components/Galeria';
 import Parceiros from './components/Parceiros';
 import CarouselNews from './components/CarouselNews';
 import Card from "components/Card/Card.js";
@@ -189,6 +190,19 @@ async function EnviarNovoFili(){
           
           
 
+            <Grid item xs={12} style={{marginTop:-50}} id={'galeria'}>
+                 <div style={{backgroundColor:"#023927",padding:5,display: "flex",alignItems: "center",justifyContent: "center"}}>
+                  <span style={{width: "100%",color:"white",position: "relative",textAlign:"center",fontWeight:"bold",fontSize: "28px"}}>GALERIA DE FOTOS</span>
+                </div>
+                
+            </Grid>
+           <Grid container style={{display:"block",padding:25,marginBottom:30}} spacing={0} >
+               <Galeria/>
+          </Grid>
+
+
+
+
             <Grid item xs={12} style={{marginTop:-50}}>
                  <div style={{backgroundColor:"#023927",padding:5,display: "flex",alignItems: "center",justifyContent: "center"}}>
                   <span style={{width: "100%",color:"white",position: "relative",textAlign:"center",fontWeight:"bold",fontSize: "28px"}}>CLASSIFICADOS</span>
@@ -199,6 +213,10 @@ async function EnviarNovoFili(){
                <Classificado/>
                 <Typography style={{marginTop:10,display: "flex",alignItems: "center",justifyContent: "center"}} variant="h5"><Link  href="/classificados">Ver todos os anúncios  </Link></Typography>
           </Grid>
+
+
+
+
             <Grid item xs={12} style={{}} id="empregos">
                  <div style={{backgroundColor:"#023927",padding:5,display: "flex",alignItems: "center",justifyContent: "center"}}>
                   <span style={{width: "100%",color:"white",position: "relative",textAlign:"center",fontWeight:"bold",fontSize: "28px"}}>BALCÃO DE EMPREGOS</span>
@@ -245,7 +263,7 @@ async function EnviarNovoFili(){
                       <TextField inputRef={name} required id="standard-required" label="Seu Nome"  />
                       <br/><TextField inputRef={email} required id="standard-required" label="Seu Email"  />
                       <br/><TextField inputRef={phone} required id="standard-required" label="Seu Telefone"  />
-                      <br/><Button style={{color:"white",backgroundColor:"#023928"}} onClick={()=> setOpen(true),EnviarNovoFili} fullWidth> Enviar!<Send/></Button>
+                      <br/><Button style={{color:"white",backgroundColor:"#023928"}} onClick={()=> {setOpen(true),EnviarNovoFili}} fullWidth> Enviar!<Send/></Button>
                   </Card>
                 </Grid>
                 <Grid item xs={12} sm={3}></Grid>
