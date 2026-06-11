@@ -23,7 +23,7 @@ import LibraryBooks from "@material-ui/icons/LibraryBooks";
 import BubbleChart from "@material-ui/icons/BubbleChart";
 import AccountBalance from "@material-ui/icons/AccountBalance";
 import HomeWork from "@material-ui/icons/HomeWork";
-import Unarchive from "@material-ui/icons/Unarchive";
+import Collections from "@material-ui/icons/Collections";
 import Museum from "@material-ui/icons/Museum";
 import Web from "@material-ui/icons/Web";
 import AddShoppingCart from "@material-ui/icons/AddShoppingCart";
@@ -53,6 +53,14 @@ const dashboardRoutes = [
     name: "Classificados",
     rtlName: "قائمة الجدول",
     icon: AddShoppingCart,
+
+    layout: "/admin",
+  },
+  {
+    path: "/galeria",
+    name: "Galeria de fotos",
+    rtlName: "قائمة الجدول",
+    icon: Collections,
 
     layout: "/admin",
   },
